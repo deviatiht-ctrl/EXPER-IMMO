@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -18,28 +18,28 @@
         </a>
         <nav class="sidebar-nav">
             <a href="index.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Mon Dashboard</span></a>
-            <a href="mes-proprietaires.html" class="nav-link"><i data-lucide="user-check"></i><span>Mes Propriétaires</span></a>
+            <a href="mes-proprietaires.html" class="nav-link"><i data-lucide="user-check"></i><span>Mes PropriÃ©taires</span></a>
             <a href="mes-locataires.html" class="nav-link"><i data-lucide="users"></i><span>Mes Locataires</span></a>
             <a href="mes-biens.html" class="nav-link"><i data-lucide="building-2"></i><span>Mes Biens</span></a>
             <a href="mes-contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Mes Contrats</span></a>
-            <a href="mes-operations.html" class="nav-link"><i data-lucide="tool"></i><span>Mes Opérations</span></a>
+            <a href="mes-operations.html" class="nav-link"><i data-lucide="tool"></i><span>Mes OpÃ©rations</span></a>
             <a href="messages.html" class="nav-link"><i data-lucide="message-square"></i><span>Messages</span></a>
             <a href="documents.html" class="nav-link active"><i data-lucide="folder"></i><span>Documents</span></a>
         </nav>
-        <div class="sidebar-footer"><button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button></div>
+        <div class="sidebar-footer"><button id="btn-logout"><i data-lucide="log-out"></i>DÃ©connexion</button></div>
     </aside>
 
     <main class="admin-main">
         <header class="admin-header">
-            <div><h1>Documents</h1><p class="header-subtitle">Documents liés à vos dossiers</p></div>
+            <div><h1>Documents</h1><p class="header-subtitle">Documents liÃ©s ÃƒÂ  vos dossiers</p></div>
             <div class="header-actions">
                 <input type="text" id="search-doc" placeholder="Rechercher un document..." style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);width:240px;">
             </div>
         </header>
 
         <div class="admin-content">
-            <!-- Catégories rapides -->
-            <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:20px;">
+            <!-- CatÃ©gories rapides -->
+            <div class="sÃ©tats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:20px;">
                 <div class="stat-card" style="cursor:pointer;" onclick="filterDocs('tous')">
                     <div class="stat-icon blue"><i data-lucide="folder"></i></div>
                     <div class="stat-info"><h3 id="count-tous">0</h3><p>Tous</p></div>
@@ -67,7 +67,7 @@
                         <option value="facture">Facture</option>
                         <option value="justificatif">Justificatif</option>
                         <option value="rapport">Rapport</option>
-                        <option value="identite">Pièce d'identité</option>
+                        <option value="identite">PiÃ¨ce d'identitÃ©</option>
                         <option value="autre">Autre</option>
                     </select>
                 </div>
@@ -77,11 +77,11 @@
                             <tr>
                                 <th>Nom du fichier</th>
                                 <th>Type</th>
-                                <th>Lié à</th>
-                                <th>Référence</th>
+                                <th>LiÃ© ÃƒÂ </th>
+                                <th>RÃ©fÃ©rence</th>
                                 <th>Date ajout</th>
                                 <th>Format</th>
-                                <th>Visibilité</th>
+                                <th>VisibilitÃ©</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>

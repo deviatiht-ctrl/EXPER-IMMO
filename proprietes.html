@@ -2,25 +2,36 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
-    <title>Propriétés | EXPERIMMO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Anti-cache meta tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    
+    <title>PropriÃ©tÃ©s | EXPERIMMO</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS (variables + reset first) -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/navbar-modern.css">
-    <link rel="stylesheet" href="css/mobile-nav-modern.css">
-    <link rel="stylesheet" href="css/bottom-nav.css">
-    <link rel="stylesheet" href="css/proprietes.css">
-    <link rel="stylesheet" href="css/footer.css">
+    <!-- CSS (variables + reset first) - with cache busting -->
+    <link rel="stylesheet" href="css/variables.css?v=2.0">
+    <link rel="stylesheet" href="css/reset.css?v=2.0">
+    <link rel="stylesheet" href="css/global.css?v=2.0">
+    <link rel="stylesheet" href="css/components.css?v=2.0">
+    <link rel="stylesheet" href="css/animations.css?v=2.0">
+    <link rel="stylesheet" href="css/navbar-modern.css?v=2.0">
+    <link rel="stylesheet" href="css/mobile-nav-modern.css?v=2.0">
+    <link rel="stylesheet" href="css/bottom-nav.css?v=2.0">
+    <link rel="stylesheet" href="css/proprietes.css?v=2.0">
+    <link rel="stylesheet" href="css/footer.css?v=2.0">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -32,9 +43,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
-    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
-    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
 
     <style>
         body { background: var(--bg-main); font-family: var(--font-body); }
@@ -449,14 +457,14 @@
                 <div class="catalog-hero-breadcrumb">
                     <a href="index.html">Accueil</a>
                     <i data-lucide="chevron-right"></i>
-                    <span>Propriétés</span>
+                    <span>PropriÃ©tÃ©s</span>
                 </div>
-                <h1>Nos <em>Propriétés</em></h1>
-                <p class="catalog-hero-sub">Achat, location — trouvez le bien qui vous correspond.</p>
+                <h1>Nos <em>PropriÃ©tÃ©s</em></h1>
+                <p class="catalog-hero-sub">Achat, location  trouvez le bien qui vous correspond.</p>
             </div>
             <div class="hero-search-bar">
                 <i data-lucide="search"></i>
-                <input type="text" id="recherche" placeholder="Quartier, type, référence...">
+                <input type="text" id="recherche" placeholder="Quartier, type, rÃ©fÃ©rence...">
                 <button class="btn-filters" id="btn-filtres-mobile">
                     <i data-lucide="sliders-horizontal"></i> Filtres
                 </button>
@@ -475,9 +483,9 @@
                 <p class="results-count" id="nb-resultats">Chargement...</p>
                 <div class="sort-controls">
                     <select id="tri">
-                        <option value="recent">Plus récentes</option>
+                        <option value="recent">Plus rÃ©centes</option>
                         <option value="prix-asc">Prix croissant</option>
-                        <option value="prix-desc">Prix décroissant</option>
+                        <option value="prix-desc">Prix dÃ©croissant</option>
                     </select>
                     <div class="view-toggle">
                         <button id="btn-grille" class="active" title="Grille">
@@ -498,7 +506,7 @@
                         <h3><i data-lucide="sliders-horizontal"></i> Filtres</h3>
                         <div class="filter-header-actions">
                             <button id="reset-filtres" class="btn-text">
-                                <i data-lucide="rotate-ccw"></i> Réinitialiser
+                                <i data-lucide="rotate-ccw"></i> RÃ©initialiser
                             </button>
                             <button id="close-filters-mobile" class="btn-close-filters">
                                 <i data-lucide="x"></i>
@@ -533,7 +541,7 @@
                         <label><i data-lucide="dollar-sign"></i> Prix (USD)</label>
                         <div class="range-inputs">
                             <input type="number" id="prix-min" placeholder="Min" min="0">
-                            <span>—</span>
+                            <span>et</span>
                             <input type="number" id="prix-max-sidebar" placeholder="Max" min="0">
                         </div>
                     </div>
@@ -550,9 +558,9 @@
                         </div>
                     </div>
 
-                    <!-- Meublé -->
+                    <!-- MeublÃ©ï¿½ -->
                     <div class="filter-group flex">
-                        <label><i data-lucide="sofa"></i> Meublé</label>
+                        <label><i data-lucide="sofa"></i> MeublÃ©Ã©</label>
                         <label class="switch">
                             <input type="checkbox" id="meuble">
                             <span class="slider"></span>
@@ -580,8 +588,8 @@
 
                     <div id="empty-state" class="empty-state" style="display:none;">
                         <i data-lucide="search-x" class="empty-icon"></i>
-                        <h3>Aucun résultat</h3>
-                        <p>Réessayez avec d'autres filtres ou mots-clés.</p>
+                        <h3>Aucun rÃ©sultat</h3>
+                        <p>RÃ©essayez avec d'autres filtres ou mots-clÃ©s.</p>
                     </div>
                 </section>
 
@@ -596,8 +604,11 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-about">
-src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
-                    <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
+                    <div class="footer-logo">
+                        <img src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'">
+                        <span>EXPERIMMO</span>
+                    </div>
+                    <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriÃ©tÃ©s en Haiti.</p>
                     <div class="social-links" style="margin-top:20px;">
                         <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
                         <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
@@ -608,9 +619,9 @@ src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38
                     <h4>Navigation</h4>
                     <nav class="footer-links">
                         <a href="index.html">Accueil</a>
-                        <a href="proprietes.html">Propriétés</a>
+                        <a href="proprietes.html">PropriÃ©tÃ©s</a>
                         <a href="services.html">Services</a>
-                        <a href="a-propos.html">À Propos</a>
+                        <a href="a-propos.html">a Ã€ Propos</a>
                     </nav>
                 </div>
                 <div>
@@ -624,14 +635,14 @@ src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38
                 </div>
                 <div>
                     <h4>Contact</h4>
-                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
+                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">PÃ©tion-Ville, Haiti</span></div>
                     <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
                     <div class="footer-contact-item"><i data-lucide="mail"></i><span data-site="email">info@experimmo.ht</span></div>
                 </div>
             </div>
             <div class="footer-bottom">
-                $12026 EXPERIMMO. Tous droits réservés.</p>
-                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ?? pour Haïti</p>
+                <p>2026 EXPERIMMO. Tous droits rÃ©servÃ©s.</p>
+                <p>crÃ©Ã© par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a></p>
             </div>
         </div>
     </footer>
@@ -666,44 +677,6 @@ src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38
     </script>
 </body>
 </html>
-.Value -replace '<p>', '<p data-site="description">' Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
-                    <div class="social-links" style="margin-top:20px;">
-                        <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
-                        <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
-                        <a href="#" aria-label="Twitter" data-site="twitter"><i data-lucide="twitter"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4>Navigation</h4>
-                    <nav class="footer-links">
-                        <a href="index.html">Accueil</a>
-                        <a href="proprietes.html">Propriétés</a>
-                        <a href="services.html">Services</a>
-                        <a href="a-propos.html">À Propos</a>
-                    </nav>
-                </div>
-                <div>
-                    <h4>Support</h4>
-                    <nav class="footer-links">
-                        <a href="contact.html">Contact</a>
-                        <a href="login.html">Connexion</a>
-                        <a href="inscription.html">Inscription</a>
-                        <a href="#">FAQ</a>
-                    </nav>
-                </div>
-                <div>
-                    <h4>Contact</h4>
-                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
-                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
-                    <div class="footer-contact-item"><i data-lucide="mail"></i><span data-site="email">info@experimmo.ht</span></div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                $12026 EXPERIMMO. Tous droits réservés.</p>
-                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ?? pour Haïti</p>
-            </div>
-        </div>
-    </footer>
 
     <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +47,7 @@
                     <a href="mon-contrat.html"><i data-lucide="file-text"></i> Mon Contrat</a>
                     <a href="mes-paiements.html" class="active"><i data-lucide="wallet"></i> Mes Paiements</a>
                     <a href="mes-factures.html"><i data-lucide="receipt"></i> Mes Factures</a>
-                    <a href="mes-echeances.html"><i data-lucide="calendar"></i> Mes Échéances</a>
+                    <a href="mes-echeances.html"><i data-lucide="calendar"></i> Mes Ã‰chÃ©ances</a>
                 </div>
                 <div class="portal-nav-section">
                     <h5>Communication</h5>
@@ -57,7 +57,7 @@
             </nav>
             <div class="portal-sidebar-footer">
                 <a href="profil.html"><i data-lucide="user"></i> Profil</a>
-                <a href="#" id="btn-logout"><i data-lucide="log-out"></i> Déconnexion</a>
+                <a href="#" id="btn-logout"><i data-lucide="log-out"></i> DÃ©connexion</a>
             </div>
         </aside>
 
@@ -69,7 +69,7 @@
 
             <div class="portal-content">
                 <!-- Payment Summary Cards -->
-                <div class="stats-grid">
+                <div class="sÃ©tats-grid">
                     <div class="stat-card">
                         <div class="stat-icon blue">
                             <i data-lucide="home"></i>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="stat-info">
                             <h3 id="stat-payes">0</h3>
-                            <span>Paiements effectués</span>
+                            <span>Paiements effectuÃ©s</span>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -116,7 +116,7 @@
                             <div class="amount" id="next-amount">$0</div>
                             <div class="due-date">
                                 <i data-lucide="calendar"></i>
-                                <span id="next-due-date">Échéance: --</span>
+                                <span id="next-due-date">Ã‰chÃ©ance: --</span>
                             </div>
                         </div>
                         <button class="btn-pay" onclick="openPaymentModal()">
@@ -131,13 +131,13 @@
                         <h3><i data-lucide="list"></i> Historique des paiements</h3>
                         <div class="flex gap-2">
                             <select id="filter-annee" class="form-control">
-                                <option value="">Toutes les années</option>
+                                <option value="">Toutes les annÃ©es</option>
                                 <option value="2024">2024</option>
                                 <option value="2025">2025</option>
                             </select>
                             <select id="filter-statut" class="form-control">
                                 <option value="">Tous les statuts</option>
-                                <option value="paye">Payé</option>
+                                <option value="paye">PayÃ©</option>
                                 <option value="en_attente">En attente</option>
                                 <option value="en_retard">En retard</option>
                             </select>
@@ -147,7 +147,7 @@
                         <table class="portal-table">
                             <thead>
                                 <tr>
-                                    <th>Période</th>
+                                    <th>PÃ©riode</th>
                                     <th>Loyer</th>
                                     <th>Charges</th>
                                     <th>Total</th>
@@ -180,7 +180,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Montant à payer</label>
+                    <label>Montant ÃƒÂ  payer</label>
                     <input type="text" id="payment-amount-display" readonly class="form-control text-lg">
                 </div>
                 <div class="form-group">

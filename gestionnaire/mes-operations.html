@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
-    <title>Mes Opérations | EXPERIMMO</title>
+    <title>Mes OpÃ©rations | EXPERIMMO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/global.css">
@@ -18,23 +18,23 @@
         </a>
         <nav class="sidebar-nav">
             <a href="index.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Mon Dashboard</span></a>
-            <a href="mes-proprietaires.html" class="nav-link"><i data-lucide="user-check"></i><span>Mes Propriétaires</span></a>
+            <a href="mes-proprietaires.html" class="nav-link"><i data-lucide="user-check"></i><span>Mes PropriÃ©taires</span></a>
             <a href="mes-locataires.html" class="nav-link"><i data-lucide="users"></i><span>Mes Locataires</span></a>
             <a href="mes-biens.html" class="nav-link"><i data-lucide="building-2"></i><span>Mes Biens</span></a>
             <a href="mes-contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Mes Contrats</span></a>
-            <a href="mes-operations.html" class="nav-link active"><i data-lucide="tool"></i><span>Mes Opérations</span></a>
+            <a href="mes-operations.html" class="nav-link active"><i data-lucide="tool"></i><span>Mes OpÃ©rations</span></a>
             <a href="messages.html" class="nav-link"><i data-lucide="message-square"></i><span>Messages</span></a>
             <a href="documents.html" class="nav-link"><i data-lucide="folder"></i><span>Documents</span></a>
         </nav>
-        <div class="sidebar-footer"><button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button></div>
+        <div class="sidebar-footer"><button id="btn-logout"><i data-lucide="log-out"></i>DÃ©connexion</button></div>
     </aside>
 
     <main class="admin-main">
         <header class="admin-header">
-            <div><h1>Mes Opérations</h1><p class="header-subtitle" id="header-date"></p></div>
+            <div><h1>Mes OpÃ©rations</h1><p class="header-subtitle" id="header-date"></p></div>
             <div class="header-actions">
                 <button class="btn-primary" id="btn-new-op">
-                    <i data-lucide="plus"></i> Nouvelle Opération
+                    <i data-lucide="plus"></i> Nouvelle OpÃ©ration
                 </button>
             </div>
         </header>
@@ -48,9 +48,9 @@
                         <option value="visite">Visite du bien</option>
                         <option value="encaissement">Encaissement de loyer</option>
                         <option value="paiement">Paiement de facture</option>
-                        <option value="travaux">Travaux de réparation</option>
+                        <option value="travaux">Travaux de rÃ©paration</option>
                         <option value="construction">Travaux de construction</option>
-                        <option value="negociation">Négociation</option>
+                        <option value="negociation">NÃ©gociation</option>
                         <option value="achat">Achat</option>
                         <option value="vente">Vente</option>
                         <option value="incident">Incident</option>
@@ -59,8 +59,8 @@
                     <select id="filter-statut" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
                         <option value="">Tous les statuts</option>
                         <option value="brouillon">Brouillon</option>
-                        <option value="publie">Publié</option>
-                        <option value="archive">Archivé</option>
+                        <option value="publie">PubliÃ©</option>
+                        <option value="archive">ArchivÃ©</option>
                     </select>
                     <input type="date" id="filter-debut" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
                     <input type="date" id="filter-fin" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
@@ -70,11 +70,11 @@
                 </div>
             </div>
 
-            <!-- Tableau des opérations -->
+            <!-- Tableau des opÃ©rations -->
             <div class="admin-card">
                 <div class="card-header">
-                    <h3><i data-lucide="activity"></i> Liste des opérations</h3>
-                    <span id="count-ops" style="font-size:0.875rem;color:#9ca3af;">0 opération(s)</span>
+                    <h3><i data-lucide="activity"></i> Liste des opÃ©rations</h3>
+                    <span id="count-ops" style="font-size:0.875rem;color:#9ca3af;">0 opÃ©ration(s)</span>
                 </div>
                 <div class="card-body" style="overflow-x:auto;">
                     <table class="admin-table">
@@ -85,7 +85,7 @@
                                 <th>Bien</th>
                                 <th>Type</th>
                                 <th>Montant</th>
-                                <th>Réf. décision</th>
+                                <th>RÃ©f. dÃ©cision</th>
                                 <th>Statut pub.</th>
                                 <th>Actions</th>
                             </tr>
@@ -94,7 +94,7 @@
                             <tr>
                                 <td colspan="8" style="text-align:center;padding:40px;color:#9ca3af;">
                                     <i data-lucide="activity" style="width:36px;height:36px;display:block;margin:0 auto 10px;"></i>
-                                    Chargement des opérations...
+                                    Chargement des opÃ©rations...
                                 </td>
                             </tr>
                         </tbody>
@@ -103,39 +103,39 @@
             </div>
         </div>
 
-        <!-- Modal: Ajouter/Modifier une opération -->
+        <!-- Modal: Ajouter/Modifier une opÃ©ration -->
         <div id="modal-op" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;overflow-y:auto;padding:20px;">
             <div style="background:white;border-radius:16px;padding:28px;width:600px;max-width:100%;margin:auto;">
                 <h3 style="margin-bottom:20px;display:flex;align-items:center;gap:8px;font-size:1.1rem;">
-                    <i data-lucide="plus-circle"></i> <span id="modal-op-title">Nouvelle Opération</span>
+                    <i data-lucide="plus-circle"></i> <span id="modal-op-title">Nouvelle OpÃ©ration</span>
                 </h3>
                 <form id="form-op">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
                         <div>
-                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Date de l'opération *</label>
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Date de l'opÃ©ration *</label>
                             <input type="date" id="op-date" required style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
                         </div>
                         <div>
-                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Type d'opération *</label>
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Type d'opÃ©ration *</label>
                             <select id="op-type" required style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
                                 <option value="">-- Choisir --</option>
                                 <option value="visite">Visite du bien</option>
                                 <option value="encaissement">Encaissement de loyer</option>
                                 <option value="paiement">Paiement de facture</option>
-                                <option value="travaux">Travaux de réparation</option>
+                                <option value="travaux">Travaux de rÃ©paration</option>
                                 <option value="construction">Travaux de construction</option>
-                                <option value="validation">Validation du propriétaire</option>
-                                <option value="negociation">Négociation</option>
+                                <option value="validation">Validation du propriÃ©taire</option>
+                                <option value="negociation">NÃ©gociation</option>
                                 <option value="achat">Achat</option>
                                 <option value="vente">Vente</option>
                                 <option value="incident">Incident</option>
-                                <option value="relance">Relance</option>
+                                <option value="rÃ©elance">Relance</option>
                                 <option value="recouvrement">Recouvrement</option>
                                 <option value="autre">Autre</option>
                             </select>
                         </div>
                         <div>
-                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Bien concerné *</label>
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Bien concernÃ© *</label>
                             <select id="op-bien" required style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
                                 <option value="">-- Choisir un bien --</option>
                             </select>
@@ -145,22 +145,22 @@
                             <input type="number" id="op-montant" placeholder="0" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
                         </div>
                         <div style="grid-column:1/-1;">
-                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Référence de décision</label>
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">RÃ©fÃ©rence de dÃ©cision</label>
                             <input type="text" id="op-ref-decision" placeholder="Email, document, note..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
                         </div>
                         <div style="grid-column:1/-1;">
-                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Description détaillée *</label>
-                            <textarea id="op-description" rows="4" required placeholder="Décrivez l'opération..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);resize:vertical;box-sizing:border-box;"></textarea>
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Description dÃ©taillÃ©e *</label>
+                            <textarea id="op-description" rows="4" required placeholder="DÃ©crivez l'opÃ©ration..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);resize:vertical;box-sizing:border-box;"></textarea>
                         </div>
                         <div style="grid-column:1/-1;">
                             <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Remarques</label>
-                            <input type="text" id="op-remarques" placeholder="Remarques éventuelles" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                            <input type="text" id="op-remarques" placeholder="Remarques Ã©ventuelles" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
                         </div>
                         <div>
                             <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:5px;color:#6b7280;">Statut de publication</label>
                             <select id="op-statut-pub" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
                                 <option value="brouillon">Brouillon (non visible client)</option>
-                                <option value="publie">Publié (visible client)</option>
+                                <option value="publie">PubliÃ© (visible client)</option>
                             </select>
                         </div>
                     </div>

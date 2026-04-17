@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -34,7 +34,7 @@
             <div class="sidebar-section-label">Dossiers</div>
             <a href="proprietaires.html" class="nav-link">
                 <i data-lucide="user-check"></i>
-                <span>Propriétaires</span>
+                <span>PropriÃ©taires</span>
             </a>
             <a href="locataires.html" class="nav-link">
                 <i data-lucide="users"></i>
@@ -42,7 +42,7 @@
             </a>
             <a href="proprietes.html" class="nav-link">
                 <i data-lucide="building-2"></i>
-                <span>Propriétés</span>
+                <span>PropriÃ©tÃ©s</span>
             </a>
             <div class="sidebar-section-label">Gestion</div>
             <a href="contrats.html" class="nav-link">
@@ -51,7 +51,7 @@
             </a>
             <a href="operations.html" class="nav-link">
                 <i data-lucide="tool"></i>
-                <span>Opérations</span>
+                <span>OpÃ©rations</span>
             </a>
             <a href="factures.html" class="nav-link active">
                 <i data-lucide="receipt"></i>
@@ -64,12 +64,12 @@
         <header class="admin-header">
             <div>
                 <h1>Module Facturation</h1>
-                <p class="header-subtitle">Loyer, Eau, Électricité et Charges</p>
+                <p class="header-subtitle">Loyer, Eau, Ã‰lectricitÃ© et Charges</p>
             </div>
             <div class="header-actions">
                 <button class="btn-primary" onclick="window.openModal('add-facture')">
                     <i data-lucide="plus"></i>
-                    Émettre une Facture
+                    Ã‰mettre une Facture
                 </button>
             </div>
         </header>
@@ -83,9 +83,9 @@
                                 <th>Code</th>
                                 <th>Type</th>
                                 <th>Locataire</th>
-                                <th>Période</th>
+                                <th>PÃ©riode</th>
                                 <th>Montant</th>
-                                <th>Échéance</th>
+                                <th>Ã‰chÃ©ance</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
@@ -117,9 +117,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Bien concerné</label>
+                        <label>Bien concernÃ©</label>
                         <select id="fac-propriete" required>
-                            <option value="">Chargement propriétés...</option>
+                            <option value="">Chargement propriÃ©tÃ©s...</option>
                         </select>
                     </div>
                     <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -128,12 +128,12 @@
                             <select id="fac-type" required>
                                 <option value="loyer">Loyer</option>
                                 <option value="eau">Eau</option>
-                                <option value="electricite">Électricité</option>
+                                <option value="electricite">Ã‰lectricitÃ©</option>
                                 <option value="charges">Charges / Autres</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Période (ex: Mai 2026)</label>
+                            <label>PÃ©riode (ex: Mai 2026)</label>
                             <input type="text" id="fac-periode" placeholder="Mai 2026" required>
                         </div>
                         <div class="form-group">
@@ -141,14 +141,14 @@
                             <input type="number" id="fac-montant" step="0.01" required>
                         </div>
                         <div class="form-group">
-                            <label>Date d'échéance</label>
+                            <label>Date d'Ã©chÃ©ance</label>
                             <input type="date" id="fac-echeance" required>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" onclick="window.closeModal('add-facture')">Annuler</button>
-                    <button type="submit" class="btn-primary">Générer la Facture</button>
+                    <button type="submit" class="btn-primary">GÃ©nÃ©rer la Facture</button>
                 </div>
             </form>
         </div>

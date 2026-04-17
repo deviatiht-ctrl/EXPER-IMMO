@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -19,13 +19,13 @@
         <nav class="sidebar-nav">
              <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
              <div class="sidebar-section-label">Dossiers</div>
-             <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
+             <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>PropriÃ©taires</span></a>
              <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
-             <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
+             <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>PropriÃ©tÃ©s</span></a>
              <div class="sidebar-section-label">Finances</div>
              <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i> <span>Contrats</span></a>
              <a href="paiements.html" class="nav-link"><i data-lucide="wallet"></i> <span>Paiements</span></a>
-             <div class="sidebar-section-label">Système</div>
+             <div class="sidebar-section-label">SystÃ¨me</div>
              <a href="gestionnaires.html" class="nav-link active"><i data-lucide="shield-check"></i> <span>Gestionnaires</span></a>
         </nav>
     </aside>
@@ -34,11 +34,11 @@
         <header class="admin-header">
             <div>
                 <h1>Gestionnaires & Personnel</h1>
-                <p class="header-subtitle">Gérez les accès administratifs et les agents</p>
+                <p class="header-subtitle">GÃ©rez les accÃ¨s administratifs et les agents</p>
             </div>
             <div class="header-actions">
                 <button class="btn-primary" onclick="openModal('add-gestionnaire')">
-                    <i data-lucide="plus"></i> <span>Ajouter un employé</span>
+                    <i data-lucide="plus"></i> <span>Ajouter un employÃ©</span>
                 </button>
             </div>
         </header>
@@ -55,8 +55,8 @@
                                 <tr>
                                     <th>Nom Complet</th>
                                     <th>Email</th>
-                                    <th>Rôle</th>
-                                    <th>Dernière connexion</th>
+                                    <th>RÃ´le</th>
+                                    <th>DerniÃ¨re connexion</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -74,7 +74,7 @@
     <div id="add-gestionnaire" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Ajouter un employé</h3>
+                <h3>Ajouter un employÃ©</h3>
                 <button class="modal-close" onclick="closeModal('add-gestionnaire')">X</button>
             </div>
             <form id="gest-form" class="modal-body">
@@ -87,7 +87,7 @@
                     <input type="email" id="gest-email" required>
                 </div>
                 <div class="form-group">
-                    <label>Rôle</label>
+                    <label>RÃ´le</label>
                     <select id="gest-role">
                         <option value="gestionnaire">Gestionnaire</option>
                         <option value="assistante">Assistante</option>
@@ -95,7 +95,7 @@
                     </select>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn-primary">Créer le compte</button>
+                    <button type="submit" class="btn-primary">CrÃ©Ã©Ã©er le compte</button>
                 </div>
             </form>
         </div>

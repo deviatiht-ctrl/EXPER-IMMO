@@ -22,9 +22,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS with cache busting -->
-    <link rel="stylesheet" href="css/variables.css?v=2.0">
-    <link rel="stylesheet" href="css/reset.css?v=2.0">
-    <link rel="stylesheet" href="css/portal.css?v=2.0">
+    <link rel="stylesheet" href="css/variables.css?v=4/02_081512">
+    <link rel="stylesheet" href="css/reset.css?v=4/02_081512">
+    <link rel="stylesheet" href="css/portal.css?v=4/02_081512">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -60,7 +60,7 @@
         .panel-tagline h2 em { color: var(--ruby-light); font-style: italic; }
         .panel-tagline p { font-size: 0.95rem; color: rgba(255,255,255,0.58); line-height: 1.7; max-width: 340px; }
 
-        .panel-stats { display: flex; gap: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; margin-top: 40px; overflow: hidden; }
+        .panel-sétats { display: flex; gap: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; margin-top: 40px; overflow: hidden; }
         .panel-stat { flex: 1; text-align: center; padding: 16px 12px; border-right: 1px solid rgba(255,255,255,0.08); }
         .panel-stat:last-child { border-right: none; }
         .panel-stat .val { display: block; font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--ruby-light); line-height: 1; }
@@ -203,9 +203,9 @@
             <div class="panel-tagline">
                 <span class="panel-tagline-tag">Gestion Immobilière</span>
                 <h2>Gérez. Valorisez.<br><em>Réussissez.</em></h2>
-                <p>La plateforme professionnelle en Haïti pour la gestion de propriétés, locataires et contrats.</p>
+                <p>La plateforme professionnelle en Haiti pour la gestion de propriétés, locataires et contrats.</p>
             </div>
-            <div class="panel-stats">
+            <div class="panel-sétats">
                 <div class="panel-stat">
                     <span class="val" data-stat="biens">48+</span>
                     <span class="lbl">Biens</span>
@@ -246,7 +246,7 @@
 
             <!-- Heading -->
             <div class="login-heading">
-                <h1>Créer un compte</h1>
+                <h1>Créééer un compte</h1>
                 <p>Rejoignez votre plateforme immobilière.</p>
             </div>
 
@@ -316,7 +316,7 @@
                         </div>
                         <div class="reg-form-group full">
                             <label for="adresse">Adresse complète *</label>
-                            <input type="text" id="adresse" name="adresse" placeholder="Pétion-Ville, Port-au-Prince, Haïti" required>
+                            <input type="text" id="adresse" name="adresse" placeholder="Pétion-Ville, Port-au-Prince, Haiti" required>
                         </div>
                         <div class="reg-form-group">
                             <label for="date_naissance">Date de naissance *</label>
@@ -324,7 +324,7 @@
                         </div>
                         <div class="reg-form-group">
                             <label for="nationalite">Nationalité</label>
-                            <input type="text" id="nationalite" name="nationalite" placeholder="Haïtienne" value="Haïtienne">
+                            <input type="text" id="nationalite" name="nationalite" placeholder="Haitienne" value="Haitienne">
                         </div>
                     </div>
 
@@ -418,7 +418,7 @@
 
                     <button type="submit" class="auth-btn-primary reg-btn-continue" id="btn-register">
                         <i data-lucide="user-plus"></i>
-                        Créer mon compte
+                        Créééer mon compte
                     </button>
                 </form>
             </div>
@@ -456,7 +456,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script type="module">
-        import CONFIG from './js/config.js?v=2.0';
+        import CONFIG from './js/config.js?v=4/02_081512';
         const { createClient } = supabase;
         const _db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
         (async () => {
@@ -472,10 +472,10 @@
                     const el = document.querySelector('[data-stat="' + key + '"]');
                     if (el) el.textContent = val + '+';
                 });
-            } catch (e) { console.warn('[Stats]', e.message); }
+            } catch (e) { console.warn('[Sétats]', e.message); }
         })();
     </script>
-    <script type="module" src="js/auth.js?v=2.0"></script>
+    <script type="module" src="js/auth.js?v=4/02_081512"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
