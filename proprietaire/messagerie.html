@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Messagerie | EXPERIMMO</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/portal.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c9a84c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <style>
+        .msg-layout { display:grid; grid-template-columns:300px 1fr; gap:0; height:calc(100vh - 120px); border:1px solid var(--border); border-radius:12px; overflow:hidden; background:white; }
+        .msg-list { border-right:1px solid var(--border); overflow-y:auto; }
+        .msg-list-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+        .msg-list-header h3 { font-size:1rem; }
+        .msg-item { padding:14px 20px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.2s; }
+        .msg-item:hover, .msg-item.active { background:var(--bg-secondary); }
+        .msg-item.unread .msg-subject { font-weight:700; color:var(--text-primary); }
+        .msg-subject { font-size:0.9rem; margin-bottom:4px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .msg-preview { font-size:0.8rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .msg-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+        .msg-date { font-size:0.75rem; color:var(--text-muted); }
+        .msg-badge { width:8px; height:8px; border-radius:50%; background:var(--ruby); flex-shrink:0; }
+        .msg-content { display:flex; flex-direction:column; }
+        .msg-content-header { padding:20px 24px; border-bottom:1px solid var(--border); }
+        .msg-content-body { flex:1; padding:24px; overflow-y:auto; }
+        .msg-thread { display:flex; flex-direction:column; gap:16px; }
+        .msg-bubble { max-width:70%; padding:14px 18px; border-radius:16px; font-size:0.9rem; line-height:1.5; }
+        .msg-bubble.sent { align-self:flex-end; background:var(--ruby); color:white; border-radius:16px 16px 4px 16px; }
+        .msg-bubble.received { align-self:flex-start; background:var(--bg-secondary); color:var(--text-primary); border-radius:16px 16px 16px 4px; }
+        .msg-compose { padding:16px 20px; border-top:1px solid var(--border); }
+        .msg-compose-area { display:flex; gap:10px; }
+        .msg-compose-area textarea { flex:1; padding:12px 14px; border:1px solid var(--border); border-radius:12px; font-family:var(--font-body); font-size:0.9rem; resize:none; height:60px; }
+        .msg-compose-area textarea:focus { outline:none; border-color:var(--ruby); }
+    </style>
+</head>
+<body class="portal-body">
+<div class="portal-layout">
+    <aside class="portal-sidebar proprietaire" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon"><img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';"></div>
+            <span>EXPERIMMO</span>
+        </div>
+        <div class="portal-user">
+            <div class="portal-user-avatar" id="user-avatar">P</div>
+            <div class="portal-user-info">
+                <h4 id="user-name">Chargement...</h4>
+                <span>Propriétaire</span>
+            </div>
+        </div>
+        <nav class="portal-nav">
+            <div class="portal-nav-section">
+                <h5>Menu Principal</h5>
+                <a href="index.html"><i data-lucide="layout-dashboard"></i> Tableau de bord</a>
+                <a href="mes-proprietes.html"><i data-lucide="building-2"></i> Mes Propriétés</a>
+                <a href="contrats.html"><i data-lucide="file-text"></i> Contrats</a>
+                <a href="paiements.html"><i data-lucide="wallet"></i> Finances</a>
+            </div>
+            <div class="portal-nav-section">
+                <h5>Documents & Messagerie</h5>
+                <a href="documents.html"><i data-lucide="folder"></i> Documents</a>
+                <a href="rapports-operation.html"><i data-lucide="activity"></i> Rapports d'opération</a>
+                <a href="messagerie.html" class="active"><i data-lucide="message-square"></i> Messagerie <span class="nav-badge" id="unread-count" style="display:none;">0</span></a>
+            </div>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="profil.html"><i data-lucide="user"></i> Mon Profil</a>
+            <a href="#" id="btn-logout"><i data-lucide="log-out"></i> Déconnexion</a>
+        </div>
+    </aside>
+
+    <main class="portal-main">
+        <header class="portal-header">
+            <h1><i data-lucide="message-square"></i> Messagerie</h1>
+            <div class="portal-header-actions">
+                <button class="btn-primary" id="btn-new-message" style="display:flex;align-items:center;gap:8px;padding:10px 18px;">
+                    <i data-lucide="edit-3"></i> Nouveau message
+                </button>
+            </div>
+        </header>
+        <div class="portal-content">
+            <div class="msg-layout">
+                <!-- Liste des messages -->
+                <div class="msg-list">
+                    <div class="msg-list-header">
+                        <h3>Conversations</h3>
+                        <span id="total-msgs" style="font-size:0.8rem;color:var(--text-muted);">0</span>
+                    </div>
+                    <div id="messages-list">
+                        <div style="padding:40px;text-align:center;color:var(--text-muted);">
+                            <i data-lucide="inbox" style="width:32px;height:32px;display:block;margin:0 auto 10px;"></i>
+                            <p style="font-size:0.875rem;">Aucun message</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenu du message -->
+                <div class="msg-content" id="msg-content-panel">
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-muted);">
+                        <div style="text-align:center;">
+                            <i data-lucide="message-circle" style="width:48px;height:48px;display:block;margin:0 auto 12px;opacity:0.3;"></i>
+                            <p>Sélectionnez une conversation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal nouveau message -->
+            <div id="modal-new-msg" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+                <div style="background:white;border-radius:16px;padding:28px;width:500px;max-width:90vw;">
+                    <h3 style="margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+                        <i data-lucide="edit-3"></i> Nouveau message
+                    </h3>
+                    <form id="form-new-msg">
+                        <div style="margin-bottom:14px;">
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Objet *</label>
+                            <input type="text" id="msg-objet" placeholder="Objet de votre message" required
+                                style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                        </div>
+                        <div style="margin-bottom:14px;">
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Catégorie</label>
+                            <select id="msg-categorie" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);">
+                                <option value="general">Général</option>
+                                <option value="bien">Concernant un bien</option>
+                                <option value="finances">Finances</option>
+                                <option value="contrat">Contrat</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom:20px;">
+                            <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Message *</label>
+                            <textarea id="msg-texte" rows="5" placeholder="Votre message..." required
+                                style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);resize:vertical;box-sizing:border-box;"></textarea>
+                        </div>
+                        <div style="display:flex;gap:10px;justify-content:flex-end;">
+                            <button type="button" id="btn-cancel-msg" class="btn-outline" style="padding:10px 20px;">Annuler</button>
+                            <button type="submit" class="btn-primary" style="padding:10px 20px;display:flex;align-items:center;gap:8px;">
+                                <i data-lucide="send"></i> Envoyer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script type="module" src="../js/proprietaire-dashboard.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if(typeof lucide!=='undefined') lucide.createIcons();
+    const btnNew = document.getElementById('btn-new-message');
+    const modal = document.getElementById('modal-new-msg');
+    const btnCancel = document.getElementById('btn-cancel-msg');
+    if(btnNew) btnNew.addEventListener('click', () => { modal.style.display='flex'; });
+    if(btnCancel) btnCancel.addEventListener('click', () => { modal.style.display='none'; });
+    modal.addEventListener('click', (e) => { if(e.target===modal) modal.style.display='none'; });
+});
+</script>
+</body>
+</html>

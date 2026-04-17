@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Messages Clients | EXPERIMMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        .msg-layout { display:grid; grid-template-columns:320px 1fr; height:calc(100vh - 140px); border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; background:white; }
+        .msg-list { border-right:1px solid #e5e7eb; overflow-y:auto; display:flex; flex-direction:column; }
+        .msg-list-header { padding:14px 18px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; background:#f9fafb; }
+        .msg-item { padding:14px 18px; border-bottom:1px solid #e5e7eb; cursor:pointer; transition:background 0.15s; }
+        .msg-item:hover, .msg-item.active { background:#f3f4f6; }
+        .msg-item.unread { background:#eff6ff; border-left:3px solid #3b82f6; }
+        .msg-sender { font-size:0.85rem; font-weight:600; color:#111827; margin-bottom:3px; }
+        .msg-subject-line { font-size:0.8rem; color:#6b7280; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
+        .msg-item.unread .msg-subject-line { color:#1d4ed8; font-weight:600; }
+        .msg-meta { display:flex; justify-content:space-between; }
+        .msg-date { font-size:0.72rem; color:#9ca3af; }
+        .msg-badge-dot { width:8px; height:8px; border-radius:50%; background:#3b82f6; }
+        .msg-content-area { display:flex; flex-direction:column; }
+        .msg-content-header { padding:18px 24px; border-bottom:1px solid #e5e7eb; background:#f9fafb; }
+        .msg-thread { flex:1; padding:20px 24px; overflow-y:auto; display:flex; flex-direction:column; gap:14px; }
+        .msg-bubble { max-width:70%; padding:12px 16px; border-radius:16px; font-size:0.875rem; line-height:1.5; }
+        .msg-bubble.client { align-self:flex-start; background:#f3f4f6; color:#111827; border-radius:16px 16px 16px 4px; }
+        .msg-bubble.gestionnaire { align-self:flex-end; background:#1d4ed8; color:white; border-radius:16px 16px 4px 16px; }
+        .msg-reply-area { padding:14px 20px; border-top:1px solid #e5e7eb; display:flex; gap:10px; }
+        .msg-reply-area textarea { flex:1; padding:10px 14px; border:1px solid #e5e7eb; border-radius:10px; font-family:var(--font-body); font-size:0.875rem; resize:none; height:52px; }
+        .msg-reply-area textarea:focus { outline:none; border-color:#1d4ed8; }
+        .msg-status-select { padding:6px 10px; border:1px solid #e5e7eb; border-radius:6px; font-family:var(--font-body); font-size:0.8rem; }
+    </style>
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-logo">
+            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" class="sidebar-logo-img">
+            <div class="sidebar-logo-text"><strong>EXPERIMMO</strong><span>Gestionnaire</span></div>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Mon Dashboard</span></a>
+            <a href="mes-proprietaires.html" class="nav-link"><i data-lucide="user-check"></i><span>Mes Propriétaires</span></a>
+            <a href="mes-locataires.html" class="nav-link"><i data-lucide="users"></i><span>Mes Locataires</span></a>
+            <a href="mes-biens.html" class="nav-link"><i data-lucide="building-2"></i><span>Mes Biens</span></a>
+            <a href="mes-contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Mes Contrats</span></a>
+            <a href="mes-operations.html" class="nav-link"><i data-lucide="tool"></i><span>Mes Opérations</span></a>
+            <a href="messages.html" class="nav-link active"><i data-lucide="message-square"></i><span>Messages <span id="badge-count" style="display:none;background:#ef4444;color:white;font-size:10px;padding:1px 5px;border-radius:10px;margin-left:4px;">0</span></span></a>
+            <a href="documents.html" class="nav-link"><i data-lucide="folder"></i><span>Documents</span></a>
+        </nav>
+        <div class="sidebar-footer"><button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button></div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div><h1>Messages Clients</h1><p class="header-subtitle">Gérez les communications avec vos clients</p></div>
+            <div class="header-actions">
+                <select id="filter-statut" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
+                    <option value="">Tous les messages</option>
+                    <option value="nouveau">Nouveau</option>
+                    <option value="en_cours">En cours</option>
+                    <option value="repondu">Répondu</option>
+                    <option value="clos">Clos</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="admin-content" style="padding:0 20px 20px;">
+            <div class="msg-layout">
+                <!-- Liste -->
+                <div class="msg-list">
+                    <div class="msg-list-header">
+                        <span style="font-size:0.9rem;font-weight:600;color:#111827;">Conversations</span>
+                        <span id="total-msgs" style="font-size:0.78rem;color:#9ca3af;">0</span>
+                    </div>
+                    <div id="messages-list" style="flex:1;overflow-y:auto;">
+                        <div style="padding:30px 18px;text-align:center;color:#9ca3af;">
+                            <i data-lucide="inbox" style="width:28px;height:28px;display:block;margin:0 auto 8px;"></i>
+                            <p style="font-size:0.8rem;">Aucun message</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenu -->
+                <div class="msg-content-area" id="msg-content-panel">
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;color:#9ca3af;">
+                        <div style="text-align:center;">
+                            <i data-lucide="message-circle" style="width:44px;height:44px;display:block;margin:0 auto 10px;opacity:0.3;"></i>
+                            <p style="font-size:0.875rem;">Sélectionnez un message pour répondre</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/gestionnaire/dashboard.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => { if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
+</body>
+</html>

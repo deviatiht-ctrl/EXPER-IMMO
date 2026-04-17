@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Mes Biens | EXPERIMMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-logo">
+            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" class="sidebar-logo-img">
+            <div class="sidebar-logo-text"><strong>EXPERIMMO</strong><span>Gestionnaire</span></div>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Mon Dashboard</span></a>
+            <a href="mes-proprietaires.html" class="nav-link"><i data-lucide="user-check"></i><span>Mes Propriétaires</span></a>
+            <a href="mes-locataires.html" class="nav-link"><i data-lucide="users"></i><span>Mes Locataires</span></a>
+            <a href="mes-biens.html" class="nav-link active"><i data-lucide="building-2"></i><span>Mes Biens</span></a>
+            <a href="mes-contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Mes Contrats</span></a>
+            <a href="mes-operations.html" class="nav-link"><i data-lucide="tool"></i><span>Mes Opérations</span></a>
+            <a href="messages.html" class="nav-link"><i data-lucide="message-square"></i><span>Messages</span></a>
+            <a href="documents.html" class="nav-link"><i data-lucide="folder"></i><span>Documents</span></a>
+        </nav>
+        <div class="sidebar-footer"><button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button></div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div><h1>Mes Biens</h1><p class="header-subtitle">Propriétés sous votre responsabilité</p></div>
+            <div class="header-actions">
+                <select id="filter-statut" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-family:var(--font-body);">
+                    <option value="">Tous les statuts</option>
+                    <option value="disponible">Disponible</option>
+                    <option value="loue">Loué</option>
+                    <option value="en_gestion">En gestion</option>
+                    <option value="en_travaux">En travaux</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i data-lucide="building-2"></i></div>
+                    <div class="stat-info"><h3 id="stat-total">0</h3><p>Total biens</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i data-lucide="home"></i></div>
+                    <div class="stat-info"><h3 id="stat-loues">0</h3><p>Loués</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i data-lucide="clock"></i></div>
+                    <div class="stat-info"><h3 id="stat-disponibles">0</h3><p>Disponibles</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i data-lucide="hammer"></i></div>
+                    <div class="stat-info"><h3 id="stat-travaux">0</h3><p>En travaux</p></div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="card-header">
+                    <h3><i data-lucide="building-2"></i> Liste des biens</h3>
+                    <input type="text" id="search-bien" placeholder="Rechercher un bien..." style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:6px;font-family:var(--font-body);width:220px;">
+                </div>
+                <div class="card-body">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Type</th>
+                                <th>Adresse</th>
+                                <th>Zone</th>
+                                <th>Propriétaire</th>
+                                <th>Mandat</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="biens-tbody">
+                            <tr>
+                                <td colspan="8" style="text-align:center;padding:40px;color:#9ca3af;">
+                                    <i data-lucide="building-2" style="width:36px;height:36px;display:block;margin:0 auto 10px;"></i>
+                                    Chargement de vos biens...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/gestionnaire/mes-biens.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => { if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
+</body>
+</html>

@@ -1,0 +1,606 @@
+/* Property Cards Global */
+.prop-grid {
+    gap: 32px;
+}
+
+.prop-card {
+    padding: 0; /* Remove default card padding for image-to-edge look */
+    overflow: hidden;
+}
+
+.prop-img-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+}
+
+.prop-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.prop-card:hover .prop-img-wrap img {
+    transform: scale(1.05);
+}
+
+.prop-badge-group {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 2;
+}
+
+.badge-statut {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    color: var(--text-primary);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-sm);
+}
+
+.badge-vente { color: var(--ruby); }
+.badge-location { color: var(--charcoal); }
+
+.btn-favori {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-sm);
+    z-index: 2;
+}
+
+.btn-favori:hover {
+    color: var(--danger);
+    transform: scale(1.1);
+}
+
+.prop-info {
+    padding: 24px;
+}
+
+.prop-prix {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ruby);
+    margin-bottom: 8px;
+}
+
+.prop-title {
+    font-family: var(--font-body); /* Body font for title often looks cleaner in grids */
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.prop-location {
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.prop-specs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.prop-specs span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-voir {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--ruby);
+    font-size: 14px;
+    margin-top: 20px;
+    transition: var(--transition);
+}
+
+.btn-voir:hover {
+    gap: 12px;
+}
+
+/* Catalog Layout */
+.catalog-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+}
+
+/* Page Header & Search */
+.page-header {
+    margin-bottom: 32px;
+    padding-top: 20px;
+}
+
+.search-inline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.search-inline i {
+    color: var(--text-muted);
+}
+
+.search-inline input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+}
+
+.sort-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-secondary);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.view-toggle button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.view-toggle button.active {
+    background: white;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Filter Sidebar */
+.filter-sidebar {
+    background: white;
+    border-radius: var(--r-xl);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.filter-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-close-filters {
+    display: none;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.btn-close-filters:hover {
+    background: var(--ruby);
+    color: white;
+}
+
+.filter-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.toggle-group {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-secondary);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.toggle-group button {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.toggle-group button.active {
+    background: var(--ruby);
+    color: white;
+}
+
+.checkbox-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.checkbox-grid input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--ruby);
+}
+
+.range-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.range-inputs input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.btn-group {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.btn-group button {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-group button.active {
+    background: var(--ruby);
+    color: white;
+    border-color: var(--ruby);
+}
+
+.btn-text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-text:hover {
+    color: var(--ruby);
+}
+
+/* Switch/Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-secondary);
+    transition: .3s;
+    border-radius: 26px;
+    border: 1px solid var(--border);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+    background-color: var(--ruby);
+    border-color: var(--ruby);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* Button hover effects */
+.btn-appliquer {
+    margin-top: 16px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-appliquer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(197, 54, 54, 0.3);
+}
+
+.btn-appliquer:active {
+    transform: translateY(0);
+}
+
+/* List view styles */
+.prop-grid.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.prop-grid.list-view .prop-card {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+}
+
+.prop-grid.list-view .prop-img-wrap {
+    aspect-ratio: 16/10;
+}
+
+.filter-section {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.filter-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.filter-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.filter-options input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--ruby);
+}
+
+.price-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price-range input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+    .catalog-layout { 
+        grid-template-columns: 1fr; 
+    }
+    .filter-sidebar { 
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        border-radius: 0;
+        overflow-y: auto;
+        padding-top: 20px;
+    }
+    .filter-sidebar.active {
+        display: block;
+    }
+    .btn-close-filters {
+        display: flex;
+    }
+    .page-header {
+        padding-top: 10px;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .catalog-page {
+        margin-top: 100px !important;
+        padding: 0 16px 80px 16px !important;
+    }
+    .search-inline {
+        padding: 10px 16px;
+    }
+    .search-inline input {
+        font-size: 14px;
+    }
+    .sort-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .sort-controls {
+        justify-content: space-between;
+    }
+    .prop-grid {
+        gap: 20px;
+    }
+    .prop-info {
+        padding: 16px;
+    }
+    .prop-prix {
+        font-size: 20px;
+    }
+    .prop-title {
+        font-size: 16px;
+    }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: 480px) {
+    .catalog-page {
+        margin-top: 90px !important;
+    }
+    .prop-grid {
+        gap: 16px;
+    }
+    .prop-info {
+        padding: 12px;
+    }
+    .prop-prix {
+        font-size: 18px;
+    }
+}
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 100px 0;
+}
+.empty-icon {
+    font-size: 64px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}

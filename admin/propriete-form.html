@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Ajouter / Modifier Propriété | EXPER IMMO Admin</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c9a84c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPER IMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+</head>
+<body class="admin-body">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPER IMMO" class="sidebar-logo-img" onerror="this.style.display='none'">
+            <div class="sidebar-logo-text"><strong>EXPER IMMO</strong><span>Administration</span></div>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
+            <a href="proprietes.html" class="nav-link active"><i data-lucide="building-2"></i><span>Propri&#233;t&#233;s</span></a>
+            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i><span>Propri&#233;taires</span></a>
+            <a href="locataires.html" class="nav-link"><i data-lucide="users"></i><span>Locataires</span></a>
+            <a href="agents.html" class="nav-link"><i data-lucide="briefcase"></i><span>Agents</span></a>
+            <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Contrats</span></a>
+            <a href="paiements.html" class="nav-link"><i data-lucide="credit-card"></i><span>Paiements</span></a>
+            <a href="statistiques.html" class="nav-link"><i data-lucide="bar-chart-3"></i><span>Statistiques</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <button id="btn-logout"><i data-lucide="log-out"></i>D&#233;connexion</button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+        <!-- HEADER (STICKY) -->
+        <header class="admin-header sticky-header">
+            <div class="header-left">
+                <a href="proprietes.html" class="btn-back" title="Retour à la liste">
+                    <i data-lucide="arrow-left"></i>
+                </a>
+                <div>
+                    <h1 id="form-title">Nouvelle Propriété</h1>
+                    <p class="text-muted">Remplissez les informations de l'annonce</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="btn-outline" onclick="window.location.href='proprietes.html'">
+                    Annuler
+                </button>
+                <button type="button" class="btn-primary btn-save" id="btn-save-prop">
+                    <i data-lucide="save"></i>
+                    <span>Enregistrer les modifications</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="admin-content">
+            <form id="prop-form" class="grid grid-2 gap-4">
+                <!-- COL 1: Basic Info -->
+                <div class="flex flex-column gap-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="info"></i> Informations Générales</h3>
+                        </div>
+                        <div class="card-body flex flex-column gap-3">
+                            <div class="form-group">
+                                <label for="titre">Titre de l'annonce</label>
+                                <input type="text" id="titre" placeholder="ex: Villa Moderne avec Piscine" required>
+                            </div>
+                            
+                            <div class="grid grid-2 gap-3">
+                                <div class="form-group">
+                                    <label for="type_transaction">Transaction</label>
+                                    <select id="type_transaction" required>
+                                        <option value="vente">Vente</option>
+                                        <option value="location">Location</option>
+                                        <option value="vente_location">Vente & Location</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="type_propriete">Type de bien</label>
+                                    <select id="type_propriete" required>
+                                        <option value="maison">Maison</option>
+                                        <option value="appartement">Appartement</option>
+                                        <option value="villa">Villa</option>
+                                        <option value="terrain">Terrain</option>
+                                        <option value="local_commercial">Local Commercial</option>
+                                        <option value="bureau">Bureau</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="description">Description complète</label>
+                                <textarea id="description" rows="6" placeholder="Décrivez le bien en détail..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="map-pin"></i> Localisation & Caractéristiques</h3>
+                        </div>
+                        <div class="card-body flex flex-column gap-3">
+                            <div class="grid grid-2 gap-3">
+                                <div class="form-group">
+                                    <label for="zone_id">Zone / Quartier</label>
+                                    <select id="zone_id" required>
+                                        <option value="">Sélectionner une zone</option>
+                                        <!-- Loaded by JS -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adresse">Adresse précise</label>
+                                    <input type="text" id="adresse" placeholder="Numéro, rue...">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-3 gap-3">
+                                <div class="form-group">
+                                    <label for="nb_chambres">Chambres</label>
+                                    <input type="number" id="nb_chambres" value="0" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nb_salles_bain">Salles de bain</label>
+                                    <input type="number" id="nb_salles_bain" value="0" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nb_garages">Garages</label>
+                                    <input type="number" id="nb_garages" value="0" min="0">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="superficie_m2">Superficie (m²)</label>
+                                <input type="number" id="superficie_m2" value="0" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COL 2: Pricing, Media, Agent -->
+                <div class="flex flex-column gap-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="dollar-sign"></i> Prix & Visibilité</h3>
+                        </div>
+                        <div class="card-body flex flex-column gap-3">
+                            <div class="form-group">
+                                <label for="statut">Statut de la propri&#233;t&#233;</label>
+                                <select id="statut">
+                                    <option value="disponible">Disponible</option>
+                                    <option value="loue">Lou&#233;</option>
+                                    <option value="vendu">Vendu</option>
+                                    <option value="indisponible">Indisponible</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="prix_location">Loyer mensuel ($)</label>
+                                    <input type="number" id="prix_location" placeholder="ex: 1200" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prix_vente">Prix de vente ($)</label>
+                                    <input type="number" id="prix_vente" placeholder="ex: 250000" min="0">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="devise">Devise</label>
+                                    <select id="devise">
+                                        <option value="USD">USD ($)</option>
+                                        <option value="HTG">HTG (G)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:24px;">
+                                    <input type="checkbox" id="est_vedette" style="width:auto;accent-color:#C53636;">
+                                    <label for="est_vedette" style="margin-bottom:0;font-weight:500;">&#127775; Mettre en vedette</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="image"></i> Galerie Photos</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="upload-zone" id="upload-zone">
+                                <div class="upload-zone-content">
+                                    <i data-lucide="upload-cloud"></i>
+                                    <p>Glissez-déposez vos images ici</p>
+                                    <p class="text-muted">ou <span class="upload-link">parcourez vos fichiers</span></p>
+                                    <p class="text-small text-muted">Format: JPG, PNG, WEBP (Max 5MB)</p>
+                                </div>
+                                <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                            </div>
+                            
+                            <div class="upload-preview" id="upload-preview">
+                                <!-- Previews will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="user"></i> Agent Responsable</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="agent_id">Choisir un agent</label>
+                                <select id="agent_id" required>
+                                    <option value="">Sélectionner un agent</option>
+                                    <!-- Loaded by JS -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/admin/propriete-form.js"></script>
+    <script>document.addEventListener('DOMContentLoaded',()=>{ if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>

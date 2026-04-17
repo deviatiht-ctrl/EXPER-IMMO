@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Tableau de Bord Propriétaire | EXPERIMMO</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/portal.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c9a84c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+</head>
+<body class="portal-body">
+    <div class="portal-layout">
+        <!-- Sidebar -->
+        <aside class="portal-sidebar proprietaire" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';">
+                </div>
+                <span>EXPERIMMO</span>
+            </div>
+            
+            <div class="portal-user">
+                <div class="portal-user-avatar" id="user-avatar">P</div>
+                <div class="portal-user-info">
+                    <h4 id="user-name">Chargement...</h4>
+                    <span>Propriétaire</span>
+                </div>
+            </div>
+
+            <nav class="portal-nav">
+                <div class="portal-nav-section">
+                    <h5>Menu Principal</h5>
+                    <a href="index.html" class="active">
+                        <i data-lucide="layout-dashboard"></i> Tableau de bord
+                    </a>
+                    <a href="mes-proprietes.html">
+                        <i data-lucide="building-2"></i> Mes Propriétés
+                    </a>
+                    <a href="contrats.html">
+                        <i data-lucide="file-text"></i> Contrats
+                    </a>
+                    <a href="paiements.html">
+                        <i data-lucide="wallet"></i> Finances
+                    </a>
+                </div>
+
+                <div class="portal-nav-section">
+                    <h5>Documents & Messagerie</h5>
+                    <a href="documents.html">
+                        <i data-lucide="folder"></i> Documents
+                    </a>
+                    <a href="rapports-operation.html">
+                        <i data-lucide="activity"></i> Rapports d'opération
+                    </a>
+                    <a href="messagerie.html">
+                        <i data-lucide="message-square"></i> Messagerie
+                    </a>
+                </div>
+            </nav>
+
+            <div class="portal-sidebar-footer">
+                <a href="profil.html">
+                    <i data-lucide="user"></i> Mon Profil
+                </a>
+                <a href="#" id="btn-logout">
+                    <i data-lucide="log-out"></i> Déconnexion
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="portal-main">
+            <header class="portal-header">
+                <div>
+                    <h1 id="welcome-title">Tableau de Bord</h1>
+                    <p class="portal-header-subtitle">Dernière connexion : <span id="last-login">Chargement...</span></p>
+                </div>
+                <div class="portal-header-actions">
+                    <a href="rapports-operation.html" class="btn-primary">
+                        <i data-lucide="activity"></i> Rapports d'opération
+                    </a>
+                </div>
+            </header>
+
+            <div class="portal-content">
+                <!-- CDC Welcome Message -->
+                <div class="welcome-banner" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid var(--ruby);">
+                    <h2 style="margin-bottom: 8px;">Bienvenue chez EXPERIMMO</h2>
+                    <p>Votre partenaire de confiance pour la gestion, la valorisation et la réussite de vos projets immobiliers.</p>
+                </div>
+
+                <!-- Stats Grid CDC 5.2.1 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i data-lucide="building-2"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-biens">0</h3>
+                            <p>Biens confiés</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-en-gestion">0</h3>
+                            <p>En Gestion</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i data-lucide="hammer"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-en-construction">0</h3>
+                            <p>En Construction</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-ops-recentes">0</h3>
+                            <p>Ops. Récentes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2">
+                    <!-- Recent Finances -->
+                    <div class="portal-card">
+                        <div class="portal-card-header">
+                            <h3><i data-lucide="wallet"></i> Finances Récentes</h3>
+                            <a href="paiements.html" class="btn-text">Détails</a>
+                        </div>
+                        <div class="portal-card-body">
+                            <table class="portal-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Bien</th>
+                                        <th>Montant</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="finances-tbody">
+                                    <tr><td colspan="4" class="text-center">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- My Properties -->
+                    <div class="portal-card">
+                        <div class="portal-card-header">
+                            <h3><i data-lucide="building-2"></i> Mes Propriétés</h3>
+                            <a href="mes-proprietes.html" class="btn-text">Gérer</a>
+                        </div>
+                        <div class="portal-card-body">
+                            <div id="properties-grid" class="activity-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/proprietaire-dashboard.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => { if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
+</body>
+</html>

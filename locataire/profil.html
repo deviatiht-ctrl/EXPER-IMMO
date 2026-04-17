@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Mon Profil | EXPERIMMO</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/portal.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#059669">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#059669">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+</head>
+<body class="portal-body">
+<div class="portal-layout">
+    <aside class="portal-sidebar locataire" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon"><img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';"></div>
+            <span>EXPERIMMO</span>
+        </div>
+        <div class="portal-user">
+            <div class="portal-user-avatar" id="user-avatar">L</div>
+            <div class="portal-user-info">
+                <h4 id="user-name">Chargement...</h4>
+                <span>Locataire</span>
+            </div>
+        </div>
+        <nav class="portal-nav">
+            <div class="portal-nav-section">
+                <h5>Mon Espace</h5>
+                <a href="index.html"><i data-lucide="layout-dashboard"></i> Tableau de bord</a>
+                <a href="mon-contrat.html"><i data-lucide="file-text"></i> Mon Contrat</a>
+                <a href="mes-paiements.html"><i data-lucide="wallet"></i> Mes Paiements</a>
+                <a href="mes-factures.html"><i data-lucide="receipt"></i> Mes Factures</a>
+                <a href="mes-echeances.html"><i data-lucide="calendar"></i> Mes Échéances</a>
+            </div>
+            <div class="portal-nav-section">
+                <h5>Communication</h5>
+                <a href="messagerie.html"><i data-lucide="message-square"></i> Messagerie</a>
+                <a href="documents.html"><i data-lucide="folder"></i> Mes Documents</a>
+            </div>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="profil.html" class="active"><i data-lucide="user"></i> Profil</a>
+            <a href="#" id="btn-logout"><i data-lucide="log-out"></i> Déconnexion</a>
+        </div>
+    </aside>
+
+    <main class="portal-main">
+        <header class="portal-header">
+            <h1><i data-lucide="user"></i> Mon Profil</h1>
+        </header>
+        <div class="portal-content">
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start;">
+                <div class="portal-card">
+                    <div class="portal-card-body" style="text-align:center;padding:32px 24px;">
+                        <div id="profil-avatar" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--locataire-color),#065f46);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:white;margin:0 auto 16px;">L</div>
+                        <h3 id="profil-name" style="margin-bottom:4px;">Chargement...</h3>
+                        <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:8px;">Locataire</p>
+                        <span id="profil-code" style="display:inline-block;background:var(--bg-secondary);padding:4px 12px;border-radius:20px;font-size:0.8rem;color:var(--text-secondary);margin-bottom:20px;">--</span>
+                        <div style="text-align:left;border-top:1px solid var(--border);padding-top:16px;">
+                            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:4px;">Membre depuis</p>
+                            <p id="profil-since" style="font-weight:500;margin-bottom:12px;">--</p>
+                            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:4px;">Dernière connexion</p>
+                            <p id="profil-last-login" style="font-weight:500;">--</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portal-card">
+                    <div class="portal-card-header">
+                        <h3><i data-lucide="edit-3"></i> Modifier mes informations</h3>
+                    </div>
+                    <div class="portal-card-body">
+                        <form id="profil-form">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                                <div>
+                                    <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Nom complet</label>
+                                    <input type="text" id="p-nom" placeholder="Votre nom" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Téléphone</label>
+                                    <input type="tel" id="p-telephone" placeholder="+509 3700-0000" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                                </div>
+                            </div>
+                            <div style="margin-bottom:16px;">
+                                <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Email</label>
+                                <input type="email" id="p-email" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                                <div>
+                                    <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Profession</label>
+                                    <input type="text" id="p-profession" placeholder="Votre profession" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Employeur</label>
+                                    <input type="text" id="p-employeur" placeholder="Employeur" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                                </div>
+                            </div>
+                            <div style="border-top:1px solid var(--border);padding-top:16px;">
+                                <h4 style="font-size:0.9rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--text-secondary);"><i data-lucide="lock" style="width:15px;height:15px;color:var(--locataire-color);"></i> Changer le mot de passe</h4>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                    <div>
+                                        <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Nouveau mot de passe</label>
+                                        <input type="password" id="p-password" placeholder="••••••••" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display:block;font-size:0.85rem;font-weight:500;margin-bottom:6px;color:var(--text-secondary);">Confirmer</label>
+                                        <input type="password" id="p-password-confirm" placeholder="••••••••" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);box-sizing:border-box;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:20px;">
+                                <button type="submit" class="btn-primary" style="display:flex;align-items:center;gap:8px;padding:12px 24px;">
+                                    <i data-lucide="save"></i> Enregistrer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script type="module" src="../js/locataire-dashboard.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    
+<!-- Anti-cache meta tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    <title>Mon Profil | EXPERIMMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css?v=2.0">
+    <link rel="stylesheet" href="css/portal.css?v=2.0">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="auth-page">
+    <div class="auth-wrapper">
+        <div class="auth-card-min" style="text-align:center;padding:48px 40px;">
+            <div class="auth-logo-wrap" style="margin-bottom:24px;">
+                <div class="auth-logo-icon">
+                    <i data-lucide="loader-2"></i>
+                </div>
+                <span class="auth-logo-name">EXPERIMMO</span>
+            </div>
+            <p style="color:var(--text-secondary);margin-bottom:8px;">Redirection en cours...</p>
+            <p style="font-size:0.875rem;color:var(--text-muted);">Vous serez redirigé vers votre espace profil.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="js/config.js?v=2.0"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if(typeof lucide!=='undefined') lucide.createIcons();
+    });
+    </script>
+    <script type="module">
+    import CONFIG from './js/config.js?v=2.0';
+    const { createClient } = supabase;
+    const sb = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) { window.location.href = 'login.html'; return; }
+
+        const { data: profile } = await sb.from('profiles').select('role').eq('id', session.user.id).single();
+        const role = profile?.role || '';
+
+        if (role === 'proprietaire') window.location.href = 'proprietaire/profil.html';
+        else if (role === 'locataire') window.location.href = 'locataire/profil.html';
+        else if (role === 'gestionnaire') window.location.href = 'gestionnaire/index.html';
+        else if (role === 'admin' || role === 'assistante') window.location.href = 'admin/parametres.html';
+        else window.location.href = 'index.html';
+    })();
+    </script>
+</body>
+</html>

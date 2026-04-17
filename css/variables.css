@@ -1,0 +1,58 @@
+:root {
+  /* Core Brand Colors */
+  --ruby:          #C41E3A;
+  --ruby-dark:     #8B1529;
+  --ruby-light:    #E02F4F;
+  --ruby-pale:     #FFF5F6;
+  
+  --charcoal:      #2C2C2C;
+  --charcoal-dark: #1A1A1A;
+  --charcoal-light:#4A4A4A;
+  --charcoal-pale: #F5F5F5;
+
+  /* Functional Mappings */
+  --primary:       var(--ruby);
+  --primary-dark:  var(--ruby-dark);
+  --secondary:     var(--charcoal);
+  
+  --bg-main:       #FDFDFD;
+  --bg-secondary:  #F7F7F7;
+  --bg-tertiary:   #EFEFEF;
+  --bg-dark:       #121212;
+
+  --text-primary:  #1A1A1A;
+  --text-secondary:#444444;
+  --text-muted:    #777777;
+  --text-white:    #FFFFFF;
+
+  --border:        #E5E5E5;
+  --border-focus:  var(--ruby);
+
+  --platinum:      #D9D9D9;
+
+  --success:       #00875A;
+  --success-bg:    #E3FCEF;
+  --warning:       #FFAB00;
+  --warning-bg:    #FFF0B3;
+  --danger:        #DE350B;
+  --danger-bg:     #FFEBE6;
+
+  --statut-disponible: #00875A;
+  --statut-compromis:  #FFAB00;
+  --statut-vendu:      #DE350B;
+  --statut-loue:       #6554C0;
+
+  --font-display:  'Playfair Display', Georgia, serif;
+  --font-body:     'Inter', system-ui, sans-serif;
+
+  --r-sm: 4px;  --r-md: 8px;
+  --r-lg: 12px; --r-xl: 24px;
+
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md:   0 12px 30px rgba(0,0,0,0.08);
+  --shadow-lg:   0 24px 60px rgba(0,0,0,0.12);
+  --shadow-premium: 0 10px 40px -10px rgba(196, 30, 58, 0.2);
+
+  --transition:      all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.2s ease;
+}

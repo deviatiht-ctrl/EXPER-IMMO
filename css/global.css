@@ -1,0 +1,390 @@
+/* ============================================================
+   EXPERIMMO PREMIUM 2026 - MODERN DESIGN SYSTEM
+   ============================================================ */
+:root {
+    --gold: #c9a84c;
+    --gold-light: #eaddb6;
+    --navy: #0f172a;
+    --glass: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --radius-lg: 24px;
+    --radius-md: 12px;
+}
+
+/* SECTION HERO PANORAMIQUE */
+.hero-premium {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 20px;
+    background: #000;
+    overflow: hidden;
+}
+
+.hero-bg-visual {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.6);
+    transform: scale(1.05);
+}
+
+.hero-overlay-dual {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(15,23,42,0.8) 0%, rgba(15,23,42,0.4) 100%);
+}
+
+.hero-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* TYPOGRAPHIE LUXE */
+.hero-title-2026 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    max-width: 800px;
+}
+.hero-title-2026 span { color: var(--gold); font-style: italic; }
+
+.hero-subtitle-2026 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(201, 168, 76, 0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+/* MOTEUR DE RECHERCHE GLASSMORPHISME */
+.search-engine-glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    max-width: 900px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.search-type-selector {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.type-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 0;
+    position: relative;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+.type-btn.active { opacity: 1; }
+.type-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 2px;
+    background: var(--gold);
+}
+
+.search-inputs-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 20px;
+}
+
+.input-block {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+}
+.input-block i { color: var(--gold); font-size: 18px; }
+.input-block select {
+    background: none;
+    border: none;
+    color: #fff;
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+}
+.input-block select option { background: var(--navy); }
+
+.btn-search-premium {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0 40px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+.btn-search-premium:hover { background: #fff; transform: translateY(-2px); }
+
+/* --- RESPONSIVE MOBILE (iPHONE) --- */
+@media screen and (max-width: 768px) {
+    .hero-premium { padding: 120px 20px 60px 20px; text-align: center; height: auto; }
+    .hero-title-2026 { font-size: 2.5rem; margin: 0 auto 15px auto; }
+    .hero-subtitle-2026 { font-size: 1rem; }
+    
+    .search-engine-glass { padding: 20px; }
+    .search-inputs-row { grid-template-columns: 1fr; gap: 12px; }
+    .search-type-selector { justify-content: center; }
+    
+    .btn-search-premium {
+        width: 100%;
+        padding: 16px;
+        justify-content: center;
+    }
+}
+
+/* ============================================================
+   LAYOUT & TYPOGRAPHY UTILITIES
+   ============================================================ */
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Grid utilities */
+.grid { display: grid; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4 { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+/* Flex utilities */
+.flex { display: flex; }
+.items-center { align-items: center; }
+.items-end { align-items: flex-end; }
+.justify-between { justify-content: space-between; }
+.text-center { text-align: center; }
+
+/* Section typography */
+.section-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--ruby-pale, #FFF5F6);
+    color: var(--ruby, #C41E3A);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: var(--text-primary, #1A1A1A);
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.section-title span,
+.section-title em {
+    color: var(--ruby, #C41E3A);
+    font-style: italic;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary, #444444);
+    line-height: 1.7;
+    max-width: 600px;
+}
+
+.section-header { margin-bottom: 48px; }
+
+/* Page sections */
+.featured-section { padding: 80px 0; }
+.bg-secondary { background: var(--bg-secondary, #F7F7F7); }
+
+/* Responsive grids */
+@media (max-width: 1024px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+    .container { padding: 0 16px; }
+}
+@media (max-width: 480px) {
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ============================================================
+   GLOBAL RESPONSIVE — applied across all pages
+   ============================================================ */
+
+/* --- Prevent horizontal overflow everywhere --- */
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: hidden; }
+body { max-width: 100%; position: relative; }
+
+/* --- Shared page hero (inline style pattern used on all inner pages) ---
+   Override padding on small screens */
+@media (max-width: 768px) {
+    /* Inner page heroes */
+    section[style*="padding:130px"] {
+        padding-top: 100px !important;
+        padding-bottom: 32px !important;
+    }
+
+    /* 4-column stats grid used on a-propos.html */
+    div[style*="grid-template-columns:repeat(4"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Footer grid → 2 cols then 1 */
+    .footer-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 28px !important;
+    }
+
+    /* Catalog layout — sidebar stacks above grid */
+    .catalog-layout {
+        flex-direction: column !important;
+    }
+
+    /* Hero search bar on proprietes.html */
+    .hero-search-bar {
+        min-width: unset !important;
+        width: 100% !important;
+    }
+
+    /* Catalog hero inner */
+    .catalog-hero-inner {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    /* Property detail layout */
+    .prop-layout {
+        flex-direction: column !important;
+    }
+
+    /* Services/about alternating rows */
+    .svc-feature-row {
+        flex-direction: column !important;
+    }
+    .svc-feature-row.reverse {
+        flex-direction: column !important;
+    }
+}
+
+@media (max-width: 640px) {
+    /* 4-col stats → single column */
+    div[style*="grid-template-columns:repeat(4"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Footer → single column */
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Reduce hero padding more on phones */
+    section[style*="padding:130px"] {
+        padding-top: 88px !important;
+        padding-bottom: 28px !important;
+    }
+
+    /* Forms & auth pages */
+    .auth-container {
+        flex-direction: column !important;
+        min-height: unset !important;
+    }
+    .auth-background { display: none !important; }
+    .auth-card { min-height: unset !important; }
+
+    /* Login split screen */
+    .login-left  { display: none !important; }
+    .login-right {
+        width: 100% !important;
+        padding: 32px 20px !important;
+    }
+    .login-form-wrap {
+        max-width: 100% !important;
+    }
+
+    /* Specs bar wrap */
+    .specs-bar {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    /* Calc grid → single col */
+    .calc-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Contact grid → single col */
+    .contact-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Agents grid → single col */
+    .agents-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* CTA buttons row → column */
+    div[style*="display:flex;gap:12px;justify-content:center"] {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .container { padding: 0 12px; }
+
+    section[style*="padding:130px"] {
+        padding-top: 80px !important;
+    }
+}

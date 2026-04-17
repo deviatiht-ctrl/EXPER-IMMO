@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Paramètres | EXPERIMMO Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C41E3A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+    <style>
+        .param-section { margin-bottom: 28px; }
+        .param-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .param-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+        .param-full { grid-column: 1 / -1; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #374151; }
+        .form-group label i { width: 13px; height: 13px; vertical-align: middle; margin-right: 4px; }
+        .form-control { width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; font-family: inherit; background: #fff; transition: border-color .15s; }
+        .form-control:focus { outline: none; border-color: var(--ruby, #C41E3A); box-shadow: 0 0 0 3px rgba(196,30,58,.08); }
+        .form-control[type="number"] { -moz-appearance: textfield; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        select.form-control { cursor: pointer; }
+        .notif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .notif-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 500; transition: border-color .15s, background .15s; }
+        .notif-item:hover { border-color: var(--ruby, #C41E3A); background: #fff5f5; }
+        .notif-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--ruby, #C41E3A); flex-shrink: 0; }
+        .card-header { display: flex; align-items: center; gap: 10px; }
+        .card-header h3 { margin: 0; font-size: 15px; }
+        .card-header .header-note { margin-left: auto; font-size: 11px; color: #9ca3af; font-weight: 400; }
+        #toast { position: fixed; top: 24px; right: 24px; z-index: 9999; display: none; padding: 14px 22px; border-radius: 12px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 24px rgba(0,0,0,.18); min-width: 260px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spin { animation: spin 1s linear infinite; }
+        @media (max-width: 768px) {
+            .param-grid-2, .param-grid-3, .notif-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="admin-body">
+
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" class="sidebar-logo-img" onerror="this.style.display='none'">
+            <div class="sidebar-logo-text"><strong>EXPERIMMO</strong><span>Administration</span></div>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
+            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i><span>Propriétés</span></a>
+            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-circle"></i><span>Propriétaires</span></a>
+            <a href="locataires.html" class="nav-link"><i data-lucide="users"></i><span>Locataires</span></a>
+            <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Contrats</span></a>
+            <a href="paiements.html" class="nav-link"><i data-lucide="credit-card"></i><span>Paiements</span></a>
+            <a href="agents.html" class="nav-link"><i data-lucide="briefcase"></i><span>Agents</span></a>
+            <a href="contacts.html" class="nav-link"><i data-lucide="message-square"></i><span>Messages</span></a>
+            <a href="statistiques.html" class="nav-link"><i data-lucide="bar-chart-3"></i><span>Statistiques</span></a>
+            <a href="parametres.html" class="nav-link active"><i data-lucide="settings"></i><span>Paramètres</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1><i data-lucide="settings" style="width:20px;height:20px;margin-right:8px;"></i> Paramètres du Site</h1>
+        </header>
+
+        <div id="toast"></div>
+
+        <div class="admin-content">
+
+            <!-- LOADING -->
+            <div id="settings-loading" style="text-align:center;padding:80px 20px;color:#9ca3af;">
+                <i data-lucide="loader-2" style="width:36px;height:36px;" class="spin"></i>
+                <p style="margin-top:14px;font-size:14px;">Chargement des paramètres...</p>
+            </div>
+
+            <form id="settings-form" style="display:none;">
+
+                <!-- -- INFORMATIONS ENTREPRISE -- -->
+                <div class="admin-card param-section">
+                    <div class="card-header">
+                        <i data-lucide="building-2"></i>
+                        <h3>Informations de l'Entreprise</h3>
+                        <span class="header-note">Affiché sur le site, le footer et les emails</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="param-grid-2">
+                            <div class="form-group">
+                                <label><i data-lucide="type"></i> Nom de l'entreprise</label>
+                                <input type="text" id="nom_entreprise" class="form-control" placeholder="EXPERIMMO">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="message-circle"></i> Slogan</label>
+                                <input type="text" id="slogan" class="form-control" placeholder="Votre Bien, Notre Mission">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="mail"></i> Email principal</label>
+                                <input type="email" id="email" class="form-control" placeholder="contact@experimmo.ht">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="phone"></i> Téléphone</label>
+                                <input type="tel" id="telephone" class="form-control" placeholder="+509 3700-0000">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="message-circle"></i> WhatsApp</label>
+                                <input type="tel" id="whatsapp" class="form-control" placeholder="+509 3700-0000">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="map-pin"></i> Adresse</label>
+                                <input type="text" id="adresse" class="form-control" placeholder="Pétion-Ville, Haïti">
+                            </div>
+                            <div class="form-group param-full">
+                                <label><i data-lucide="align-left"></i> Description (footer du site)</label>
+                                <textarea id="description_footer" class="form-control" rows="3" placeholder="Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- -- RÉSEAUX SOCIAUX -- -->
+                <div class="admin-card param-section">
+                    <div class="card-header">
+                        <i data-lucide="share-2"></i>
+                        <h3>Réseaux Sociaux</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="param-grid-2">
+                            <div class="form-group">
+                                <label><i data-lucide="facebook"></i> Facebook</label>
+                                <input type="url" id="facebook_url" class="form-control" placeholder="https://facebook.com/experimmo">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="instagram"></i> Instagram</label>
+                                <input type="url" id="instagram_url" class="form-control" placeholder="https://instagram.com/experimmo">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="twitter"></i> Twitter / X</label>
+                                <input type="url" id="twitter_url" class="form-control" placeholder="https://twitter.com/experimmo">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="linkedin"></i> LinkedIn</label>
+                                <input type="url" id="linkedin_url" class="form-control" placeholder="https://linkedin.com/company/experimmo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- -- PARAMÈTRES COMMERCE -- -->
+                <div class="admin-card param-section">
+                    <div class="card-header">
+                        <i data-lucide="credit-card"></i>
+                        <h3>Paramètres Commerce</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="param-grid-3">
+                            <div class="form-group">
+                                <label><i data-lucide="dollar-sign"></i> Devise par défaut</label>
+                                <select id="devise_defaut" class="form-control">
+                                    <option value="USD">USD ($)</option>
+                                    <option value="HTG">HTG (G)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="percent"></i> Commission vente (%)</label>
+                                <input type="number" id="commission_vente" class="form-control" min="0" max="100" step="0.5" placeholder="5">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="percent"></i> Commission location (%)</label>
+                                <input type="number" id="commission_location" class="form-control" min="0" max="100" step="0.5" placeholder="10">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="refresh-cw"></i> Taux USD ? HTG</label>
+                                <input type="number" id="taux_change" class="form-control" min="0" step="0.01" placeholder="132.50">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="calendar"></i> Durée location min. (mois)</label>
+                                <input type="number" id="duree_location_min" class="form-control" min="1" placeholder="6">
+                            </div>
+                            <div class="form-group">
+                                <label><i data-lucide="shield"></i> Caution (mois de loyer)</label>
+                                <input type="number" id="caution_mois" class="form-control" min="0" max="12" placeholder="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- -- NOTIFICATIONS -- -->
+                <div class="admin-card param-section">
+                    <div class="card-header">
+                        <i data-lucide="bell"></i>
+                        <h3>Notifications Email</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="notif-grid">
+                            <label class="notif-item">
+                                <input type="checkbox" id="notif_nouvelle_propriete">
+                                <i data-lucide="building-2" style="width:15px;height:15px;color:#6b7280;"></i>
+                                Nouvelle propriété publiée
+                            </label>
+                            <label class="notif-item">
+                                <input type="checkbox" id="notif_nouveau_contrat">
+                                <i data-lucide="file-text" style="width:15px;height:15px;color:#6b7280;"></i>
+                                Nouveau contrat signé
+                            </label>
+                            <label class="notif-item">
+                                <input type="checkbox" id="notif_paiement">
+                                <i data-lucide="credit-card" style="width:15px;height:15px;color:#6b7280;"></i>
+                                Paiement reçu
+                            </label>
+                            <label class="notif-item">
+                                <input type="checkbox" id="notif_message">
+                                <i data-lucide="mail" style="width:15px;height:15px;color:#6b7280;"></i>
+                                Nouveau message contact
+                            </label>
+                            <label class="notif-item">
+                                <input type="checkbox" id="notif_inscription">
+                                <i data-lucide="user-plus" style="width:15px;height:15px;color:#6b7280;"></i>
+                                Nouvelle inscription
+                            </label>
+                            <label class="notif-item">
+                                <input type="checkbox" id="notif_loyer_retard">
+                                <i data-lucide="alert-triangle" style="width:15px;height:15px;color:#f59e0b;"></i>
+                                Loyer en retard
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- -- BOUTONS SAVE -- -->
+                <div style="display:flex;justify-content:flex-end;gap:12px;margin-bottom:32px;">
+                    <button type="button" id="btn-reset" class="btn-outline" style="padding:11px 24px;">
+                        <i data-lucide="rotate-ccw"></i> Réinitialiser
+                    </button>
+                    <button type="submit" id="btn-save" class="btn-primary" style="padding:11px 28px;">
+                        <i data-lucide="save"></i> Sauvegarder les paramètres
+                    </button>
+                </div>
+
+            </form>
+
+            <!-- -- SÉCURITÉ -- (formulaire séparé) -->
+            <div class="admin-card param-section">
+                <div class="card-header">
+                    <i data-lucide="shield"></i>
+                    <h3>Sécurité du Compte Admin</h3>
+                </div>
+                <div class="card-body">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+                        <div>
+                            <h4 style="font-size:14px;font-weight:600;margin-bottom:14px;">Changer le mot de passe</h4>
+                            <form id="password-form" style="display:flex;flex-direction:column;gap:12px;">
+                                <input type="password" id="pwd-new" class="form-control" placeholder="Nouveau mot de passe" minlength="8">
+                                <input type="password" id="pwd-confirm" class="form-control" placeholder="Confirmer le mot de passe">
+                                <button type="submit" class="btn-primary" id="btn-pwd">
+                                    <i data-lucide="lock"></i> Changer le mot de passe
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <h4 style="font-size:14px;font-weight:600;margin-bottom:14px;">Sessions actives</h4>
+                            <p style="font-size:13px;color:#6b7280;margin-bottom:16px;">Déconnectez toutes les sessions ouvertes sur votre compte administrateur.</p>
+                            <button type="button" class="btn-outline" id="btn-logout-all" style="width:100%;">
+                                <i data-lucide="log-out"></i> Déconnecter toutes les sessions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end admin-content -->
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/config.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => { if (typeof lucide !== 'undefined') lucide.createIcons(); });</script>
+
+    <script type="module">
+        import { supabaseClient } from '../js/supabase-client.js';
+
+        const form     = document.getElementById('settings-form');
+        const loading  = document.getElementById('settings-loading');
+        const toast    = document.getElementById('toast');
+        let   rowId    = null;   // UUID de la ligne dans parametres_site
+        let   snapshot = {};     // données chargées (pour reset)
+
+        // -- Champs texte + champs numériques + checkboxes ------
+        const TEXT_FIELDS = ['nom_entreprise','slogan','email','telephone','whatsapp','adresse',
+                             'description_footer','facebook_url','instagram_url','twitter_url',
+                             'linkedin_url','devise_defaut'];
+        const NUM_FIELDS  = ['commission_vente','commission_location','taux_change',
+                             'duree_location_min','caution_mois'];
+        const BOOL_FIELDS = ['notif_nouvelle_propriete','notif_nouveau_contrat','notif_paiement',
+                             'notif_message','notif_inscription','notif_loyer_retard'];
+        const ALL_FIELDS  = [...TEXT_FIELDS, ...NUM_FIELDS, ...BOOL_FIELDS];
+
+        // -- Toast -----------------------------------------------
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.style.background = type === 'success' ? '#10b981' : '#ef4444';
+            toast.style.color = '#fff';
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3800);
+        }
+
+        // -- Remplir le formulaire avec les données --------------
+        function fillForm(data) {
+            TEXT_FIELDS.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) el.value = data[f] ?? '';
+            });
+            NUM_FIELDS.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) el.value = data[f] ?? '';
+            });
+            BOOL_FIELDS.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) el.checked = !!data[f];
+            });
+        }
+
+        // -- Lire les valeurs du formulaire ----------------------
+        function readForm() {
+            const payload = { updated_at: new Date().toISOString() };
+            TEXT_FIELDS.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) payload[f] = el.value.trim() || null;
+            });
+            NUM_FIELDS.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) payload[f] = el.value !== '' ? parseFloat(el.value) : null;
+            });
+            BOOL_FIELDS.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) payload[f] = el.checked;
+            });
+            return payload;
+        }
+
+        // -- Charger les paramètres depuis Supabase ---------------
+        async function loadSettings() {
+            const { data, error } = await supabaseClient
+                .from('parametres_site')
+                .select('*')
+                .single();
+
+            loading.style.display = 'none';
+            form.style.display = 'block';
+            lucide.createIcons();
+
+            if (error && error.code !== 'PGRST116') {
+                showToast('Erreur chargement: ' + error.message, 'error');
+                return;
+            }
+            if (data) {
+                rowId    = data.id;
+                snapshot = { ...data };
+                fillForm(data);
+            }
+        }
+
+        // -- Sauvegarder -----------------------------------------
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save');
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Sauvegarde...';
+            lucide.createIcons();
+
+            const payload = readForm();
+            let error;
+
+            if (rowId) {
+                ({ error } = await supabaseClient.from('parametres_site').update(payload).eq('id', rowId));
+            } else {
+                const res = await supabaseClient.from('parametres_site').insert([payload]).select().single();
+                error  = res.error;
+                if (res.data) rowId = res.data.id;
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="save"></i> Sauvegarder les paramètres';
+            lucide.createIcons();
+
+            if (error) {
+                showToast('Erreur: ' + error.message, 'error');
+            } else {
+                showToast('? Paramètres sauvegardés avec succès !');
+                await loadSettings();
+            }
+        });
+
+        // -- Réinitialiser ----------------------------------------
+        document.getElementById('btn-reset').addEventListener('click', () => {
+            if (Object.keys(snapshot).length === 0) return;
+            fillForm(snapshot);
+            showToast('Champs remis aux valeurs sauvegardées');
+        });
+
+        // -- Changer le mot de passe ------------------------------
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pwd     = document.getElementById('pwd-new').value;
+            const confirm = document.getElementById('pwd-confirm').value;
+            if (pwd !== confirm)  { showToast('Les mots de passe ne correspondent pas', 'error'); return; }
+            if (pwd.length < 8)   { showToast('Minimum 8 caractères', 'error'); return; }
+
+            const btn = document.getElementById('btn-pwd');
+            btn.disabled = true;
+            const { error } = await supabaseClient.auth.updateUser({ password: pwd });
+            btn.disabled = false;
+
+            if (error) { showToast('Erreur: ' + error.message, 'error'); }
+            else {
+                showToast('Mot de passe changé avec succès !');
+                document.getElementById('password-form').reset();
+            }
+        });
+
+        // -- Déconnecter toutes les sessions ---------------------
+        document.getElementById('btn-logout-all').addEventListener('click', async () => {
+            if (!confirm('Déconnecter toutes les sessions actives ?')) return;
+            await supabaseClient.auth.signOut({ scope: 'global' });
+            window.location.href = '../login.html';
+        });
+
+        // -- Logout sidebar ----------------------------------------
+        document.getElementById('btn-logout')?.addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.href = '../login.html';
+        });
+
+        // -- Init --------------------------------------------------
+        loadSettings();
+    </script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+    }
+    </script>
+</body>
+</html>

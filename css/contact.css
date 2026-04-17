@@ -1,0 +1,51 @@
+/* contact.css */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.info-item {
+    display: flex;
+    gap: 20px;
+}
+
+.info-item i {
+    width: 48px;
+    height: 48px;
+    background: var(--ruby-pale);
+    color: var(--ruby);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-md);
+    flex-shrink: 0;
+}
+
+.info-item h4 {
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.info-item p {
+    color: var(--text-secondary);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+}

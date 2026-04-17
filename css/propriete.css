@@ -1,0 +1,216 @@
+/* propriete.css */
+
+.prop-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 48px;
+}
+
+.prop-header {
+    margin: 32px 0;
+}
+
+.prop-badges {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.badge-ref {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    padding: 4px 12px;
+    border-radius: var(--r-sm);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.prop-titre-grand {
+    font-size: 40px;
+    font-family: var(--font-display);
+    margin-bottom: 12px;
+}
+
+.prop-meta-row {
+    display: flex;
+    gap: 24px;
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+.specs-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    background: var(--bg-secondary);
+    padding: 24px;
+    border-radius: var(--r-xl);
+    margin-bottom: 40px;
+}
+
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+}
+
+.spec-item i {
+    font-size: 24px;
+    color: var(--ruby);
+}
+
+.prop-section {
+    margin-bottom: 48px;
+}
+
+.prop-section h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: var(--font-display);
+}
+
+.amenagements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.amenagement {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--r-md);
+    background: var(--bg-secondary);
+    font-weight: 500;
+}
+
+.amenagement.on i { color: var(--success); }
+.amenagement.off { opacity: 0.5; }
+
+/* Sticky Sidebar */
+.sticky-sidebar {
+    position: sticky;
+    top: 100px;
+}
+
+.prop-prix-sidebar {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: var(--ruby);
+}
+
+.agent-contact-card {
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+}
+
+.agent-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.agent-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+    .prop-layout { 
+        grid-template-columns: 1fr; 
+        gap: 32px;
+    }
+    .prop-sidebar { 
+        margin-top: 40px; 
+    }
+    .sticky-sidebar {
+        position: relative;
+        top: 0;
+    }
+    .prop-titre-grand {
+        font-size: 32px;
+    }
+    .specs-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 20px;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .property-detail {
+        margin-top: 100px !important;
+        padding: 0 16px 60px 16px !important;
+    }
+    .prop-titre-grand {
+        font-size: 24px;
+    }
+    .prop-meta-row {
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 14px;
+    }
+    .specs-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 16px;
+    }
+    .spec-item i {
+        font-size: 20px;
+    }
+    .spec-item span {
+        font-size: 13px;
+    }
+    .amenagements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
+    .amenagement {
+        padding: 10px;
+        font-size: 13px;
+    }
+    .prop-section h3 {
+        font-size: 20px;
+    }
+    .breadcrumb {
+        font-size: 13px;
+        flex-wrap: wrap;
+    }
+    .agent-contact-card {
+        padding: 24px;
+    }
+    .prop-prix-sidebar {
+        font-size: 28px;
+    }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: 480px) {
+    .property-detail {
+        margin-top: 90px !important;
+    }
+    .prop-titre-grand {
+        font-size: 22px;
+    }
+    .specs-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 12px;
+    }
+    .amenagements-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .amenagement {
+        padding: 8px;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Gestion Paiements | EXPER IMMO</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c9a84c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPER IMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+</head>
+<body class="admin-body">
+
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPER IMMO" class="sidebar-logo-img" onerror="this.style.display='none'">
+            <div class="sidebar-logo-text"><strong>EXPER IMMO</strong><span>Administration</span></div>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
+            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i><span>Propriétés</span></a>
+            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-circle"></i><span>Propriétaires</span></a>
+            <a href="locataires.html" class="nav-link"><i data-lucide="users"></i><span>Locataires</span></a>
+            <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Contrats</span></a>
+            <a href="paiements.html" class="nav-link active"><i data-lucide="credit-card"></i><span>Paiements</span></a>
+            <a href="agents.html" class="nav-link"><i data-lucide="briefcase"></i><span>Agents</span></a>
+            <a href="contacts.html" class="nav-link"><i data-lucide="message-square"></i><span>Messages</span></a>
+            <a href="statistiques.html" class="nav-link"><i data-lucide="bar-chart-3"></i><span>Statistiques</span></a>
+            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i><span>Paramètres</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div><h1>Gestion des Paiements</h1><p class="header-subtitle">Suivi complet des loyers et versements</p></div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openModal('add-paiement')"><i data-lucide="plus"></i>Nouveau Paiement</button>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="stat-card"><div class="stat-icon green"><i data-lucide="credit-card"></i></div><div class="stat-info"><h3 id="stat-revenus-pay">—</h3><p>Revenus ce mois</p></div></div>
+                <div class="stat-card"><div class="stat-icon blue"><i data-lucide="check-circle"></i></div><div class="stat-info"><h3 id="stat-payes">—</h3><p>Paiements payés</p></div></div>
+                <div class="stat-card"><div class="stat-icon orange"><i data-lucide="clock"></i></div><div class="stat-info"><h3 id="stat-attente-pay">—</h3><p>En attente</p></div></div>
+                <div class="stat-card"><div class="stat-icon red"><i data-lucide="alert-circle"></i></div><div class="stat-info"><h3 id="stat-retard-pay">—</h3><p>En retard</p></div></div>
+            </div>
+
+            <div class="admin-card">
+                <div class="card-header">
+                    <h3><i data-lucide="credit-card"></i> Historique des Paiements</h3>
+                    <div class="filter-bar">
+                        <div class="search-input-wrap"><i data-lucide="search"></i><input type="text" placeholder="Ref, locataire..." id="search-paiements"></div>
+                        <select class="filter-select" id="filter-statut-pay">
+                            <option value="">Tous statuts</option>
+                            <option value="paye">Payé</option>
+                            <option value="en_attente">En attente</option>
+                            <option value="en_retard">En retard</option>
+                            <option value="annule">Annulé</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Locataire</th>
+                                    <th>Propriété</th>
+                                    <th>Montant</th>
+                                    <th>Échéance</th>
+                                    <th>Méthode</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paiements-table">
+                                <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--admin-text-muted);">Chargement...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL: ADD PAYMENT -->
+    <div class="modal" id="add-paiement">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header-title">
+                    <h3><i data-lucide="credit-card"></i> <span id="pay-modal-title">Enregistrer un Paiement</span></h3>
+                </div>
+                <button class="modal-close" onclick="closeModal('add-paiement')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="paiement-form" onsubmit="savePaiement(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Locataire <span class="required">*</span></label>
+                            <select id="pay-locataire" required><option value="">Sélectionner...</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Propriété</label>
+                            <select id="pay-propriete"><option value="">Sélectionner...</option></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Montant ($) <span class="required">*</span></label>
+                            <input type="number" id="pay-montant" required placeholder="1200" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Date d'échéance <span class="required">*</span></label>
+                            <input type="date" id="pay-echeance" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Méthode de paiement</label>
+                            <select id="pay-methode">
+                                <option value="virement">Virement bancaire</option>
+                                <option value="especes">Espèces</option>
+                                <option value="cheque">Chèque</option>
+                                <option value="mobile">Mobile Money</option>
+                                <option value="carte">Carte bancaire</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Statut</label>
+                            <select id="pay-statut">
+                                <option value="en_attente">En attente</option>
+                                <option value="paye">Payé</option>
+                                <option value="en_retard">En retard</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row cols-1">
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea id="pay-notes" placeholder="Observations..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('add-paiement')">Annuler</button>
+                        <button type="submit" class="btn-primary" id="pay-save-btn"><i data-lucide="save"></i><span>Enregistrer</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/admin/paiements.js"></script>
+    <script>document.addEventListener('DOMContentLoaded',()=>{if(typeof lucide!=='undefined')lucide.createIcons();});</script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>

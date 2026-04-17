@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Contrôle des Utilisateurs | EXPERIMMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="admin-body">
+
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+src="../assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" class="sidebar-logo-img"
+            <div class="sidebar-logo-text"><strong>EXPERIMMO</strong><span>Administration</span></div>
+        </a>
+        <nav class="sidebar-nav">
+             <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
+             <div class="sidebar-section-label">Dossiers</div>
+             <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
+             <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
+             <div class="sidebar-section-label">Finances</div>
+             <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i> <span>Contrats</span></a>
+             <div class="sidebar-section-label">Système</div>
+             <a href="gestionnaires.html" class="nav-link"><i data-lucide="shield-check"></i> <span>Gestionnaires</span></a>
+             <a href="utilisateurs.html" class="nav-link active"><i data-lucide="user-cog"></i> <span>Utilisateurs</span></a>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div>
+                <h1>Tous les Utilisateurs</h1>
+                <p class="header-subtitle">Gestion globale des comptes et des rôles</p>
+            </div>
+            <div class="header-actions">
+                <div class="search-input-wrap">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="util-search" placeholder="Rechercher un nom ou email...">
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="admin-card">
+                <div class="card-header">
+                    <h3><i data-lucide="users"></i> Répertoire central</h3>
+                    <select id="filter-role" class="filter-select">
+                        <option value="">Tous les rôles</option>
+                        <option value="admin">Administrateurs</option>
+                        <option value="gestionnaire">Gestionnaires</option>
+                        <option value="proprietaire">Propriétaires</option>
+                        <option value="locataire">Locataires</option>
+                    </select>
+                </div>
+                <div class="card-body">
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Nom / Profil</th>
+                                    <th>Contact</th>
+                                    <th>Rôle</th>
+                                    <th>Création</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table">
+                                <tr><td colspan="5" style="text-align:center; padding:20px;">Chargement du répertoire...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/admin/utilisateurs.js"></script>
+</body>
+</html>

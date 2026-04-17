@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Messagerie | EXPERIMMO</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="admin-body">
+
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" class="sidebar-logo-img">
+            <div class="sidebar-logo-text">
+                <strong>EXPERIMMO</strong>
+                <span>Administration</span>
+            </div>
+        </a>
+        
+        <nav class="sidebar-nav">
+             <div class="sidebar-section-label">Principal</div>
+            <a href="dashboard.html" class="nav-link">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+            <div class="sidebar-section-label">Communication</div>
+            <a href="messages.html" class="nav-link active">
+                <i data-lucide="message-square"></i>
+                <span>Messagerie</span>
+            </a>
+            <!-- Autres liens... -->
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div>
+                <h1>Messagerie & Service Client</h1>
+                <p class="header-subtitle">Échanges avec les propriétaires et locataires</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="window.openModal('new-message')">
+                    <i data-lucide="send"></i>
+                    Nouveau Message
+                </button>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="dashboard-grid">
+                <!-- INBOX -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3><i data-lucide="inbox"></i> Boîte de réception</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="messages-list" class="activity-list">
+                            <p class="empty-state">Chargement des messages...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK VIEW / CHAT -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3><i data-lucide="message-circle"></i> Détails</h3>
+                    </div>
+                    <div class="card-body" id="message-detail">
+                        <p class="empty-state">Sélectionnez un message pour voir le contenu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- NEW MESSAGE MODAL -->
+    <div id="new-message" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Envoyer un message</h3>
+                <button class="modal-close" onclick="window.closeModal('new-message')">&times;</button>
+            </div>
+            <form id="form-new-message">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Destinataire</label>
+                        <select id="msg-destinataire" required>
+                            <option value="">Chargement...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Objet</label>
+                        <input type="text" id="msg-objet" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea id="msg-content" rows="5" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="window.closeModal('new-message')">Annuler</button>
+                    <button type="submit" class="btn-primary">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/admin/messages.js"></script>
+    <script>
+        window.openModal = (id) => document.getElementById(id).classList.add('is-open');
+        window.closeModal = (id) => document.getElementById(id).classList.remove('is-open');
+    </script>
+</body>
+</html>

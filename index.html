@@ -1,0 +1,762 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Anti-cache meta tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    
+    <title>EXPERIMMO | Votre Bien, Notre Mission</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS (variables + reset must come first) - with cache busting -->
+    <link rel="stylesheet" href="css/variables.css?v=2.0">
+    <link rel="stylesheet" href="css/reset.css?v=2.0">
+    <link rel="stylesheet" href="css/global.css?v=2.0">
+    <link rel="stylesheet" href="css/components.css?v=2.0">
+    <link rel="stylesheet" href="css/animations.css?v=2.0">
+    <link rel="stylesheet" href="css/navbar-modern.css?v=2.0">
+    <link rel="stylesheet" href="css/home-sections.css?v=2.0">
+    <link rel="stylesheet" href="css/mobile-nav-modern.css?v=2.0">
+    <link rel="stylesheet" href="css/bottom-nav.css?v=2.0">
+    <link rel="stylesheet" href="css/proprietes.css?v=2.0">
+    <link rel="stylesheet" href="css/footer.css?v=2.0">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C41E3A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+
+    <style>
+        /* ========================================================
+           INDEX PAGE — SPECIFIC STYLES
+           ======================================================== */
+        body {
+            background: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+        }
+
+        /* ---- HERO ---- */
+        .page-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            overflow: hidden;
+        }
+        .page-hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.38);
+        }
+        .page-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(26,26,26,0.88) 0%, rgba(196,30,58,0.12) 100%);
+        }
+        .page-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(196,30,58,0.15);
+            border: 1px solid rgba(196,30,58,0.35);
+            border-radius: 100px;
+            color: #ff7a93;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 28px;
+        }
+        .page-hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.07;
+            margin-bottom: 22px;
+        }
+        .page-hero-title em {
+            color: var(--ruby);
+            font-style: italic;
+        }
+        .page-hero-subtitle {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.72);
+            max-width: 500px;
+            line-height: 1.75;
+            margin-bottom: 48px;
+        }
+        .hero-action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 700px;
+        }
+        .hero-action-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.11);
+            border-radius: 16px;
+            padding: 24px 16px;
+            text-align: center;
+            display: block;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        .hero-action-card:hover {
+            background: rgba(196,30,58,0.13);
+            border-color: rgba(196,30,58,0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 14px 36px rgba(196,30,58,0.18);
+        }
+        .hero-action-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(196,30,58,0.18);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            color: #ff7a93;
+        }
+        .hero-action-icon svg { width: 22px; height: 22px; }
+        .hero-action-card h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .hero-action-card p {
+            font-size: 0.76rem;
+            color: rgba(255,255,255,0.52);
+            line-height: 1.45;
+        }
+
+        /* ---- STATS STRIP ---- */
+        .stats-strip {
+            background: var(--charcoal-dark);
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .stats-strip-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .stats-strip-item {
+            text-align: center;
+            padding: 28px 16px;
+            border-right: 1px solid rgba(255,255,255,0.07);
+        }
+        .stats-strip-item:last-child { border-right: none; }
+        .stats-strip-item .s-val {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--ruby-light);
+            display: block;
+            line-height: 1;
+        }
+        .stats-strip-item .s-lbl {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.52);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 8px;
+            display: block;
+        }
+
+        /* ---- SERVICES ---- */
+        .services-section { padding: 96px 0; background: var(--bg-main); }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .svc-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .svc-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--ruby);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+        .svc-card:hover::before { transform: scaleX(1); }
+        .svc-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.09);
+            border-color: rgba(196,30,58,0.12);
+        }
+        .svc-icon {
+            width: 52px; height: 52px;
+            background: var(--ruby-pale);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+            color: var(--ruby);
+        }
+        .svc-icon svg { width: 24px; height: 24px; }
+        .svc-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        .svc-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ---- PROCESS ---- */
+        .process-section { padding: 96px 0; background: var(--bg-secondary); }
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            position: relative;
+        }
+        .process-grid::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 12.5%; right: 12.5%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(196,30,58,0.3), transparent);
+        }
+        .process-step {
+            text-align: center;
+            padding: 0 20px;
+        }
+        .process-num {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            border: 2px solid var(--ruby);
+            background: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--ruby);
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 0 6px var(--ruby-pale);
+        }
+        .process-step h4 {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .process-step p {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* ---- CTA ---- */
+        .cta-section {
+            padding: 96px 0;
+            background: var(--charcoal-dark);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center bottom, rgba(196,30,58,0.14) 0%, transparent 65%);
+        }
+        .cta-section .container { position: relative; z-index: 1; }
+        .cta-eyebrow {
+            display: inline-block;
+            padding: 6px 18px;
+            background: rgba(196,30,58,0.18);
+            border: 1px solid rgba(196,30,58,0.35);
+            border-radius: 100px;
+            color: #ff7a93;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #fff;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .cta-section h2 em { color: var(--ruby-light); font-style: italic; }
+        .cta-section p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.58);
+            margin-bottom: 40px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: var(--ruby);
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-cta:hover {
+            background: var(--ruby-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(196,30,58,0.35);
+        }
+
+        /* ---- ANIMATE ON SCROLL ---- */
+        .anim-item {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        .anim-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 1024px) {
+            .hero-action-grid { max-width: 100%; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .process-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+            .process-grid::after { display: none; }
+            .stats-strip-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-strip-item:nth-child(2) { border-right: none; }
+        }
+        @media (max-width: 768px) {
+            .page-hero { padding: 110px 0 60px; min-height: auto; }
+            .hero-action-grid { grid-template-columns: 1fr; max-width: 300px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .process-grid { grid-template-columns: 1fr; }
+            .services-section, .process-section, .cta-section { padding: 64px 0; }
+            .stats-strip-item { padding: 20px 12px; }
+            .stats-strip-item .s-val { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR injected by load-navbar.js -->
+
+    <!-- ======================================================
+         HERO
+         ====================================================== -->
+    <header class="page-hero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-overlay"></div>
+        <div class="page-hero-content container">
+            <span class="hero-eyebrow">
+                <i data-lucide="map-pin"></i>
+                Haïti &nbsp;·&nbsp; Gestion Immobilière Premium
+            </span>
+            <h1 class="page-hero-title">
+                Gérez. Valorisez.<br><em>Réussissez.</em>
+            </h1>
+            <p class="page-hero-subtitle">
+                EXPERIMMO — Votre partenaire de confiance en gestion immobilière professionnelle. Nous gérons vos biens avec rigueur et excellence.
+            </p>
+            <div class="hero-action-grid">
+                <a href="proprietes.html?type=location" class="hero-action-card">
+                    <div class="hero-action-icon"><i data-lucide="key"></i></div>
+                    <h3>Louer un bien</h3>
+                    <p>Accédez à notre portefeuille de locations</p>
+                </a>
+                <a href="proprietes.html?type=vente" class="hero-action-card">
+                    <div class="hero-action-icon"><i data-lucide="home"></i></div>
+                    <h3>Acheter un bien</h3>
+                    <p>Découvrez nos propriétés à la vente</p>
+                </a>
+                <a href="inscription.html" class="hero-action-card">
+                    <div class="hero-action-icon"><i data-lucide="briefcase"></i></div>
+                    <h3>Confier mon bien</h3>
+                    <p>Gérance professionnelle de votre patrimoine</p>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================================================
+         STATS STRIP
+         ====================================================== -->
+    <div class="stats-strip">
+        <div class="container">
+            <div class="stats-strip-grid">
+                <div class="stats-strip-item">
+                    <span class="s-val" data-target="48" data-stat="biens">0</span>
+                    <span class="s-lbl">Biens gérés</span>
+                </div>
+                <div class="stats-strip-item">
+                    <span class="s-val" data-target="32" data-stat="proprietaires">0</span>
+                    <span class="s-lbl">Propriétaires</span>
+                </div>
+                <div class="stats-strip-item">
+                    <span class="s-val" data-target="60" data-stat="locataires">0</span>
+                    <span class="s-lbl">Locataires actifs</span>
+                </div>
+                <div class="stats-strip-item">
+                    <span class="s-val">2+</span>
+                    <span class="s-lbl">Ans d'expérience</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         CATEGORIES
+         ====================================================== -->
+    <section class="categories-rapides container">
+        <div class="section-header text-center">
+            <span class="section-tag">Parcourir par catégorie</span>
+            <h2 class="section-title">Trouvez le bien <em>qui vous correspond</em></h2>
+            <p class="section-subtitle" style="margin: 0 auto;">Filtrez par type de bien en un clic.</p>
+        </div>
+        <div class="cat-grid">
+            <a href="proprietes.html?type_p=maison" class="cat-card anim-item">
+                <i data-lucide="home"></i>
+                <span>Maisons</span>
+            </a>
+            <a href="proprietes.html?type_p=appartement" class="cat-card anim-item">
+                <i data-lucide="building"></i>
+                <span>Appartements</span>
+            </a>
+            <a href="proprietes.html?type_p=villa" class="cat-card anim-item">
+                <i data-lucide="star"></i>
+                <span>Villas</span>
+            </a>
+            <a href="proprietes.html?type_p=terrain" class="cat-card anim-item">
+                <i data-lucide="mountain"></i>
+                <span>Terrains</span>
+            </a>
+            <a href="proprietes.html?type_p=commercial" class="cat-card anim-item">
+                <i data-lucide="briefcase"></i>
+                <span>Commercial</span>
+            </a>
+            <a href="proprietes.html" class="cat-card anim-item">
+                <i data-lucide="map"></i>
+                <span>Toutes zones</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         PROPRIÉTÉS EN VEDETTE
+         ====================================================== -->
+    <section class="featured-section bg-secondary">
+        <div class="container">
+            <div class="section-header" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+                <div>
+                    <span class="section-tag">Catalogue sélectionné</span>
+                    <h2 class="section-title" style="margin-bottom:0;">Propriétés <em>en vedette</em></h2>
+                </div>
+                <a href="proprietes.html" class="btn btn-outline" style="flex-shrink:0;">
+                    Voir tout &nbsp;<i data-lucide="arrow-right"></i>
+                </a>
+            </div>
+            <div class="prop-grid grid grid-3" id="featured-grid">
+                <div class="skeleton card" style="height:400px;"></div>
+                <div class="skeleton card" style="height:400px;"></div>
+                <div class="skeleton card" style="height:400px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         NOS SERVICES
+         ====================================================== -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Ce que nous faisons</span>
+                <h2 class="section-title">Nos <em>expertises</em></h2>
+                <p class="section-subtitle" style="margin:0 auto;">Une gamme complète de services immobiliers adaptés à vos besoins.</p>
+            </div>
+            <div class="services-grid">
+                <div class="svc-card anim-item">
+                    <div class="svc-icon"><i data-lucide="building-2"></i></div>
+                    <h3>Gestion Locative</h3>
+                    <p>Prise en charge complète de vos biens : recherche de locataires, rédaction de contrats, suivi des paiements et maintenance.</p>
+                </div>
+                <div class="svc-card anim-item">
+                    <div class="svc-icon"><i data-lucide="trending-up"></i></div>
+                    <h3>Valorisation Immobilière</h3>
+                    <p>Stratégies sur mesure pour augmenter la valeur de votre patrimoine immobilier sur le marché haïtien.</p>
+                </div>
+                <div class="svc-card anim-item">
+                    <div class="svc-icon"><i data-lucide="file-text"></i></div>
+                    <h3>Gestion Contractuelle</h3>
+                    <p>Rédaction, suivi et archivage de vos contrats de bail, mandats et actes notariés avec rigueur.</p>
+                </div>
+                <div class="svc-card anim-item">
+                    <div class="svc-icon"><i data-lucide="users"></i></div>
+                    <h3>Suivi Personnalisé</h3>
+                    <p>Un gestionnaire dédié pour chaque client, disponible et réactif pour toutes vos demandes.</p>
+                </div>
+                <div class="svc-card anim-item">
+                    <div class="svc-icon"><i data-lucide="shield-check"></i></div>
+                    <h3>Sécurité & Traçabilité</h3>
+                    <p>Chaque opération documentée et sécurisée. Accédez à vos données 24h/24 en toute confiance.</p>
+                </div>
+                <div class="svc-card anim-item">
+                    <div class="svc-icon"><i data-lucide="bar-chart-3"></i></div>
+                    <h3>Rapports & Analyses</h3>
+                    <p>Tableaux de bord et rapports détaillés pour suivre la performance de votre portefeuille.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         COMMENT ÇA MARCHE
+         ====================================================== -->
+    <section class="process-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Comment ça marche</span>
+                <h2 class="section-title">Un processus <em>simple et rapide</em></h2>
+                <p class="section-subtitle" style="margin:0 auto;">Confiez votre bien en 4 étapes faciles.</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step anim-item">
+                    <div class="process-num">01</div>
+                    <h4>Inscription</h4>
+                    <p>Créez votre compte propriétaire en quelques minutes avec vos documents.</p>
+                </div>
+                <div class="process-step anim-item">
+                    <div class="process-num">02</div>
+                    <h4>Évaluation</h4>
+                    <p>Notre équipe évalue votre bien et vous propose un mandat adapté.</p>
+                </div>
+                <div class="process-step anim-item">
+                    <div class="process-num">03</div>
+                    <h4>Mise en gestion</h4>
+                    <p>Nous prenons en charge la gestion complète de votre propriété.</p>
+                </div>
+                <div class="process-step anim-item">
+                    <div class="process-num">04</div>
+                    <h4>Suivi en temps réel</h4>
+                    <p>Accédez à votre tableau de bord et suivez toutes les opérations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         CTA FINAL
+         ====================================================== -->
+    <section class="cta-section">
+        <div class="container">
+            <span class="cta-eyebrow">Prêt à commencer ?</span>
+            <h2>Prêt à nous confier <em>votre bien ?</em></h2>
+            <p>Rejoignez plus de 32 propriétaires qui nous font déjà confiance en Haïti.</p>
+            <a href="inscription.html" class="btn-cta">
+                Démarrer maintenant <i data-lucide="arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         FOOTER
+         ====================================================== -->
+    <footer class="footer" style="margin-top:0;">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+"assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
+                        <span>EXPERIMMO</span>
+                    </div>
+                    <p data-site="description">Votre partenaire de confiance pour la gestion, l'achat et la location de propriétés de prestige en Haïti.</p>
+                    <div class="social-links" style="margin-top:24px;">
+                        <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" aria-label="Twitter" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Navigation</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="services.html">Services</a>
+                        <a href="a-propos.html">À Propos</a>
+                        <a href="contact.html">Contact</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Espaces</h4>
+                    <nav class="footer-links">
+                        <a href="login.html">Connexion</a>
+                        <a href="inscription.html">Inscription</a>
+                        <a href="calculateur.html">Simulateur</a>
+                        <a href="#">Mentions légales</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item">
+                        <i data-lucide="map-pin"></i>
+                        <span data-site="address">Pétion-Ville, Haïti</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="phone"></i>
+                        <span data-site="phone">+509 3700-0000</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="mail"></i>
+                        <span data-site="email">info@experimmo.ht</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                $12026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤️ pour Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================
+         SCRIPTS
+         ====================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="js/config.js?v=2.0"></script>
+    <script type="module" src="js/supabase-client.js?v=2.0"></script>
+    <script src="js/load-navbar.js?v=2.0"></script>
+    <script type="module" src="js/site-config.js?v=2.0"></script>
+    <script src="js/navbar-controller.js?v=2.0"></script>
+    <script type="module" src="js/home.js?v=2.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // Navbar scroll state
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    navbar.classList.toggle('scrolled', window.scrollY > 40);
+                });
+            }
+
+            // Counter animation
+            const counters = document.querySelectorAll('[data-target]');
+            const counterObs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    let current = 0;
+                    const step = Math.ceil(target / 50);
+                    const timer = setInterval(() => {
+                        current = Math.min(current + step, target);
+                        el.textContent = current + '+';
+                        if (current >= target) clearInterval(timer);
+                    }, 28);
+                    counterObs.unobserve(el);
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(c => counterObs.observe(c));
+
+            // Animate-on-scroll
+            const animItems = document.querySelectorAll('.anim-item');
+            const animObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        animObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            animItems.forEach(el => animObs.observe(el));
+        });
+    </script>
+    <script type="module">
+        import CONFIG from './js/config.js';
+        const { createClient } = supabase;
+        const _db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        (async () => {
+            try {
+                const [r1, r2, r3] = await Promise.all([
+                    _db.from('proprietes').select('*', { count: 'exact', head: true }),
+                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'proprietaire'),
+                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'locataire')
+                ]);
+                const map = { biens: r1.count, proprietaires: r2.count, locataires: r3.count };
+                Object.entries(map).forEach(([key, val]) => {
+                    if (val === null || val === undefined) return;
+                    const el = document.querySelector('[data-stat="' + key + '"]');
+                    if (!el) return;
+                    el.dataset.target = val;
+                    if (el.textContent !== '0') el.textContent = val + '+';
+                });
+            } catch (e) { console.warn('[Stats]', e.message); }
+        })();
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(r => console.log('[PWA] SW OK', r.scope))
+                    .catch(e => console.warn('[PWA] SW err', e));
+            });
+        }
+    </script>
+</body>
+</html>

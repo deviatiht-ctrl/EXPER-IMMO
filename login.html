@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Anti-cache meta tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    
+    <title>Connexion | EXPERIMMO</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS with cache busting -->
+    <link rel="stylesheet" href="css/variables.css?v=2.0">
+    <link rel="stylesheet" href="css/reset.css?v=2.0">
+    <link rel="stylesheet" href="css/portal.css?v=2.0">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C41E3A">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" href="assets/EXPER IMMO LOGO.png">
+
+    <style>
+        /* ========================================================
+           LOGIN PAGE — SPLIT SCREEN LAYOUT
+           ======================================================== */
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            font-family: var(--font-body);
+            background: var(--bg-main);
+            margin: 0;
+        }
+
+        /* ---- LEFT PANEL (brand) ---- */
+        .login-left {
+            width: 42%;
+            min-height: 100vh;
+            position: relative;
+            background: var(--charcoal-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 52px 48px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .login-left-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.17;
+        }
+        .login-left-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(196,30,58,0.18) 0%, rgba(26,26,26,0.92) 70%);
+        }
+        .login-left-content { position: relative; z-index: 2; }
+
+        /* Logo in left panel */
+        .panel-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.3px;
+        }
+        .panel-logo-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--ruby) 0%, var(--ruby-dark) 100%);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(196,30,58,0.35);
+        }
+        .panel-logo-icon svg { width: 22px; height: 22px; }
+
+        /* Tagline */
+        .panel-tagline {
+            margin-top: 64px;
+        }
+        .panel-tagline-tag {
+            display: inline-block;
+            padding: 5px 14px;
+            background: rgba(196,30,58,0.18);
+            border: 1px solid rgba(196,30,58,0.35);
+            border-radius: 100px;
+            color: #ff7a93;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .panel-tagline h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+        .panel-tagline h2 em { color: var(--ruby-light); font-style: italic; }
+        .panel-tagline p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.58);
+            line-height: 1.7;
+            max-width: 340px;
+        }
+
+        /* Stats in left panel */
+        .panel-stats {
+            display: flex;
+            gap: 0;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            margin-top: 40px;
+            overflow: hidden;
+        }
+        .panel-stat {
+            flex: 1;
+            text-align: center;
+            padding: 16px 12px;
+            border-right: 1px solid rgba(255,255,255,0.08);
+        }
+        .panel-stat:last-child { border-right: none; }
+        .panel-stat .val {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ruby-light);
+            line-height: 1;
+        }
+        .panel-stat .lbl {
+            display: block;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.45);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 5px;
+        }
+
+        /* Footer of left panel */
+        .panel-footer {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.35);
+        }
+
+        /* ---- RIGHT PANEL (form) ---- */
+        .login-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px;
+            background: var(--bg-main);
+        }
+
+        .login-form-wrap {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Mobile logo (hidden on desktop) */
+        .mobile-logo {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .mobile-logo-icon {
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, var(--ruby) 0%, var(--ruby-dark) 100%);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            margin-bottom: 10px;
+            box-shadow: 0 8px 24px rgba(196,30,58,0.25);
+        }
+        .mobile-logo-icon svg { width: 26px; height: 26px; }
+        .mobile-logo span { font-weight: 700; font-size: 1.1rem; color: var(--text-primary); }
+
+        /* Form heading */
+        .login-heading {
+            margin-bottom: 8px;
+        }
+        .login-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 28px;
+            transition: color 0.2s;
+        }
+        .login-back:hover { color: var(--ruby); }
+        .login-back svg { width: 14px; height: 14px; }
+        .login-heading h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+        .login-heading p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Error banner */
+        .auth-error-banner {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--danger-bg);
+            border: 1px solid rgba(222,53,11,0.2);
+            border-radius: 10px;
+            font-size: 0.875rem;
+            color: var(--danger);
+            margin-bottom: 20px;
+        }
+        .auth-error-banner.show { display: flex; }
+        .auth-error-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+        /* Form footer */
+        .login-footer {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .login-footer a { color: var(--ruby); font-weight: 600; text-decoration: none; }
+        .login-footer a:hover { text-decoration: underline; }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 900px) {
+            .login-left { display: none; }
+            .mobile-logo { display: flex; }
+            .login-right { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====================================================
+         LEFT PANEL — Brand
+         ==================================================== -->
+    <div class="login-left">
+        <div class="login-left-bg"></div>
+        <div class="login-left-overlay"></div>
+
+        <!-- Logo -->
+        <div class="login-left-content">
+            <div class="panel-logo">
+                <div class="panel-logo-icon"><i data-lucide="building-2"></i></div>
+                <span>EXPERIMMO</span>
+            </div>
+        </div>
+
+        <!-- Tagline -->
+        <div class="login-left-content">
+            <div class="panel-tagline">
+                <span class="panel-tagline-tag">Gestion Immobilière</span>
+                <h2>Gérez. Valorisez.<br><em>Réussissez.</em></h2>
+                <p>La plateforme professionnelle en Haïti pour la gestion de propriétés, locataires et contrats.</p>
+            </div>
+            <div class="panel-stats">
+                <div class="panel-stat">
+                    <span class="val" data-stat="biens">48+</span>
+                    <span class="lbl">Biens</span>
+                </div>
+                <div class="panel-stat">
+                    <span class="val" data-stat="proprietaires">32+</span>
+                    <span class="lbl">Propriétaires</span>
+                </div>
+                <div class="panel-stat">
+                    <span class="val" data-stat="locataires">60+</span>
+                    <span class="lbl">Locataires</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="login-left-content">
+            <p class="panel-footer">&copy; 2026 EXPERIMMO. Tous droits réservés.</p>
+        </div>
+    </div>
+
+    <!-- ====================================================
+         RIGHT PANEL — Form
+         ==================================================== -->
+    <div class="login-right">
+        <div class="login-form-wrap">
+
+            <!-- Mobile logo (hidden on desktop) -->
+            <div class="mobile-logo">
+                <div class="mobile-logo-icon"><i data-lucide="building-2"></i></div>
+                <span>EXPERIMMO</span>
+            </div>
+
+            <!-- Back link -->
+            <a href="index.html" class="login-back">
+                <i data-lucide="arrow-left"></i>
+                Retour à l'accueil
+            </a>
+
+            <!-- Heading -->
+            <div class="login-heading">
+                <h1>Bon retour !</h1>
+                <p>Connectez-vous à votre espace personnel.</p>
+            </div>
+
+            <!-- Error banner -->
+            <div class="auth-error-banner" id="error-banner">
+                <i data-lucide="alert-circle"></i>
+                <span id="error-msg">Email ou mot de passe incorrect.</span>
+            </div>
+
+            <!-- Form -->
+            <form id="login-form" style="margin-top: 28px;">
+
+                <!-- Email -->
+                <div class="auth-field" style="margin-bottom: 16px;">
+                    <i data-lucide="mail"></i>
+                    <input type="email" id="email" name="email"
+                           placeholder="votre@email.com" required autocomplete="email">
+                </div>
+
+                <!-- Password -->
+                <div class="auth-field auth-field-pw" style="margin-bottom: 8px;">
+                    <i data-lucide="lock"></i>
+                    <input type="password" id="password" name="password"
+                           placeholder="••••••••" required autocomplete="current-password">
+                    <button type="button" class="btn-toggle-password" id="btn-toggle-pw" title="Afficher/masquer">
+                        <i data-lucide="eye" id="pw-icon"></i>
+                    </button>
+                </div>
+
+                <!-- Options row -->
+                <div class="auth-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="remember-me">
+                        <span>Se souvenir de moi</span>
+                    </label>
+                    <a href="#">Mot de passe oublié ?</a>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="auth-btn-primary" id="btn-login">
+                    <i data-lucide="log-in"></i>
+                    Se connecter
+                </button>
+
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>Pas encore de compte ?</span>
+            </div>
+
+            <!-- Register link -->
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <a href="inscription.html" class="auth-role-btn auth-role-proprietaire">
+                    <i data-lucide="building-2"></i>
+                    M'inscrire comme propriétaire
+                </a>
+                <a href="inscription.html" class="auth-role-btn auth-role-locataire">
+                    <i data-lucide="key"></i>
+                    M'inscrire comme locataire
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module">
+        import CONFIG from './js/config.js?v=2.0';
+        const { createClient } = supabase;
+        const _db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        (async () => {
+            try {
+                const [r1, r2, r3] = await Promise.all([
+                    _db.from('proprietes').select('*', { count: 'exact', head: true }),
+                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'proprietaire'),
+                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'locataire')
+                ]);
+                const map = { biens: r1.count, proprietaires: r2.count, locataires: r3.count };
+                Object.entries(map).forEach(([key, val]) => {
+                    if (val === null || val === undefined) return;
+                    const el = document.querySelector('[data-stat="' + key + '"]');
+                    if (el) el.textContent = val + '+';
+                });
+            } catch (e) { console.warn('[Stats]', e.message); }
+        })();
+    </script>
+    <script type="module" src="js/auth.js?v=2.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const toggleBtn = document.getElementById('btn-toggle-pw');
+            const pwInput   = document.getElementById('password');
+            const pwIcon    = document.getElementById('pw-icon');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const show = pwInput.type === 'password';
+                    pwInput.type = show ? 'text' : 'password';
+                    pwIcon.setAttribute('data-lucide', show ? 'eye-off' : 'eye');
+                    lucide.createIcons();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte - Leaflet | EXPER IMMO</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/mobile-nav-modern.css">
+    <link rel="stylesheet" href="css/bottom-nav.css">
+    
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 16px;
+            margin-top: 100px;
+        }
+        .map-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c9a84c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPER IMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+</head>
+<body>
+    <!-- NAVBAR will be loaded by JS -->
+    
+    <div class="map-container">
+        <h1>Nos Propriétés sur la Carte</h1>
+        <div id="map"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- Scripts -->
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script src="js/leaflet-map.js"></script>
+    
+    <script>
+        // Initialiser la carte quand le DOM est prêt
+        document.addEventListener('DOMContentLoaded', function() {
+            // Créer la carte centrée sur Haïti
+            const map = new ExperMap('map', {
+                center: [18.5944, -72.3074],
+                zoom: 8
+            });
+            map.init();
+            
+            // Ajouter quelques marqueurs d'exemple (propriétés)
+            const properties = [
+                { lat: 18.5392, lng: -72.3350, title: 'Villa Pétion-Ville', price: '$350,000' },
+                { lat: 18.5473, lng: -72.3396, title: 'Appartement Laboule', price: '$180,000' },
+                { lat: 18.5128, lng: -72.2893, title: 'Maison Péguy-Ville', price: '$220,000' },
+                { lat: 18.5561, lng: -72.3064, title: 'Terrain Delmas', price: '$95,000' }
+            ];
+            
+            properties.forEach(prop => {
+                const popup = `
+                    <div style="text-align:center;">
+                        <h3>${prop.title}</h3>
+                        <p style="color:#C53636;font-weight:bold;">${prop.price}</p>
+                        <a href="proprietes.html" style="color:#C53636;">Voir détails</a>
+                    </div>
+                `;
+                map.addMarker(prop.lat, prop.lng, popup);
+            });
+            
+            // Ajuster la vue pour voir tous les marqueurs
+            map.fitBounds();
+        });
+    </script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>

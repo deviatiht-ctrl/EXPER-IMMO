@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Propriété | EXPER IMMO</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/mobile-nav-modern.css">
+    <link rel="stylesheet" href="css/bottom-nav.css">
+    <link rel="stylesheet" href="css/propriete.css">
+    <link rel="stylesheet" href="css/galerie.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C41E3A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+</head>
+<body>
+
+    <!-- PAGE HERO -->
+    <section style="position:relative;padding:130px 0 36px;background:var(--charcoal-dark);overflow:hidden;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(196,30,58,0.09) 0%,transparent 60%);"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(196,30,58,0.2),transparent);"></div>
+        <div class="container" style="position:relative;z-index:1;">
+            <nav style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;">
+                <a href="index.html" style="color:rgba(255,255,255,0.55);text-decoration:none;">Accueil</a>
+                <i data-lucide="chevron-right" style="width:11px;height:11px;"></i>
+                <a href="proprietes.html" style="color:rgba(255,255,255,0.55);text-decoration:none;">Propriétés</a>
+                <i data-lucide="chevron-right" style="width:11px;height:11px;"></i>
+                <span id="breadcrumb-title-hero">...</span>
+            </nav>
+            <h1 id="hero-titre" style="font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:#fff;line-height:1.15;margin-bottom:6px;">Chargement...</h1>
+            <p id="hero-location" style="font-size:0.9rem;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:6px;"><i data-lucide="map-pin" style="width:13px;height:13px;"></i> <span>...</span></p>
+        </div>
+    </section>
+
+    <main class="property-detail container" style="padding-top:40px;padding-bottom:80px;">
+        
+        <div class="prop-layout">
+            <div class="prop-main">
+                
+                <!-- GALRI -->
+                <div class="galerie-principale">
+                    <div class="galerie-main">
+                        <img id="main-photo" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1200" alt="Property">
+                        <button class="btn-lightbox" id="btn-all-photos">
+                            <i data-lucide="expand"></i> Voir toutes les photos
+                        </button>
+                    </div>
+                    <div class="galerie-thumbs" id="thumbs-grid">
+                        <!-- Thumbs loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- ENTETE -->
+                <div class="prop-header">
+                    <div class="prop-badges">
+                        <span class="badge-ref" id="prop-ref"><i data-lucide="hash"></i> ...</span>
+                        <span class="badge-statut-green" id="prop-statut"><i data-lucide="check-circle"></i> Disponible</span>
+                    </div>
+                    <h1 class="prop-titre-grand" id="prop-titre">Chargement...</h1>
+                    <div class="prop-meta-row">
+                        <span><i data-lucide="map-pin"></i> <span id="prop-address">...</span></span>
+                        <span><i data-lucide="eye"></i> <span id="prop-views">0</span> vues</span>
+                        <span><i data-lucide="calendar"></i> Ajouté le <span id="prop-date">...</span></span>
+                    </div>
+                </div>
+
+                <!-- SPECS BAR -->
+                <div class="specs-bar">
+                    <div class="spec-item"><i data-lucide="bed"></i><span id="spec-beds">0 Chambres</span></div>
+                    <div class="spec-item"><i data-lucide="bath"></i><span id="spec-baths">0 Sdb</span></div>
+                    <div class="spec-item"><i data-lucide="car"></i><span id="spec-garages">0 Park.</span></div>
+                    <div class="spec-item"><i data-lucide="maximize"></i><span id="spec-size">0 m²</span></div>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="prop-section">
+                    <h3>Description</h3>
+                    <p id="prop-description">...</p>
+                </div>
+
+                <!-- AMENAJMAN -->
+                <div class="prop-section">
+                    <h3>Aménagements</h3>
+                    <div class="amenagements-grid" id="amenagements-grid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- MAP -->
+                <div class="map-section">
+                    <h3><i data-lucide="map-pin"></i> Localisation</h3>
+                    <div id="map" class="map-container"></div>
+                </div>
+
+            </div>
+
+            <!-- SIDEBAR CONTACT -->
+            <aside class="prop-sidebar">
+                <div class="sticky-sidebar">
+                    <div class="prop-prix-sidebar">
+                        <span id="prop-prix-val">$0</span>
+                        <span class="devise" id="prop-devise">USD</span>
+                    </div>
+                    
+                    <!-- AGENT CARD -->
+                    <div class="agent-contact-card card">
+                        <div class="agent-info">
+                            <img id="agent-photo" src="https://i.pravatar.cc/150" alt="Agent" class="agent-photo">
+                            <div>
+                                <h4 id="agent-name">...</h4>
+                                <p id="agent-title">Agent Immobilier</p>
+                            </div>
+                        </div>
+                        <div class="agent-actions">
+                            <a id="agent-phone" href="tel:" class="btn-outline w-full"><i data-lucide="phone"></i> Appeler</a>
+                            <a id="agent-whatsapp" href="https://wa.me/" class="btn-success btn w-full" style="background:#25D366;color:white;border:none">
+                                <i data-lucide="message-circle"></i> WhatsApp
+                            </a>
+                        </div>
+
+                        <!-- FORM -->
+                        <form id="form-contact" class="mt-4">
+                            <h4>Envoyer une demande</h4>
+                            <div class="form-group"><input type="text" id="contact-nom" placeholder="Votre nom" required></div>
+                            <div class="form-group"><input type="email" id="contact-email" placeholder="Votre email" required></div>
+                            <div class="form-group"><input type="tel" id="contact-tel" placeholder="Votre téléphone" required></div>
+                            <div class="form-group">
+                                <select id="type-demande">
+                                    <option value="information">Plus d'infos</option>
+                                    <option value="visite">Planifier une visite</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><textarea id="contact-message" placeholder="Votre message..." rows="3"></textarea></div>
+                            <button type="submit" class="btn-primary w-full"><i data-lucide="send"></i> Envoyer</button>
+                        </form>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/supabase-client.js"></script>
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script type="module" src="js/propriete.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    navbar.classList.toggle('scrolled', window.scrollY > 40);
+                });
+            }
+        });
+    </script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>

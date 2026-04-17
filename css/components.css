@@ -1,0 +1,171 @@
+/* components.css */
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: var(--r-md);
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  transition: var(--transition);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary {
+  background-color: var(--ruby);
+  color: var(--text-white);
+  border: 1px solid var(--ruby);
+}
+
+.btn-primary:hover {
+  background-color: var(--ruby-dark);
+  border-color: var(--ruby-dark);
+  box-shadow: var(--shadow-premium);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  border: 2px solid var(--charcoal);
+  background: linear-gradient(135deg, rgba(42, 42, 42, 0.05) 0%, transparent 100%);
+  color: var(--charcoal);
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--ruby);
+  color: white;
+  background: linear-gradient(135deg, var(--ruby) 0%, #8b1538 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 21, 56, 0.25);
+}
+
+.btn-outline:active {
+  transform: translateY(0);
+}
+
+/* Cards */
+.card {
+  background: var(--bg-main);
+  border-radius: var(--r-lg);
+  padding: 32px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+  border-color: var(--platinum);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 4px; /* More architectural/stable feel */
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.badge-vente { background: var(--ruby-pale); color: var(--ruby); }
+.badge-location { background: var(--charcoal-pale); color: var(--charcoal-dark); }
+.badge-vedette { background: var(--ruby); color: var(--text-white); }
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--charcoal-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+  padding: 14px 18px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  font-size: 15px;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--ruby);
+  background: var(--bg-main);
+  box-shadow: 0 0 0 4px var(--ruby-pale);
+  outline: none;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #f5f5f5 25%, #eeeeee 50%, #f5f5f5 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: var(--r-sm);
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toast {
+  padding: 16px 24px;
+  background: var(--bg-main);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 4px solid var(--ruby);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

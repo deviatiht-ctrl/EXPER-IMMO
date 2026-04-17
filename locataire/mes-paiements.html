@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Mes Paiements | EXPERIMMO</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/portal.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#059669">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+</head>
+<body class="portal-body">
+    <div class="portal-layout">
+        <aside class="portal-sidebar locataire" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';"></div>
+                <span>EXPERIMMO</span>
+            </div>
+            <div class="portal-user">
+                <div class="portal-user-avatar" id="user-avatar">L</div>
+                <div class="portal-user-info">
+                    <h4 id="user-name">Chargement...</h4>
+                    <span>Locataire</span>
+                </div>
+            </div>
+            <nav class="portal-nav">
+                <div class="portal-nav-section">
+                    <h5>Mon Espace</h5>
+                    <a href="index.html"><i data-lucide="layout-dashboard"></i> Tableau de bord</a>
+                    <a href="mon-contrat.html"><i data-lucide="file-text"></i> Mon Contrat</a>
+                    <a href="mes-paiements.html" class="active"><i data-lucide="wallet"></i> Mes Paiements</a>
+                    <a href="mes-factures.html"><i data-lucide="receipt"></i> Mes Factures</a>
+                    <a href="mes-echeances.html"><i data-lucide="calendar"></i> Mes Échéances</a>
+                </div>
+                <div class="portal-nav-section">
+                    <h5>Communication</h5>
+                    <a href="messagerie.html"><i data-lucide="message-square"></i> Messagerie</a>
+                    <a href="documents.html"><i data-lucide="folder"></i> Mes Documents</a>
+                </div>
+            </nav>
+            <div class="portal-sidebar-footer">
+                <a href="profil.html"><i data-lucide="user"></i> Profil</a>
+                <a href="#" id="btn-logout"><i data-lucide="log-out"></i> Déconnexion</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="portal-main">
+            <header class="portal-header">
+                <h1><i data-lucide="wallet"></i> Mes Paiements</h1>
+            </header>
+
+            <div class="portal-content">
+                <!-- Payment Summary Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i data-lucide="home"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-loyer">$0</h3>
+                            <span>Loyer mensuel</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-payes">0</h3>
+                            <span>Paiements effectués</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i data-lucide="clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-attente">0</h3>
+                            <span>En attente</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon ruby">
+                            <i data-lucide="alert-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-retard">0</h3>
+                            <span>En retard</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Payment -->
+                <div class="payment-due-card" id="next-payment-card" style="display:none">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4>Prochain paiement</h4>
+                            <div class="amount" id="next-amount">$0</div>
+                            <div class="due-date">
+                                <i data-lucide="calendar"></i>
+                                <span id="next-due-date">Échéance: --</span>
+                            </div>
+                        </div>
+                        <button class="btn-pay" onclick="openPaymentModal()">
+                            <i data-lucide="credit-card"></i> Payer maintenant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Payments Table -->
+                <div class="portal-card">
+                    <div class="portal-card-header">
+                        <h3><i data-lucide="list"></i> Historique des paiements</h3>
+                        <div class="flex gap-2">
+                            <select id="filter-annee" class="form-control">
+                                <option value="">Toutes les années</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                            <select id="filter-statut" class="form-control">
+                                <option value="">Tous les statuts</option>
+                                <option value="paye">Payé</option>
+                                <option value="en_attente">En attente</option>
+                                <option value="en_retard">En retard</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="portal-card-body">
+                        <table class="portal-table">
+                            <thead>
+                                <tr>
+                                    <th>Période</th>
+                                    <th>Loyer</th>
+                                    <th>Charges</th>
+                                    <th>Total</th>
+                                    <th>Date paiement</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payments-tbody">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="payment-modal" style="display:none">
+        <div class="modal-overlay" onclick="closePaymentModal()"></div>
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h3>Effectuer un paiement</h3>
+                <button class="btn-close" onclick="closePaymentModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Montant à payer</label>
+                    <input type="text" id="payment-amount-display" readonly class="form-control text-lg">
+                </div>
+                <div class="form-group">
+                    <label>Mode de paiement</label>
+                    <div class="payment-methods">
+                        <label class="payment-method">
+                            <input type="radio" name="payment-method" value="virement" checked>
+                            <span><i data-lucide="building"></i> Virement bancaire</span>
+                        </label>
+                        <label class="payment-method">
+                            <input type="radio" name="payment-method" value="mobile_money">
+                            <span><i data-lucide="smartphone"></i> Mobile Money</span>
+                        </label>
+                        <label class="payment-method">
+                            <input type="radio" name="payment-method" value="carte">
+                            <span><i data-lucide="credit-card"></i> Carte bancaire</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes (optionnel)</label>
+                    <textarea id="payment-notes" rows="2" placeholder="Ajouter une note..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closePaymentModal()">Annuler</button>
+                <button class="btn-primary" id="btn-confirm-payment">
+                    <i data-lucide="check"></i> Confirmer le paiement
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/locataire-payments.js"></script>
+    <script>
+        function openPaymentModal() {
+            document.getElementById('payment-modal').style.display = 'flex';
+        }
+        function closePaymentModal() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+        document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    </script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>

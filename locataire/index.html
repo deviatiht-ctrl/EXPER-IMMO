@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Tableau de Bord Locataire | EXPERIMMO</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/portal.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#059669">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#059669">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+</head>
+<body class="portal-body">
+    <div class="portal-layout">
+        <aside class="portal-sidebar locataire" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';"></div>
+                <span>EXPERIMMO</span>
+            </div>
+            <div class="portal-user">
+                <div class="portal-user-avatar" id="user-avatar">L</div>
+                <div class="portal-user-info">
+                    <h4 id="user-name">Chargement...</h4>
+                    <span>Locataire</span>
+                </div>
+            </div>
+            <nav class="portal-nav">
+                <div class="portal-nav-section">
+                    <h5>Mon Espace</h5>
+                    <a href="index.html" class="active"><i data-lucide="layout-dashboard"></i> Tableau de bord</a>
+                    <a href="mon-contrat.html"><i data-lucide="file-text"></i> Mon Contrat</a>
+                <a href="mes-paiements.html"><i data-lucide="wallet"></i> Mes Paiements</a>
+                    <a href="mes-factures.html"><i data-lucide="receipt"></i> Mes Factures</a>
+                    <a href="mes-echeances.html"><i data-lucide="calendar"></i> Mes Échéances</a>
+                </div>
+                <div class="portal-nav-section">
+                    <h5>Communication</h5>
+                    <a href="messagerie.html"><i data-lucide="message-square"></i> Messagerie</a>
+                    <a href="documents.html"><i data-lucide="folder"></i> Mes Documents</a>
+                </div>
+            </nav>
+            <div class="portal-sidebar-footer">
+                <a href="profil.html"><i data-lucide="user"></i> Profil</a>
+                <a href="#" id="btn-logout"><i data-lucide="log-out"></i> Déconnexion</a>
+            </div>
+        </aside>
+
+        <main class="portal-main">
+            <header class="portal-header">
+                <div>
+                    <h1 id="welcome-title">Bienvenue</h1>
+                    <p class="portal-header-subtitle">Dernière connexion : <span id="last-login">--</span></p>
+                </div>
+            </header>
+
+            <div class="portal-content">
+                <!-- Welcome CDC -->
+                <div class="welcome-banner" style="background: linear-gradient(135deg, var(--locataire-color, #059669) 0%, #047857 100%); color: white; padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+                    <h2 style="margin-bottom: 8px;">Votre Espace Locataire</h2>
+                    <p>Consultez vos contrats, vos échéances et vos factures en toute simplicité.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i data-lucide="home"></i></div>
+                        <div class="stat-info"><h3 id="stat-bien-occupe">--</h3><p>Bien occupé</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i data-lucide="file-check"></i></div>
+                        <div class="stat-info"><h3 id="stat-contrat-statut">--</h3><p>Contrat Actif</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i data-lucide="alert-circle"></i></div>
+                        <div class="stat-info"><h3 id="stat-echeances">0</h3><p>Échéances à venir</p></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="portal-card">
+                        <div class="portal-card-header"><h3><i data-lucide="receipt"></i> Dernières Factures</h3><a href="mes-factures.html">Tout voir</a></div>
+                        <div class="portal-card-body">
+                            <table class="portal-table">
+                                <thead><tr><th>Type</th><th>Période</th><th>Montant</th><th>Statut</th></tr></thead>
+                                <tbody id="factures-tbody"><tr><td colspan="4" class="text-center">Chargement...</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="portal-card">
+                        <div class="portal-card-header"><h3><i data-lucide="message-square"></i> Messages récents</h3><a href="messagerie.html">Messagerie</a></div>
+                        <div class="portal-card-body"><div id="recent-messages" class="activity-list"></div></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/locataire-dashboard.js"></script>
+</body>
+</html>

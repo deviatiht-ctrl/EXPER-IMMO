@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Dashboard Gestionnaire | EXPERIMMO</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-modern.css">
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="admin-body">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-logo">
+            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" class="sidebar-logo-img">
+            <div class="sidebar-logo-text">
+                <strong>EXPERIMMO</strong>
+                <span>Gestionnaire</span>
+            </div>
+        </a>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-link active">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Mon Dashboard</span>
+            </a>
+            <a href="mes-proprietaires.html" class="nav-link">
+                <i data-lucide="user-check"></i>
+                <span>Mes Propriétaires</span>
+            </a>
+            <a href="mes-locataires.html" class="nav-link">
+                <i data-lucide="users"></i>
+                <span>Mes Locataires</span>
+            </a>
+            <a href="mes-biens.html" class="nav-link">
+                <i data-lucide="building-2"></i>
+                <span>Mes Biens</span>
+            </a>
+            <a href="mes-contrats.html" class="nav-link">
+                <i data-lucide="file-text"></i>
+                <span>Mes Contrats</span>
+            </a>
+            <a href="mes-operations.html" class="nav-link">
+                <i data-lucide="tool"></i>
+                <span>Mes Opérations</span>
+            </a>
+            <a href="messages.html" class="nav-link">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="documents.html" class="nav-link">
+                <i data-lucide="folder"></i>
+                <span>Documents</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <button id="btn-logout">
+                <i data-lucide="log-out"></i>
+                Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+        <header class="admin-header">
+            <div>
+                <h1>Tableau de Bord Gestionnaire</h1>
+                <p class="header-subtitle" id="header-date"></p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="location.href='mes-operations.html?action=new'">
+                    <i data-lucide="plus"></i>
+                    Nouvelle Opération
+                </button>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i data-lucide="building-2"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-mes-biens">0</h3>
+                        <p>Biens sous charge</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i data-lucide="users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-mes-locataires">0</h3>
+                        <p>Locataires gérés</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i data-lucide="alert-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-alertes">0</h3>
+                        <p>Urgences / Maintenance</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3><i data-lucide="activity"></i> Mes Dossiers Récents</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="dossiers-recents" class="activity-list">
+                            <p class="empty-state">Chargement de vos dossiers...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3><i data-lucide="message-square"></i> Messages Clients</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="messages-clients" class="activity-list">
+                            <p class="empty-state">Aucun nouveau message.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/gestionnaire/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            const d = new Date();
+            const el = document.getElementById('header-date');
+            if(el) el.textContent = d.toLocaleDateString('fr-FR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+        });
+    </script>
+</body>
+</html>

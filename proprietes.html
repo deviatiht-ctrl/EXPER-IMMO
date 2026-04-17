@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    <title>Propriétés | EXPERIMMO</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS (variables + reset first) -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/mobile-nav-modern.css">
+    <link rel="stylesheet" href="css/bottom-nav.css">
+    <link rel="stylesheet" href="css/proprietes.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C41E3A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+
+    <style>
+        body { background: var(--bg-main); font-family: var(--font-body); }
+
+        /* ---- CATALOG HERO ---- */
+        .catalog-hero {
+            position: relative;
+            padding: 130px 0 48px;
+            background: var(--charcoal-dark);
+            overflow: hidden;
+        }
+        .catalog-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 50%, rgba(196,30,58,0.10) 0%, transparent 60%);
+        }
+        .catalog-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(196,30,58,0.25), transparent);
+        }
+        .catalog-hero-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .catalog-hero-breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 12px;
+        }
+        .catalog-hero-breadcrumb a { color: rgba(255,255,255,0.55); text-decoration: none; }
+        .catalog-hero-breadcrumb a:hover { color: var(--ruby-light); }
+        .catalog-hero-breadcrumb svg { width: 11px; height: 11px; }
+        .catalog-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+        .catalog-hero h1 em { color: var(--ruby-light); font-style: italic; }
+        .catalog-hero-sub {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Inline search in hero */
+        .hero-search-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            padding: 4px 4px 4px 16px;
+            min-width: 340px;
+            flex-shrink: 0;
+        }
+        .hero-search-bar svg { width: 16px; height: 16px; color: rgba(255,255,255,0.4); flex-shrink: 0; margin-right: 10px; }
+        .hero-search-bar input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: var(--font-body);
+        }
+        .hero-search-bar input::placeholder { color: rgba(255,255,255,0.35); }
+        .hero-search-bar .btn-filters {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: var(--ruby);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .hero-search-bar .btn-filters:hover { background: var(--ruby-dark); }
+        .hero-search-bar .btn-filters svg { width: 14px; height: 14px; margin-right: 0; }
+
+        /* ---- CATALOG BODY ---- */
+        .catalog-body {
+            padding: 40px 0 80px;
+            background: var(--bg-main);
+        }
+
+        /* Sort bar */
+        .catalog-sort-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .catalog-sort-bar .results-count {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .catalog-sort-bar .results-count strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sort-controls select {
+            padding: 8px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: #fff;
+            cursor: pointer;
+        }
+        .sort-controls select:focus { outline: none; border-color: var(--ruby); }
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 3px;
+        }
+        .view-toggle button {
+            width: 32px; height: 32px;
+            border: none;
+            border-radius: 6px;
+            background: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .view-toggle button svg { width: 16px; height: 16px; }
+        .view-toggle button.active {
+            background: #fff;
+            color: var(--ruby);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        /* Filter sidebar improvements */
+        .filter-sidebar {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+        .filter-header {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .filter-header h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-header h3 svg { width: 16px; height: 16px; color: var(--ruby); }
+        .filter-header-actions { display: flex; align-items: center; gap: 8px; }
+        .btn-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .btn-text:hover { color: var(--ruby); background: var(--ruby-pale); }
+        .btn-text svg { width: 12px; height: 12px; }
+        .btn-close-filters {
+            width: 28px; height: 28px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted);
+        }
+        .btn-close-filters svg { width: 14px; height: 14px; }
+        .filter-group {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .filter-group:last-of-type { border-bottom: none; }
+        .filter-group > label:first-child {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+        .filter-group > label:first-child svg { width: 13px; height: 13px; color: var(--ruby); }
+        .toggle-group { display: flex; gap: 6px; flex-wrap: wrap; }
+        .toggle-group .toggle {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .toggle-group .toggle.active {
+            border-color: var(--ruby);
+            background: var(--ruby);
+            color: #fff;
+        }
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .checkbox-grid label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        .checkbox-grid input[type="checkbox"] { accent-color: var(--ruby); }
+        .range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .range-inputs input {
+            flex: 1;
+            padding: 9px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: #fafafa;
+        }
+        .range-inputs input:focus { outline: none; border-color: var(--ruby); background: #fff; }
+        .range-inputs span { color: var(--text-muted); font-size: 0.8rem; }
+        .btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
+        .btn-group button {
+            padding: 7px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 7px;
+            background: #fff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+        }
+        .btn-group button.active {
+            border-color: var(--ruby);
+            background: var(--ruby);
+            color: #fff;
+        }
+        /* Toggle switch */
+        .filter-group.flex { display: flex; align-items: center; justify-content: space-between; }
+        .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--border);
+            border-radius: 22px;
+            transition: 0.3s;
+        }
+        .slider:before {
+            position: absolute;
+            content: '';
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .switch input:checked + .slider { background: var(--ruby); }
+        .switch input:checked + .slider:before { transform: translateX(18px); }
+
+        .btn-appliquer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: var(--ruby);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            cursor: pointer;
+            margin: 16px 20px;
+            width: calc(100% - 40px);
+            transition: background 0.2s;
+        }
+        .btn-appliquer:hover { background: var(--ruby-dark); }
+        .btn-appliquer svg { width: 16px; height: 16px; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .empty-icon { width: 56px; height: 56px; color: var(--text-muted); margin-bottom: 16px; }
+        .empty-state h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--text-primary); }
+        .empty-state p { font-size: 0.875rem; color: var(--text-muted); }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            width: 36px; height: 36px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pagination button.active {
+            background: var(--ruby);
+            border-color: var(--ruby);
+            color: #fff;
+        }
+        .pagination button:hover:not(.active) { border-color: var(--ruby); color: var(--ruby); }
+
+        /* Skeleton while loading */
+        .prop-grid .skeleton-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            height: 320px;
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 900px) {
+            .catalog-hero-inner { flex-direction: column; align-items: flex-start; }
+            .hero-search-bar { min-width: unset; width: 100%; }
+        }
+        @media (max-width: 768px) {
+            .catalog-sort-bar { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR injected by load-navbar.js -->
+
+    <!-- ======================================================
+         PAGE HERO
+         ====================================================== -->
+    <section class="catalog-hero">
+        <div class="catalog-hero-inner container">
+            <div class="catalog-hero-left">
+                <div class="catalog-hero-breadcrumb">
+                    <a href="index.html">Accueil</a>
+                    <i data-lucide="chevron-right"></i>
+                    <span>Propriétés</span>
+                </div>
+                <h1>Nos <em>Propriétés</em></h1>
+                <p class="catalog-hero-sub">Achat, location — trouvez le bien qui vous correspond.</p>
+            </div>
+            <div class="hero-search-bar">
+                <i data-lucide="search"></i>
+                <input type="text" id="recherche" placeholder="Quartier, type, référence...">
+                <button class="btn-filters" id="btn-filtres-mobile">
+                    <i data-lucide="sliders-horizontal"></i> Filtres
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         CATALOG
+         ====================================================== -->
+    <div class="catalog-body">
+        <div class="container">
+
+            <!-- Sort bar -->
+            <div class="catalog-sort-bar">
+                <p class="results-count" id="nb-resultats">Chargement...</p>
+                <div class="sort-controls">
+                    <select id="tri">
+                        <option value="recent">Plus récentes</option>
+                        <option value="prix-asc">Prix croissant</option>
+                        <option value="prix-desc">Prix décroissant</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button id="btn-grille" class="active" title="Grille">
+                            <i data-lucide="grid-3x3"></i>
+                        </button>
+                        <button id="btn-liste" title="Liste">
+                            <i data-lucide="list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="catalog-layout">
+
+                <!-- SIDEBAR FILTERS -->
+                <aside class="filter-sidebar" id="filter-sidebar">
+                    <div class="filter-header">
+                        <h3><i data-lucide="sliders-horizontal"></i> Filtres</h3>
+                        <div class="filter-header-actions">
+                            <button id="reset-filtres" class="btn-text">
+                                <i data-lucide="rotate-ccw"></i> Réinitialiser
+                            </button>
+                            <button id="close-filters-mobile" class="btn-close-filters">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Transaction -->
+                    <div class="filter-group">
+                        <label><i data-lucide="tag"></i> Transaction</label>
+                        <div class="toggle-group" id="filter-transaction">
+                            <button class="toggle active" data-val="vente">Acheter</button>
+                            <button class="toggle" data-val="location">Louer</button>
+                            <button class="toggle" data-val="all">Tous</button>
+                        </div>
+                    </div>
+
+                    <!-- Type de bien -->
+                    <div class="filter-group">
+                        <label><i data-lucide="building-2"></i> Type de bien</label>
+                        <div class="checkbox-grid" id="filter-types">
+                            <label><input type="checkbox" value="maison"> Maison</label>
+                            <label><input type="checkbox" value="appartement"> Appartement</label>
+                            <label><input type="checkbox" value="villa"> Villa</label>
+                            <label><input type="checkbox" value="terrain"> Terrain</label>
+                            <label><input type="checkbox" value="local_commercial"> Commercial</label>
+                        </div>
+                    </div>
+
+                    <!-- Prix -->
+                    <div class="filter-group">
+                        <label><i data-lucide="dollar-sign"></i> Prix (USD)</label>
+                        <div class="range-inputs">
+                            <input type="number" id="prix-min" placeholder="Min" min="0">
+                            <span>—</span>
+                            <input type="number" id="prix-max-sidebar" placeholder="Max" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Chambres -->
+                    <div class="filter-group">
+                        <label><i data-lucide="bed"></i> Chambres min.</label>
+                        <div class="btn-group" id="filter-chambres">
+                            <button class="active" data-val="0">Tous</button>
+                            <button data-val="1">1+</button>
+                            <button data-val="2">2+</button>
+                            <button data-val="3">3+</button>
+                            <button data-val="4">4+</button>
+                        </div>
+                    </div>
+
+                    <!-- Meublé -->
+                    <div class="filter-group flex">
+                        <label><i data-lucide="sofa"></i> Meublé</label>
+                        <label class="switch">
+                            <input type="checkbox" id="meuble">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <button class="btn-appliquer" id="btn-apply-filters">
+                        <i data-lucide="check"></i> Appliquer les filtres
+                    </button>
+                </aside>
+
+                <!-- RESULTS -->
+                <section class="results-container">
+                    <div class="prop-grid grid grid-3" id="catalog-grid">
+                        <!-- Skeletons while loading -->
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                    </div>
+
+                    <div class="pagination" id="pagination"></div>
+
+                    <div id="empty-state" class="empty-state" style="display:none;">
+                        <i data-lucide="search-x" class="empty-icon"></i>
+                        <h3>Aucun résultat</h3>
+                        <p>Réessayez avec d'autres filtres ou mots-clés.</p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         FOOTER
+         ====================================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
+                    <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
+                    <div class="social-links" style="margin-top:20px;">
+                        <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" aria-label="Twitter" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Navigation</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="services.html">Services</a>
+                        <a href="a-propos.html">À Propos</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <nav class="footer-links">
+                        <a href="contact.html">Contact</a>
+                        <a href="login.html">Connexion</a>
+                        <a href="inscription.html">Inscription</a>
+                        <a href="#">FAQ</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
+                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
+                    <div class="footer-contact-item"><i data-lucide="mail"></i><span data-site="email">info@experimmo.ht</span></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                $12026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ?? pour Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/supabase-client.js"></script>
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script type="module" src="js/proprietes.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    navbar.classList.toggle('scrolled', window.scrollY > 40);
+                });
+            }
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(r => console.log('[PWA] SW OK', r.scope))
+                    .catch(e => console.warn('[PWA] SW err', e));
+            });
+        }
+    </script>
+</body>
+</html>
+.Value -replace '<p>', '<p data-site="description">' Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
+                    <div class="social-links" style="margin-top:20px;">
+                        <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" aria-label="Twitter" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Navigation</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="services.html">Services</a>
+                        <a href="a-propos.html">À Propos</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <nav class="footer-links">
+                        <a href="contact.html">Contact</a>
+                        <a href="login.html">Connexion</a>
+                        <a href="inscription.html">Inscription</a>
+                        <a href="#">FAQ</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
+                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
+                    <div class="footer-contact-item"><i data-lucide="mail"></i><span data-site="email">info@experimmo.ht</span></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                $12026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ?? pour Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/supabase-client.js"></script>
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script type="module" src="js/proprietes.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    navbar.classList.toggle('scrolled', window.scrollY > 40);
+                });
+            }
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(r => console.log('[PWA] SW OK', r.scope))
+                    .catch(e => console.warn('[PWA] SW err', e));
+            });
+        }
+    </script>
+</body>
+</html>

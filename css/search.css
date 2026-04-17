@@ -1,0 +1,89 @@
+/* search.css */
+
+.search-bar {
+    background: var(--bg-main);
+    border-radius: var(--r-xl);
+    padding: 12px;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 1000px;
+    margin-top: -20px; /* Slight offset if needed, or purely based on layout */
+}
+
+.search-tabs {
+    display: flex;
+    gap: 12px;
+    padding: 8px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+}
+
+.search-tabs .tab {
+    padding: 10px 20px;
+    border-radius: var(--r-md);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.search-tabs .tab.active {
+    background: var(--ruby-pale);
+    color: var(--ruby);
+}
+
+.search-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 16px;
+    padding: 16px;
+}
+
+.field-group {
+    position: relative;
+}
+
+.field-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.field-group select, 
+.field-group input {
+    width: 100%;
+    padding: 12px 12px 12px 40px !important;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--bg-secondary);
+    appearance: none;
+}
+
+.btn-search {
+    background: var(--ruby);
+    color: white;
+    padding: 0 32px;
+    border-radius: var(--r-md);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+}
+
+.btn-search:hover {
+    background: var(--ruby-dark);
+    box-shadow: var(--shadow-premium);
+}
+
+@media (max-width: 768px) {
+    .search-fields {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    <title>Contactez-nous | EXPERIMMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/mobile-nav-modern.css">
+    <link rel="stylesheet" href="css/bottom-nav.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C41E3A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+</head>
+<body>
+
+    <!-- NAVBAR injected by load-navbar.js -->
+
+    <!-- HERO -->
+    <section style="position:relative;padding:130px 0 48px;background:var(--charcoal-dark);overflow:hidden;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(196,30,58,0.09) 0%,transparent 60%);"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(196,30,58,0.2),transparent);"></div>
+        <div class="container" style="position:relative;z-index:1;">
+            <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;">
+                <a href="index.html" style="color:rgba(255,255,255,0.55);text-decoration:none;">Accueil</a>
+                <i data-lucide="chevron-right" style="width:11px;height:11px;"></i>
+                <span>Contact</span>
+            </div>
+            <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:8px;">Parlons de votre <em style="color:var(--ruby-light);font-style:italic;">Projet</em></h1>
+            <p style="font-size:0.9rem;color:rgba(255,255,255,0.5);">Notre équipe est disponible pour répondre à toutes vos questions.</p>
+        </div>
+    </section>
+
+    <main class="container" style="padding-top:48px;padding-bottom:80px;">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h1 class="prop-titre-grand mb-2">Parlons de votre projet</h1>
+                <p class="mb-4">Notre équipe est là pour vous accompagner dans toutes vos démarches immobilières en Haïti.</p>
+                
+                <div class="info-list">
+                    <div class="info-item">
+                        <i data-lucide="map-pin"></i>
+                        <div>
+                            <h4>Siège Social</h4>
+                            <p>Angle des Rues Geffrard et Faubert, Pétion-Ville, Haïti</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i data-lucide="phone"></i>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <p>+509 3700-0000</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i data-lucide="mail"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>contact@experimmo.ht</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i data-lucide="clock"></i>
+                        <div>
+                            <h4>Horaires</h4>
+                            <p>Lun - Ven: 8h00 - 18h00<br>Sam: 9h00 - 14h00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form card">
+                <form id="contact-main-form">
+                    <div class="form-row">
+                        <div class="form-group"><label>Nom complet</label><input type="text" id="name" required></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="email" required></div>
+                    </div>
+                    <div class="form-group"><label>Téléphone</label><input type="tel" id="tel" required></div>
+                    <div class="form-group">
+                        <label>Sujet</label>
+                        <select id="subject">
+                            <option>Demande d'information</option>
+                            <option>Mise en vente d'un bien</option>
+                            <option>Estimation gratuite</option>
+                            <option>Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Message</label><textarea id="message" rows="5" required></textarea></div>
+                    <button type="submit" class="btn-primary w-full"><i data-lucide="send"></i> Envoyer le message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
+                    <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
+                </div>
+                <div>
+                    <h4>Liens Rapides</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="agents.html">Nos Agents</a>
+                        <a href="calculateur.html">Simulateur</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <nav class="footer-links">
+                        <a href="contact.html">Contact</a>
+                        <a href="a-propos.html">À Propos</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Mentions Légales</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
+                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
+                    <div class="social-links">
+                        <a href="#" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                $12026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Site web créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener noreferrer" style="color: var(--ruby); font-weight: 600;">Cvisual</a> | Fait avec ?? pour Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { 
+            lucide.createIcons(); 
+            var f = document.getElementById('contact-main-form');
+            if (f) f.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Merci ! Votre message a été envoyé.');
+                e.target.reset();
+            });
+        });
+    </script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>
+.Value -replace '<p>', '<p data-site="description">' Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
+                </div>
+                <div>
+                    <h4>Liens Rapides</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="agents.html">Nos Agents</a>
+                        <a href="calculateur.html">Simulateur</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <nav class="footer-links">
+                        <a href="contact.html">Contact</a>
+                        <a href="a-propos.html">À Propos</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Mentions Légales</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
+                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
+                    <div class="social-links">
+                        <a href="#" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                $12026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Site web créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener noreferrer" style="color: var(--ruby); font-weight: 600;">Cvisual</a> | Fait avec ?? pour Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { 
+            lucide.createIcons(); 
+            var f = document.getElementById('contact-main-form');
+            if (f) f.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Merci ! Votre message a été envoyé.');
+                e.target.reset();
+            });
+        });
+    </script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>

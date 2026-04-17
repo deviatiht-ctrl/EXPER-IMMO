@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    \n    <!-- Anti-cache meta tags -->\n    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n    <meta http-equiv="Pragma" content="no-cache">\n    <meta http-equiv="Expires" content="0">\n    \n    <!-- Favicon / Logo -->\n    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">\n    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    <title>Nos Services | EXPERIMMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS (variables + reset first) -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/mobile-nav-modern.css">
+    <link rel="stylesheet" href="css/bottom-nav.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#C41E3A">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <style>
+        body {
+            background: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+        }
+
+        /* ---- PAGE HERO ---- */
+        .svc-hero {
+            position: relative;
+            padding: 160px 0 80px;
+            background: var(--charcoal-dark);
+            overflow: hidden;
+            text-align: center;
+        }
+        .svc-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 60% 50%, rgba(196,30,58,0.12) 0%, transparent 60%);
+        }
+        .svc-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(196,30,58,0.3), transparent);
+        }
+        .svc-hero-inner { position: relative; z-index: 1; }
+        .svc-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 18px;
+            line-height: 1.1;
+        }
+        .svc-hero h1 em { color: var(--ruby-light); font-style: italic; }
+        .svc-hero p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.65);
+            max-width: 580px;
+            margin: 0 auto 32px;
+            line-height: 1.75;
+        }
+        .hero-breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 24px;
+        }
+        .hero-breadcrumb a { color: rgba(255,255,255,0.6); }
+        .hero-breadcrumb a:hover { color: var(--ruby-light); }
+        .hero-breadcrumb svg { width: 12px; height: 12px; }
+
+        /* ---- SERVICES GRID ---- */
+        .svc-section { padding: 80px 0; background: var(--bg-main); }
+        .svc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .svc-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 32px 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .svc-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent-color, var(--ruby));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+        .svc-card:hover::before { transform: scaleX(1); }
+        .svc-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 52px rgba(0,0,0,0.09);
+            border-color: rgba(0,0,0,0.05);
+        }
+        .svc-card-icon {
+            width: 60px; height: 60px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--icon-bg, var(--ruby-pale));
+            color: var(--accent-color, var(--ruby));
+            margin-bottom: 20px;
+        }
+        .svc-card-icon svg { width: 26px; height: 26px; }
+        .svc-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        .svc-card > p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .svc-features {
+            list-style: none;
+            padding: 0;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+        }
+        .svc-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            padding: 4px 0;
+        }
+        .svc-features li svg {
+            width: 14px; height: 14px;
+            color: var(--success);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ---- WHY US STRIP ---- */
+        .why-strip {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 56px 0;
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+        }
+        .why-item {
+            text-align: center;
+            padding: 24px 20px;
+            border-right: 1px solid var(--border);
+        }
+        .why-item:last-child { border-right: none; }
+        .why-icon {
+            width: 52px; height: 52px;
+            background: var(--ruby-pale);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--ruby);
+        }
+        .why-icon svg { width: 22px; height: 22px; }
+        .why-item h4 {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .why-item p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ---- CTA BANNER ---- */
+        .svc-cta {
+            margin: 80px 0;
+            background: var(--charcoal-dark);
+            border-radius: 20px;
+            padding: 64px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .svc-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(196,30,58,0.14) 0%, transparent 65%);
+        }
+        .svc-cta-inner { position: relative; z-index: 1; }
+        .svc-cta h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            color: #fff;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+        .svc-cta h2 em { color: var(--ruby-light); font-style: italic; }
+        .svc-cta p {
+            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+            margin-bottom: 36px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        .cta-btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn-cta-primary {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 32px;
+            background: var(--ruby);
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        .btn-cta-primary:hover {
+            background: var(--ruby-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(196,30,58,0.35);
+        }
+        .btn-cta-outline {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 32px;
+            background: transparent;
+            color: rgba(255,255,255,0.85);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        .btn-cta-outline:hover {
+            border-color: rgba(255,255,255,0.55);
+            background: rgba(255,255,255,0.07);
+        }
+
+        /* ---- ANIMATE ---- */
+        .anim-item {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .anim-item.visible { opacity: 1; transform: translateY(0); }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 1024px) {
+            .svc-grid { grid-template-columns: repeat(2, 1fr); }
+            .why-grid { grid-template-columns: repeat(2, 1fr); }
+            .why-item:nth-child(2) { border-right: none; }
+            .why-item:nth-child(3),
+            .why-item:nth-child(4) { border-top: 1px solid var(--border); }
+        }
+        @media (max-width: 768px) {
+            .svc-hero { padding: 130px 0 60px; }
+            .svc-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .svc-cta { padding: 48px 24px; margin: 60px 0; }
+        }
+        @media (max-width: 480px) {
+            .why-grid { grid-template-columns: 1fr; }
+            .why-item { border-right: none; border-bottom: 1px solid var(--border); }
+            .why-item:last-child { border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR injected by load-navbar.js -->
+
+    <!-- ======================================================
+         HERO
+         ====================================================== -->
+    <section class="svc-hero">
+        <div class="svc-hero-inner container">
+            <div class="hero-breadcrumb">
+                <a href="index.html">Accueil</a>
+                <i data-lucide="chevron-right"></i>
+                <span>Services</span>
+            </div>
+            <span class="section-tag">Ce que nous faisons</span>
+            <h1>Nos <em>Services</em></h1>
+            <p>EXPERIMMO vous accompagne avec rigueur, transparence et efficacité dans la gestion et le succès de vos affaires immobilières en Haïti.</p>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         SERVICES GRID
+         ====================================================== -->
+    <section class="svc-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Ce que nous <em>proposons</em></h2>
+                <p class="section-subtitle" style="margin:0 auto;">Une gamme complète de services immobiliers pour propriétaires et locataires.</p>
+            </div>
+            <div class="svc-grid">
+
+                <!-- Gestion locative -->
+                <div class="svc-card anim-item" style="--accent-color:#C41E3A; --icon-bg:rgba(196,30,58,0.07);">
+                    <div class="svc-card-icon"><i data-lucide="home"></i></div>
+                    <h3>Gestion Locative</h3>
+                    <p>Nous gérons vos biens de A à Z : recherche de locataires, état des lieux, perception des loyers et gestion des incidents.</p>
+                    <ul class="svc-features">
+                        <li><i data-lucide="check"></i> Sélection rigoureuse des locataires</li>
+                        <li><i data-lucide="check"></i> États des lieux détaillés</li>
+                        <li><i data-lucide="check"></i> Perception et reversement des loyers</li>
+                        <li><i data-lucide="check"></i> Suivi des incidents et réparations</li>
+                        <li><i data-lucide="check"></i> Rapports mensuels au propriétaire</li>
+                    </ul>
+                </div>
+
+                <!-- Transaction immobilière -->
+                <div class="svc-card anim-item" style="--accent-color:#2C2C2C; --icon-bg:rgba(44,44,44,0.07);">
+                    <div class="svc-card-icon"><i data-lucide="handshake"></i></div>
+                    <h3>Transaction Immobilière</h3>
+                    <p>Achat, vente ou investissement — notre équipe vous accompagne à chaque étape de vos transactions avec expertise.</p>
+                    <ul class="svc-features">
+                        <li><i data-lucide="check"></i> Évaluation de la valeur du bien</li>
+                        <li><i data-lucide="check"></i> Recherche d'acquéreurs qualifiés</li>
+                        <li><i data-lucide="check"></i> Négociation et accompagnement</li>
+                        <li><i data-lucide="check"></i> Suivi des démarches juridiques</li>
+                        <li><i data-lucide="check"></i> Conseil en investissement</li>
+                    </ul>
+                </div>
+
+                <!-- Gestion de construction -->
+                <div class="svc-card anim-item" style="--accent-color:#C41E3A; --icon-bg:rgba(196,30,58,0.07);">
+                    <div class="svc-card-icon"><i data-lucide="building-2"></i></div>
+                    <h3>Gestion de Construction</h3>
+                    <p>Supervision complète de vos projets de construction ou de rénovation, avec un suivi rigoureux et transparent.</p>
+                    <ul class="svc-features">
+                        <li><i data-lucide="check"></i> Suivi de chantier régulier</li>
+                        <li><i data-lucide="check"></i> Coordination des prestataires</li>
+                        <li><i data-lucide="check"></i> Rapports d'avancement détaillés</li>
+                        <li><i data-lucide="check"></i> Contrôle des dépenses</li>
+                        <li><i data-lucide="check"></i> Réception des travaux</li>
+                    </ul>
+                </div>
+
+                <!-- Espace client digital -->
+                <div class="svc-card anim-item" style="--accent-color:#2C2C2C; --icon-bg:rgba(44,44,44,0.07);">
+                    <div class="svc-card-icon"><i data-lucide="monitor-smartphone"></i></div>
+                    <h3>Espace Client Digital</h3>
+                    <p>Accédez à vos informations 24h/24 depuis votre tableau de bord — biens, loyers, factures et documents.</p>
+                    <ul class="svc-features">
+                        <li><i data-lucide="check"></i> Tableau de bord personnalisé</li>
+                        <li><i data-lucide="check"></i> Accès aux rapports d'opération</li>
+                        <li><i data-lucide="check"></i> Consultation des finances</li>
+                        <li><i data-lucide="check"></i> Messagerie intégrée</li>
+                        <li><i data-lucide="check"></i> Documents téléchargeables</li>
+                    </ul>
+                </div>
+
+                <!-- Conseil patrimonial -->
+                <div class="svc-card anim-item" style="--accent-color:#C41E3A; --icon-bg:rgba(196,30,58,0.07);">
+                    <div class="svc-card-icon"><i data-lucide="trending-up"></i></div>
+                    <h3>Conseil Patrimonial</h3>
+                    <p>Optimisez votre patrimoine grâce à nos conseils personnalisés et notre connaissance approfondie du marché haïtien.</p>
+                    <ul class="svc-features">
+                        <li><i data-lucide="check"></i> Analyse de votre portefeuille</li>
+                        <li><i data-lucide="check"></i> Stratégie d'investissement</li>
+                        <li><i data-lucide="check"></i> Étude de rendement locatif</li>
+                        <li><i data-lucide="check"></i> Conseil juridique de base</li>
+                    </ul>
+                </div>
+
+                <!-- Service à la clientèle -->
+                <div class="svc-card anim-item" style="--accent-color:#2C2C2C; --icon-bg:rgba(44,44,44,0.07);">
+                    <div class="svc-card-icon"><i data-lucide="headphones"></i></div>
+                    <h3>Service à la Clientèle</h3>
+                    <p>Notre équipe est disponible pour répondre à toutes vos questions et traiter vos demandes dans les meilleurs délais.</p>
+                    <ul class="svc-features">
+                        <li><i data-lucide="check"></i> Messagerie dédiée propriétaires</li>
+                        <li><i data-lucide="check"></i> Messagerie dédiée locataires</li>
+                        <li><i data-lucide="check"></i> Réponse rapide garantie</li>
+                        <li><i data-lucide="check"></i> Traçabilité des échanges</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         POURQUOI NOUS
+         ====================================================== -->
+    <div class="why-strip">
+        <div class="container">
+            <div class="section-header text-center" style="margin-bottom:40px;">
+                <span class="section-tag">Pourquoi nous choisir</span>
+                <h2 class="section-title">Nos <em>engagements</em></h2>
+            </div>
+            <div class="why-grid">
+                <div class="why-item anim-item">
+                    <div class="why-icon"><i data-lucide="shield-check"></i></div>
+                    <h4>Fiabilité totale</h4>
+                    <p>Chaque opération est tracée et sécurisée dans notre plateforme.</p>
+                </div>
+                <div class="why-item anim-item">
+                    <div class="why-icon"><i data-lucide="clock"></i></div>
+                    <h4>Réactivité</h4>
+                    <p>Nous répondons à vos demandes sous 24h, 7 jours sur 7.</p>
+                </div>
+                <div class="why-item anim-item">
+                    <div class="why-icon"><i data-lucide="eye"></i></div>
+                    <h4>Transparence</h4>
+                    <p>Rapports clairs et accès complet à toutes vos données en temps réel.</p>
+                </div>
+                <div class="why-item anim-item">
+                    <div class="why-icon"><i data-lucide="award"></i></div>
+                    <h4>Expertise locale</h4>
+                    <p>2 ans d'expérience et une profonde connaissance du marché haïtien.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         CTA BANNER
+         ====================================================== -->
+    <div class="container">
+        <div class="svc-cta">
+            <div class="svc-cta-inner">
+                <span class="section-tag" style="background:rgba(196,30,58,0.2);border:1px solid rgba(196,30,58,0.35);color:#ff7a93;">Prêt à commencer ?</span>
+                <h2>Prêt à nous confier <em>votre bien ?</em></h2>
+                <p>Rejoignez les propriétaires et locataires qui nous font confiance pour la gestion de leur patrimoine immobilier en Haïti.</p>
+                <div class="cta-btn-group">
+                    <a href="inscription.html" class="btn-cta-primary">
+                        <i data-lucide="building-2"></i>
+                        Je suis propriétaire
+                    </a>
+                    <a href="contact.html" class="btn-cta-outline">
+                        <i data-lucide="mail"></i>
+                        Nous contacter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         FOOTER
+         ====================================================== -->
+    <footer class="footer" style="margin-top:0;">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
+                        <span>EXPERIMMO</span>
+                    </div>
+                    <p data-site="description">Votre partenaire de confiance pour la gestion immobilière en Haïti.</p>
+                    <div class="social-links" style="margin-top:24px;">
+                        <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" aria-label="Twitter" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Navigation</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="services.html">Services</a>
+                        <a href="a-propos.html">À Propos</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <nav class="footer-links">
+                        <a href="contact.html">Contact</a>
+                        <a href="login.html">Connexion</a>
+                        <a href="inscription.html">Inscription</a>
+                        <a href="#">FAQ</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
+                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
+                    <div class="footer-contact-item"><i data-lucide="mail"></i><span data-site="email">info@experimmo.ht</span></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                $12026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ?? pour Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    navbar.classList.toggle('scrolled', window.scrollY > 40);
+                });
+            }
+
+            const animItems = document.querySelectorAll('.anim-item');
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animItems.forEach(el => obs.observe(el));
+        });
+    </script>
+</body>
+</html>
+.Value -replace '<p>', '<p data-site="description">' Votre partenaire de confiance pour la gestion immobilière en Haïti.</p>
+                    <div class="social-links" style="margin-top:24px;">
+                        <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" aria-label="Twitter" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Navigation</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="services.html">Services</a>
+                        <a href="a-propos.html">À Propos</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <nav class="footer-links">
+                        <a href="contact.html">Contact</a>
+                        <a href="login.html">Connexion</a>
+                        <a href="inscription.html">Inscription</a>
+                        <a href="#">FAQ</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haïti</span></div>
+                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
+                    <div class="footer-contact-item"><i data-lucide="mail"></i><span data-site="email">info@experimmo.ht</span></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                $12026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ?? pour Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    navbar.classList.toggle('scrolled', window.scrollY > 40);
+                });
+            }
+
+            const animItems = document.querySelectorAll('.anim-item');
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animItems.forEach(el => obs.observe(el));
+        });
+    </script>
+</body>
+</html>

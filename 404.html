@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>404 | EXPER IMMO</title>
+    <link rel="stylesheet" href="css/global.css?v=2.0">
+    <link rel="stylesheet" href="css/components.css?v=2.0">
+    <style>body{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--bg-secondary)}</style>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c9a84c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPER IMMO">
+    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" href="assets/EXPER IMMO LOGO.png">
+</head>
+<body class="bg-secondary">
+    <div class="container flex justify-center items-center" style="height: 100vh;">
+        <div class="card text-center" style="max-width: 500px; padding: 60px 40px;">
+            <div class="navbar-logo mb-4" style="justify-content:center; color: var(--ruby)">
+                <i data-lucide="home"></i>
+                <span>EXPER IMMO</span>
+            </div>
+            <h1 style="font-size: clamp(5rem, 15vw, 8rem); color: var(--ruby); line-height: 1; margin-bottom: 20px;">404</h1>
+            <h2 class="mb-2">Oups! Page introuvable.</h2>
+            <p class="text-secondary mb-4">Il semble que vous vous soyez égaré dans les quartiers de Port-au-Prince. Laissez-nous vous ramener à bon port.</p>
+            <a href="index.html" class="btn btn-primary">
+                <i data-lucide="home"></i> Retour à l'accueil
+            </a>
+        </div>
+    </div>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>lucide.createIcons();</script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+</body>
+</html>

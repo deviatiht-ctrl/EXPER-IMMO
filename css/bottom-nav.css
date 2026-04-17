@@ -1,0 +1,127 @@
+/* ============================================================
+   EXPERIMMO — BOTTOM NAV (Glassmorphic · Centré · Style Telegram)
+   Visible uniquement sur téléphone (≤ 600px)
+   ============================================================ */
+
+.bottom-nav {
+    display: none; /* masqué partout sauf mobile */
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 32px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.11),
+        0 2px 8px  rgba(0, 0, 0, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+    padding: 6px 6px;
+    width: max-content;
+    max-width: calc(100vw - 24px);
+}
+
+/* ---- Inner row ---- */
+.bottom-nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+/* ---- Each tab item ---- */
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 8px 13px 10px;
+    color: #888;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    letter-spacing: 0.01em;
+    border-radius: 24px;
+    min-width: 50px;
+    position: relative;
+    transition: background 0.18s, color 0.18s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-item svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    transition: transform 0.18s;
+}
+
+/* ---- Hover ---- */
+.bottom-nav-item:hover {
+    color: var(--ruby, #C41E3A);
+    background: rgba(196, 30, 58, 0.06);
+}
+
+/* ---- Active state ---- */
+.bottom-nav-item.active {
+    color: var(--ruby, #C41E3A);
+    background: rgba(196, 30, 58, 0.09);
+}
+
+.bottom-nav-item.active svg {
+    transform: translateY(-2px);
+}
+
+/* Active dot (like iOS tab bar) */
+.bottom-nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    background: var(--ruby, #C41E3A);
+    border-radius: 50%;
+    opacity: 0.85;
+}
+
+/* ---- Show on phones only ---- */
+@media (max-width: 640px) {
+    .bottom-nav {
+        display: block; /* visible on phone */
+    }
+
+    body {
+        padding-bottom: 90px !important;
+    }
+
+    footer {
+        margin-bottom: 80px;
+    }
+}
+
+/* ---- Extra-small phones ---- */
+@media (max-width: 380px) {
+    .bottom-nav {
+        bottom: 12px;
+        max-width: calc(100vw - 16px);
+    }
+
+    .bottom-nav-item {
+        padding: 7px 10px 9px;
+        min-width: 42px;
+        font-size: 9px;
+    }
+
+    .bottom-nav-item svg {
+        width: 20px;
+        height: 20px;
+    }
+}
