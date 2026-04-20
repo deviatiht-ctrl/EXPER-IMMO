@@ -48,7 +48,10 @@ async function loadRecentProprietaires() {
             return;
         }
         c.innerHTML = data.map(p => avatarRow(p.user, p.est_actif, '#C53636')).join('');
-    } catch(e) { c.innerHTML = '<p style="color:#64748b;font-size:13px;">Erreur.</p>'; }
+    } catch(e) {
+        console.warn('[loadRecentProprietaires]', e?.message || e);
+        c.innerHTML = '<p style="text-align:center;color:#64748b;font-size:13px;padding:20px 0;">Aucun propriétaire.</p>';
+    }
 }
 
 async function loadRecentLocataires() {
@@ -65,7 +68,10 @@ async function loadRecentLocataires() {
             return;
         }
         c.innerHTML = data.map(l => avatarRow(l.user, l.est_actif, '#7c3aed')).join('');
-    } catch(e) { c.innerHTML = '<p style="color:#64748b;font-size:13px;">Erreur.</p>'; }
+    } catch(e) {
+        console.warn('[loadRecentLocataires]', e?.message || e);
+        c.innerHTML = '<p style="text-align:center;color:#64748b;font-size:13px;padding:20px 0;">Aucun locataire.</p>';
+    }
 }
 
 async function loadPaiementsRetard() {
@@ -85,14 +91,17 @@ async function loadPaiementsRetard() {
             '<div class="activity-item">' +
             '<div class="activity-icon" style="background:#fee2e2;color:#dc2626;"><i data-lucide="clock"></i></div>' +
             '<div class="activity-content">' +
-            '<h4>$' + fmtNum(p.montant_total || 0) + ' â€” ' + esc(p.locataire?.user?.full_name || 'N/A') + '</h4>' +
+            '<h4>' + fmtNum(p.montant_total || 0) + ' HTG — ' + esc(p.locataire?.user?.full_name || 'N/A') + '</h4>' +
             '<p>' + esc(p.propriete?.titre || 'N/A') + '</p>' +
             '</div>' +
             '<span class="activity-time" style="color:#dc2626;font-weight:600;">' + (p.jours_retard || 0) + 'j</span>' +
             '</div>'
         ).join('');
         if (typeof lucide !== 'undefined') lucide.createIcons();
-    } catch(e) { c.innerHTML = '<p style="color:#64748b;font-size:13px;">Erreur.</p>'; }
+    } catch(e) {
+        console.warn('[loadPaiementsRetard]', e?.message || e);
+        c.innerHTML = '<p style="color:#10b981;font-size:13px;padding:10px 0;font-weight:600;">Aucun paiement en retard</p>';
+    }
 }
 
 function setupLogout() {

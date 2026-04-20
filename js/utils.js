@@ -17,10 +17,10 @@ export const showToast = (message, type = 'info') => {
     const container = document.querySelector('.toast-container') || createToastContainer();
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    
+
     let icon = 'info';
-    if (type === 'success') icon = 'check-circle';
-    if (type === 'error') icon = 'alert-circle';
+    if (type === 'success') icon = 'check-circle-2';
+    if (type === 'error') icon = 'x-circle';
     if (type === 'warning') icon = 'alert-triangle';
 
     toast.innerHTML = `
@@ -29,12 +29,14 @@ export const showToast = (message, type = 'info') => {
     `;
 
     container.appendChild(toast);
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 
+    // Elegant exit animation
     setTimeout(() => {
+        toast.style.animation = 'none';
+        toast.style.transform = 'translateX(120%) scale(0.8)';
         toast.style.opacity = '0';
-        toast.style.transform = 'translateY(20px)';
-        setTimeout(() => toast.remove(), 300);
+        setTimeout(() => toast.remove(), 400);
     }, 4000);
 };
 

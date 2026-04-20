@@ -164,21 +164,21 @@
         }
 
         /* ---- STATS STRIP ---- */
-        .sétats-strip {
+        .stats-strip {
             background: var(--charcoal-dark);
             border-top: 1px solid rgba(255,255,255,0.06);
         }
-        .sétats-strip-grid {
+        .stats-strip-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
         }
-        .sétats-strip-item {
+        .stats-strip-item {
             text-align: center;
             padding: 28px 16px;
             border-right: 1px solid rgba(255,255,255,0.07);
         }
-        .sétats-strip-item:last-child { border-right: none; }
-        .sétats-strip-item .s-val {
+        .stats-strip-item:last-child { border-right: none; }
+        .stats-strip-item .s-val {
             font-family: var(--font-display);
             font-size: 2.2rem;
             font-weight: 700;
@@ -186,7 +186,7 @@
             display: block;
             line-height: 1;
         }
-        .sétats-strip-item .s-lbl {
+        .stats-strip-item .s-lbl {
             font-size: 0.78rem;
             color: rgba(255,255,255,0.52);
             text-transform: uppercase;
@@ -376,8 +376,8 @@
             .services-grid { grid-template-columns: repeat(2, 1fr); }
             .process-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
             .process-grid::after { display: none; }
-            .sétats-strip-grid { grid-template-columns: repeat(2, 1fr); }
-            .sétats-strip-item:nth-child(2) { border-right: none; }
+            .stats-strip-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-strip-item:nth-child(2) { border-right: none; }
         }
         @media (max-width: 768px) {
             .page-hero { padding: 110px 0 60px; min-height: auto; }
@@ -385,8 +385,8 @@
             .services-grid { grid-template-columns: 1fr; }
             .process-grid { grid-template-columns: 1fr; }
             .services-section, .process-section, .cta-section { padding: 64px 0; }
-            .sétats-strip-item { padding: 20px 12px; }
-            .sétats-strip-item .s-val { font-size: 1.8rem; }
+            .stats-strip-item { padding: 20px 12px; }
+            .stats-strip-item .s-val { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -434,22 +434,22 @@
     <!-- ======================================================
          STATS STRIP
          ====================================================== -->
-    <div class="sétats-strip">
+    <div class="stats-strip">
         <div class="container">
-            <div class="sétats-strip-grid">
-                <div class="sétats-strip-item">
+            <div class="stats-strip-grid">
+                <div class="stats-strip-item">
                     <span class="s-val" data-target="48" data-stat="biens">0</span>
                     <span class="s-lbl">Biens gérés</span>
                 </div>
-                <div class="sétats-strip-item">
+                <div class="stats-strip-item">
                     <span class="s-val" data-target="32" data-stat="proprietaires">0</span>
                     <span class="s-lbl">Propriétaires</span>
                 </div>
-                <div class="sétats-strip-item">
+                <div class="stats-strip-item">
                     <span class="s-val" data-target="60" data-stat="locataires">0</span>
                     <span class="s-lbl">Locataires actifs</span>
                 </div>
-                <div class="sétats-strip-item">
+                <div class="stats-strip-item">
                     <span class="s-val">2+</span>
                     <span class="s-lbl">Ans d'expérience</span>
                 </div>
@@ -535,7 +535,7 @@
                 <div class="svc-card anim-item">
                     <div class="svc-icon"><i data-lucide="trending-up"></i></div>
                     <h3>Valorisation Immobilière</h3>
-                    <p>Stratégies sur mesure pour augmenter la valeur de votre patrimoine immobilier sur le marchééé haitien.</p>
+                    <p>Stratégies sur mesure pour augmenter la valeur de votre patrimoine immobilier sur le marché haitien.</p>
                 </div>
                 <div class="svc-card anim-item">
                     <div class="svc-icon"><i data-lucide="file-text"></i></div>
@@ -575,12 +575,12 @@
                 <div class="process-step anim-item">
                     <div class="process-num">01</div>
                     <h4>Inscription</h4>
-                    <p>Créééez votre compte propriétaire en quelques minutes avec vos documents.</p>
+                    <p>Crééez votre compte propriétaire en quelques minutes avec vos documents.</p>
                 </div>
                 <div class="process-step anim-item">
                     <div class="process-num">02</div>
                     <h4>Éévaluation</h4>
-                    <p>Notre éééquipe évalue votre bien et vous propose un mandat adapté.</p>
+                    <p>Notre équipe évalue votre bien et vous propose un mandat adapté.</p>
                 </div>
                 <div class="process-step anim-item">
                     <div class="process-num">03</div>
@@ -634,7 +634,7 @@
                         <a href="index.html">Accueil</a>
                         <a href="proprietes.html">Propriétés</a>
                         <a href="services.html">Services</a>
-                        <a href="a-propos.html">À À Propos</a>
+                        <a href="a-propos.html">À Propos</a>
                         <a href="contact.html">Contact</a>
                     </nav>
                 </div>
@@ -664,8 +664,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                $12026 EXPERIMMO. Tous droits réservés.</p>
-                <p>Créééé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤️ pour Haiti</p>
+                © 2026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤️ pour Haiti</p>
             </div>
         </div>
     </footer>
@@ -743,7 +743,7 @@
                     el.dataset.target = val;
                     if (el.textContent !== '0') el.textContent = val + '+';
                 });
-            } catch (e) { console.warn('[Sétats]', e.message); }
+            } catch (e) { console.warn('[Stats]', e.message); }
         })();
     </script>
     <script>

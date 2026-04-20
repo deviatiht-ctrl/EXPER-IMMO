@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Anti-cache meta tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <title>Modifier Propriété | EXPERIMMO</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/portal.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c9a84c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EXPERIMMO">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="shortcut icon" href="/assets/icons/icon-192.png">
+</head>
+<body class="portal-body">
+    <div class="portal-layout">
+        <!-- Sidebar -->
+        <aside class="portal-sidebar proprietaire" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';"></div>
+                <span>EXPERIMMO</span>
+            </div>
+            
+            <div class="portal-user">
+                <div class="portal-user-avatar" id="user-avatar">P</div>
+                <div class="portal-user-info">
+                    <h4 id="user-name">Chargement...</h4>
+                    <span>Propriétaire</span>
+                </div>
+            </div>
+
+            <nav class="portal-nav">
+                <div class="portal-nav-section">
+                    <h5>Menu Principal</h5>
+                    <a href="index.html">
+                        <i data-lucide="layout-dashboard"></i> Tableau de bord
+                    </a>
+                    <a href="mes-proprietes.html" class="active">
+                        <i data-lucide="building-2"></i> Mes Propriétés
+                    </a>
+                    <a href="contrats.html">
+                        <i data-lucide="file-text"></i> Contrats
+                    </a>
+                    <a href="paiements.html">
+                        <i data-lucide="wallet"></i> Paiements
+                    </a>
+                </div>
+
+                <div class="portal-nav-section">
+                    <h5>Documents & Messagerie</h5>
+                    <a href="documents.html">
+                        <i data-lucide="folder"></i> Documents
+                    </a>
+                    <a href="rapports-operation.html">
+                        <i data-lucide="activity"></i> Rapports d'opération
+                    </a>
+                    <a href="messagerie.html">
+                        <i data-lucide="message-square"></i> Messagerie
+                    </a>
+                </div>
+            </nav>
+
+            <div class="portal-sidebar-footer">
+                <a href="profil.html">
+                    <i data-lucide="user"></i> Mon Profil
+                </a>
+                <a href="#" id="btn-logout">
+                    <i data-lucide="log-out"></i> Déconnexion
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="portal-main">
+            <header class="portal-header">
+                <div class="header-left">
+                    <a href="mes-proprietes.html" class="btn-back">
+                        <i data-lucide="arrow-left"></i>
+                    </a>
+                    <h1><i data-lucide="edit-3"></i> Modifier Propriété</h1>
+                </div>
+                <div class="portal-header-actions">
+                    <a href="#" id="btn-view" class="btn-secondary">
+                        <i data-lucide="eye"></i> Voir détails
+                    </a>
+                </div>
+            </header>
+
+            <div class="portal-content">
+                <!-- Loading State -->
+                <div class="loading-state" id="loading-state">
+                    <i data-lucide="loader-2" class="spin"></i>
+                    <p>Chargement...</p>
+                </div>
+
+                <!-- Error State -->
+                <div class="empty-state" id="error-state" style="display:none">
+                    <i data-lucide="alert-circle"></i>
+                    <h3>Propriété non trouvée</h3>
+                    <p>La propriété demandée n'existe pas ou vous n'avez pas accès.</p>
+                    <a href="mes-proprietes.html" class="btn-primary mt-3">
+                        <i data-lucide="arrow-left"></i> Retour aux propriétés
+                    </a>
+                </div>
+
+                <!-- Edit Form -->
+                <div id="edit-form" style="display:none">
+                    <div class="portal-card">
+                        <div class="portal-card-header">
+                            <h3>Informations de la propriété</h3>
+                            <p>Modifiez les détails ci-dessous</p>
+                        </div>
+                        <div class="portal-card-body">
+                            <form id="form-modifier-propriete">
+                                <input type="hidden" id="property-id">
+                                
+                                <!-- Section: Identification -->
+                                <div class="form-section">
+                                    <h4 class="section-title"><i data-lucide="tag"></i> Identification</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="titre">Titre de la propriété *</label>
+                                            <input type="text" id="titre" name="titre" required 
+                                                   placeholder="Ex: Villa moderne à Pétion-Ville">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reference">Référence</label>
+                                            <input type="text" id="reference" name="reference" readonly 
+                                                   class="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section: Type & Transaction -->
+                                <div class="form-section">
+                                    <h4 class="section-title"><i data-lucide="home"></i> Type & Transaction</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="type_propriete">Type de propriété *</label>
+                                            <select id="type_propriete" name="type_propriete" required>
+                                                <option value="">Sélectionner...</option>
+                                                <option value="maison">Maison</option>
+                                                <option value="appartement">Appartement</option>
+                                                <option value="villa">Villa</option>
+                                                <option value="terrain">Terrain</option>
+                                                <option value="local_commercial">Local Commercial</option>
+                                                <option value="entrepot">Entrepôt</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="type_transaction">Type de transaction *</label>
+                                            <select id="type_transaction" name="type_transaction" required>
+                                                <option value="">Sélectionner...</option>
+                                                <option value="location">Location</option>
+                                                <option value="vente">Vente</option>
+                                                <option value="lesion_bail">Léger-bail</option>
+                                                <option value="co_propriete">Co-propriété</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="statut">Statut *</label>
+                                            <select id="statut" name="statut" required>
+                                                <option value="disponible">Disponible</option>
+                                                <option value="loue">Loué</option>
+                                                <option value="vendu">Vendu</option>
+                                                <option value="sous_compromis">Sous compromis</option>
+                                                <option value="en_construction">En construction</option>
+                                                <option value="gestion">En gestion</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="statut_bien">Statut bien</label>
+                                            <select id="statut_bien" name="statut_bien">
+                                                <option value="">Non spécifié</option>
+                                                <option value="gestion">En gestion</option>
+                                                <option value="construction">En construction</option>
+                                                <option value="disponible">Disponible</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section: Localisation -->
+                                <div class="form-section">
+                                    <h4 class="section-title"><i data-lucide="map-pin"></i> Localisation</h4>
+                                    <div class="form-row">
+                                        <div class="form-group flex-2">
+                                            <label for="adresse">Adresse *</label>
+                                            <input type="text" id="adresse" name="adresse" required 
+                                                   placeholder="Ex: 123 Rue de la Paix">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ville">Ville *</label>
+                                            <select id="ville" name="ville" required>
+                                                <option value="">Sélectionner...</option>
+                                                <option value="Port-au-Prince">Port-au-Prince</option>
+                                                <option value="Pétion-Ville">Pétion-Ville</option>
+                                                <option value="Delmas">Delmas</option>
+                                                <option value="Carrefour">Carrefour</option>
+                                                <option value="Tabarre">Tabarre</option>
+                                                <option value="Kenscoff">Kenscoff</option>
+                                                <option value="Jacmel">Jacmel</option>
+                                                <option value="Cap-Haïtien">Cap-Haïtien</option>
+                                                <option value="Les Cayes">Les Cayes</option>
+                                                <option value="Gonaïves">Gonaïves</option>
+                                                <option value="Autre">Autre</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section: Caractéristiques -->
+                                <div class="form-section">
+                                    <h4 class="section-title"><i data-lucide="ruler"></i> Caractéristiques</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="superficie_m2">Superficie (m²)</label>
+                                            <input type="number" id="superficie_m2" name="superficie_m2" 
+                                                   min="0" step="0.01" placeholder="Ex: 150">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nb_chambres">Chambres</label>
+                                            <input type="number" id="nb_chambres" name="nb_chambres" 
+                                                   min="0" placeholder="Ex: 3">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nb_salles_bain">Salles de bain</label>
+                                            <input type="number" id="nb_salles_bain" name="nb_salles_bain" 
+                                                   min="0" placeholder="Ex: 2">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="nb_etages">Étages</label>
+                                            <input type="number" id="nb_etages" name="nb_etages" 
+                                                   min="0" placeholder="Ex: 2">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="annee_construction">Année construction</label>
+                                            <input type="number" id="annee_construction" name="annee_construction" 
+                                                   min="1800" max="2099" placeholder="Ex: 2015">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section: Prix -->
+                                <div class="form-section">
+                                    <h4 class="section-title"><i data-lucide="dollar-sign"></i> Prix</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="prix_vente">Prix de vente (HTG)</label>
+                                            <input type="number" id="prix_vente" name="prix_vente" 
+                                                   min="0" step="0.01" placeholder="Ex: 5000000">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="prix_location">Prix location/mois (HTG)</label>
+                                            <input type="number" id="prix_location" name="prix_location" 
+                                                   min="0" step="0.01" placeholder="Ex: 50000">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="devise">Devise</label>
+                                            <select id="devise" name="devise">
+                                                <option value="HTG">HTG (Gourde)</option>
+                                                <option value="USD">USD (Dollar)</option>
+                                                <option value="EUR">EUR (Euro)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section: Description -->
+                                <div class="form-section">
+                                    <h4 class="section-title"><i data-lucide="align-left"></i> Description</h4>
+                                    <div class="form-group">
+                                        <label for="description">Description détaillée</label>
+                                        <textarea id="description" name="description" rows="5" 
+                                                  placeholder="Décrivez votre propriété..."></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="form-actions">
+                                    <a href="mes-proprietes.html" class="btn-secondary">
+                                        <i data-lucide="x"></i> Annuler
+                                    </a>
+                                    <button type="button" class="btn-danger" id="btn-delete">
+                                        <i data-lucide="trash-2"></i> Supprimer
+                                    </button>
+                                    <button type="submit" class="btn-primary" id="btn-submit">
+                                        <i data-lucide="save"></i> Enregistrer les modifications
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="module" src="../js/proprietaire-edit-property.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
+</body>
+</html>

@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="css/variables.css?v=4/02_081512">
     <link rel="stylesheet" href="css/reset.css?v=4/02_081512">
     <link rel="stylesheet" href="css/portal.css?v=4/02_081512">
+    <link rel="stylesheet" href="css/components.css?v=4/02_081512">
+    <link rel="stylesheet" href="css/bottom-nav.css?v=4/02_081512">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -37,9 +39,26 @@
 
     <style>
         /* ========================================================
-           LOGIN PAGE â€” SPLIT SCREEN LAYOUT
+           LOGIN PAGE — SPLIT SCREEN LAYOUT
            ======================================================== */
         * { box-sizing: border-box; }
+
+        /* Animated gradient background */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
 
         body {
             min-height: 100vh;
@@ -47,6 +66,7 @@
             font-family: var(--font-body);
             background: var(--bg-main);
             margin: 0;
+            padding-bottom: 70px; /* Space for mobile bottom nav */
         }
 
         /* ---- LEFT PANEL (brand) ---- */
@@ -130,8 +150,8 @@
             max-width: 340px;
         }
 
-        /* Sétats in left panel */
-        .panel-sétats {
+        /* Stats in left panel */
+        .panel-stats {
             display: flex;
             gap: 0;
             background: rgba(255,255,255,0.05);
@@ -269,7 +289,7 @@
 <body>
 
     <!-- ====================================================
-         LEFT PANEL â€” Brand
+         LEFT PANEL — Brand
          ==================================================== -->
     <div class="login-left">
         <div class="login-left-bg"></div>
@@ -290,7 +310,7 @@
                 <h2>Gérez. Valorisez.<br><em>Réussissez.</em></h2>
                 <p>La plateforme professionnelle en Haiti pour la gestion de propriétés, locataires et contrats.</p>
             </div>
-            <div class="panel-sétats">
+            <div class="panel-stats">
                 <div class="panel-stat">
                     <span class="val" data-stat="biens">48+</span>
                     <span class="lbl">Biens</span>
@@ -313,7 +333,7 @@
     </div>
 
     <!-- ====================================================
-         RIGHT PANEL â€” Form
+         RIGHT PANEL — Form
          ==================================================== -->
     <div class="login-right">
         <div class="login-form-wrap">
@@ -327,13 +347,13 @@
             <!-- Back link -->
             <a href="index.html" class="login-back">
                 <i data-lucide="arrow-left"></i>
-                Retour Ã  l'accueil
+                Retour é  l'accueil
             </a>
 
             <!-- Heading -->
             <div class="login-heading">
                 <h1>Bon retour !</h1>
-                <p>Connectez-vous Ã  votre espace personnel.</p>
+                <p>Connectez-vous é  votre espace personnel.</p>
             </div>
 
             <!-- Error banner -->
@@ -356,7 +376,7 @@
                 <div class="auth-field auth-field-pw" style="margin-bottom: 8px;">
                     <i data-lucide="lock"></i>
                     <input type="password" id="password" name="password"
-                           placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required autocomplete="current-password">
+                           placeholder="••••••••" required autocomplete="current-password">
                     <button type="button" class="btn-toggle-password" id="btn-toggle-pw" title="Afficher/masquer">
                         <i data-lucide="eye" id="pw-icon"></i>
                     </button>
@@ -402,6 +422,26 @@
     <!-- Toast -->
     <div class="toast-container"></div>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="index.html" class="bottom-nav-item" data-page="index">
+            <i data-lucide="home"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="proprietes.html" class="bottom-nav-item" data-page="proprietes">
+            <i data-lucide="building-2"></i>
+            <span>Biens</span>
+        </a>
+        <a href="contact.html" class="bottom-nav-item" data-page="contact">
+            <i data-lucide="mail"></i>
+            <span>Contact</span>
+        </a>
+        <a href="login.html" class="bottom-nav-item active" data-page="login">
+            <i data-lucide="log-in"></i>
+            <span>Connexion</span>
+        </a>
+    </nav>
+
     <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script type="module">
@@ -421,7 +461,7 @@
                     const el = document.querySelector('[data-stat="' + key + '"]');
                     if (el) el.textContent = val + '+';
                 });
-            } catch (e) { console.warn('[Sétats]', e.message); }
+            } catch (e) { console.warn('[Stats]', e.message); }
         })();
     </script>
     <script type="module" src="js/auth.js?v=4/02_081512"></script>
