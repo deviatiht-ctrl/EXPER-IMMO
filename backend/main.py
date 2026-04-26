@@ -19,6 +19,41 @@ from . import models, database, auth
 # Create tables
 models.Base.metadata.create_all(bind=database.engine)
 
+# Auto-create admin on startup (Render free tier - no shell access)
+def create_admin_on_startup():
+    db = database.SessionLocal()
+    try:
+        admin_email = os.getenv("ADMIN_EMAIL")
+        admin_password = os.getenv("ADMIN_PASSWORD")
+        admin_name = os.getenv("ADMIN_NAME", "Administrateur EXPERIMMO")
+        
+        if not admin_email or not admin_password:
+            return
+        
+        existing = db.query(models.User).filter(models.User.email == admin_email).first()
+        if existing:
+            return
+        
+        user = models.User(
+            email=admin_email,
+            hashed_password=auth.get_password_hash(admin_password),
+            full_name=admin_name,
+            role="admin",
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        
+        db.add(models.Profile(id=user.id, full_name=admin_name, role="admin"))
+        db.commit()
+        print(f"[OK] Admin auto-created: {admin_email}")
+    except Exception as e:
+        print(f"[WARN] Could not auto-create admin: {e}")
+    finally:
+        db.close()
+
+create_admin_on_startup()
+
 # Create upload directory
 UPLOAD_DIR = Path("static/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)

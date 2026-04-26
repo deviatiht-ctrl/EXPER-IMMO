@@ -12,7 +12,14 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: BASE_URL
-        value: https://exper-immo-api.onrender.com
+        value: https://exper-immo.onrender.com
+      - key: ADMIN_EMAIL
+        value: admin@experimmo.com
+      - key: ADMIN_PASSWORD
+        generateValue: false
+        value: Admin@Exp2024!
+      - key: ADMIN_NAME
+        value: Administrateur EXPERIMMO
 
 databases:
   - name: exper-immo-db
