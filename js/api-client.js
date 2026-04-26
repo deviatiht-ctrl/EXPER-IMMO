@@ -3,7 +3,7 @@
  * Calls the FastAPI backend. Update API_URL in config.js after deploying to Render.
  */
 
-const API_URL = window.EXPER_API_URL || 'https://exper-immo-api.onrender.com';
+const API_URL = window.EXPER_API_URL || 'https://exper-immo.onrender.com';
 
 const apiClient = {
     async request(endpoint, options = {}) {

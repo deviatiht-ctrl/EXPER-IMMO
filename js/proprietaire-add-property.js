@@ -211,7 +211,7 @@ const uploadPhotosToStorage = async (_propertyId) => {
     if (uploadedPhotos.length === 0) return [];
 
     const token = localStorage.getItem('exper_immo_token');
-    const API_URL = window.EXPER_API_URL || 'https://exper-immo-api.onrender.com';
+    const API_URL = window.EXPER_API_URL || 'https://exper-immo.onrender.com';
     const urls = [];
 
     for (let i = 0; i < uploadedPhotos.length; i++) {
