@@ -1,27 +1,22 @@
 // proprietaire-add-property.js - Add Property Page
-import CONFIG from './config.js';
 import { showToast, formatPrice } from './utils.js';
-import { requireAuth, logout, supabaseClient } from './auth.js';
+import { requireAuth, logout } from './auth.js';
+import apiClient from './api-client.js';
 
 let currentUser = null;
 let proprietaireId = null;
 let uploadedPhotos = []; // Store selected files
 
 const initAuth = async () => {
-    currentUser = await requireAuth(['proprietaire']);
-    if (!currentUser) return;
-    
-    const { data: proprietaire } = await supabaseClient
-        .from('proprietaires')
-        .select('id_proprietaire')
-        .eq('user_id', currentUser.id)
-        .single();
-    
-    proprietaireId = proprietaire?.id_proprietaire;
-    
-    document.getElementById('user-name').textContent = currentUser.profile?.full_name || 'Propriétaire';
-    document.getElementById('user-avatar').textContent = 
-        (currentUser.profile?.full_name || 'P').charAt(0).toUpperCase();
+    const userStr = localStorage.getItem('exper_immo_user');
+    if (!userStr) { window.location.href = '../login.html'; return; }
+    currentUser = JSON.parse(userStr);
+    if (currentUser.role !== 'proprietaire') { window.location.href = '../login.html'; return; }
+
+    const nameEl   = document.getElementById('user-name');
+    const avatarEl = document.getElementById('user-avatar');
+    if (nameEl)   nameEl.textContent   = currentUser.full_name || 'Propriétaire';
+    if (avatarEl) avatarEl.textContent = (currentUser.full_name || 'P').charAt(0).toUpperCase();
 };
 
 const generateReference = () => {
@@ -78,17 +73,9 @@ const handleSubmit = async (e) => {
             updated_at: new Date().toISOString()
         };
         
-        // Insert into Supabase
-        const { data, error } = await supabaseClient
-            .from('proprietes')
-            .insert([formData])
-            .select()
-            .single();
-        
-        if (error) {
-            console.error('Supabase error:', error);
-            throw new Error(error.message || 'Erreur lors de l\'enregistrement');
-        }
+        // Insert via API
+        const data = await apiClient.post('/properties', formData);
+        if (!data || !data.id) throw new Error('Erreur lors de l\'enregistrement');
         
         showToast('Propriété ajoutée avec succès!', 'success');
         
@@ -220,47 +207,47 @@ const updatePhotoCount = () => {
     }
 };
 
-const uploadPhotosToStorage = async (propertyId) => {
+const uploadPhotosToStorage = async (_propertyId) => {
     if (uploadedPhotos.length === 0) return [];
-    
+
+    const token = localStorage.getItem('exper_immo_token');
+    const API_URL = window.EXPER_API_URL || 'https://exper-immo-api.onrender.com';
     const urls = [];
-    
+
     for (let i = 0; i < uploadedPhotos.length; i++) {
         const file = uploadedPhotos[i];
-        const ext = file.name.split('.').pop();
-        const path = `properties/${proprietaireId}/${propertyId}/${i}_${Date.now()}.${ext}`;
-        
+        const item = document.querySelector(`.photo-preview-item[data-filename="${file.name}"]`);
+
         try {
-            const { error: uploadError } = await supabaseClient.storage
-                .from('proprietes-photos')
-                .upload(path, file, { 
-                    contentType: file.type,
-                    upsert: true 
-                });
-            
-            if (uploadError) {
-                console.warn('Upload error:', uploadError);
+            const form = new FormData();
+            form.append('file', file);
+
+            const resp = await fetch(`${API_URL}/upload/image`, {
+                method: 'POST',
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+                body: form,
+            });
+
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                console.warn('Upload error:', err.detail || resp.status);
                 continue;
             }
-            
-            const { data: { publicUrl } } = supabaseClient.storage
-                .from('proprietes-photos')
-                .getPublicUrl(path);
-            
-            urls.push(publicUrl);
-            
-            // Update progress bar
-            const item = document.querySelector(`.photo-preview-item[data-filename="${file.name}"]`);
+
+            const result = await resp.json();
+            urls.push(result.url);
+
             if (item) {
-                item.querySelector('.upload-progress').style.display = 'block';
-                item.querySelector('.upload-progress-bar').style.width = '100%';
+                const bar = item.querySelector('.upload-progress');
+                const fill = item.querySelector('.upload-progress-bar');
+                if (bar)  bar.style.display = 'block';
+                if (fill) fill.style.width = '100%';
             }
-            
         } catch (err) {
             console.error('Error uploading photo:', err);
         }
     }
-    
+
     return urls;
 };
 

@@ -1,5 +1,4 @@
-// home.js
-import { supabaseClient } from './supabase-client.js';
+import apiClient from './api-client.js';
 import { formatPrice } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -11,57 +10,51 @@ document.addEventListener('DOMContentLoaded', async () => {
         tab.addEventListener('click', () => {
             searchTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            // Logic to update search context if needed
         });
     });
 
     // Load Zones for Search
     const loadZones = async () => {
-        const { data: zones, error } = await supabaseClient
-            .from('zones')
-            .select('*')
-            .eq('actif', true)
-            .order('ordre', { ascending: true });
-
-        if (error) {
+        try {
+            const zones = await apiClient.get('/zones');
+            const zoneSelect = document.getElementById('zone');
+            if (zoneSelect) {
+                zones.forEach(zone => {
+                    const option = document.createElement('option');
+                    option.value = zone.id;
+                    option.textContent = zone.nom;
+                    zoneSelect.appendChild(option);
+                });
+            }
+        } catch (error) {
             console.error('Error loading zones:', error);
-            return;
-        }
-
-        const zoneSelect = document.getElementById('zone');
-        if (zoneSelect) {
-            zones.forEach(zone => {
-                const option = document.createElement('option');
-                option.value = zone.id;
-                option.textContent = zone.nom;
-                zoneSelect.appendChild(option);
-            });
         }
     };
 
     // Load Featured Properties
     const loadFeaturedProperties = async () => {
-        const { data: props, error } = await supabaseClient
-            .from('proprietes')
-            .select(`
-                *,
-                zones (nom),
-                agents (prenom, nom, photo_url)
-            `)
-            .eq('est_vedette', true)
-            .eq('est_actif', true)
-            .limit(3);
+        try {
+            const props = await apiClient.get('/properties');
+            // Filter featured on client side for now if API doesn't filter
+            const featured = props.filter(p => p.est_vedette);
+            
+            if (!featured || featured.length === 0) {
+                featuredGrid.innerHTML = '<p class="text-center">Aucune propriété vedette pour le moment.</p>';
+                return;
+            }
 
-        if (error) {
+            featuredGrid.innerHTML = '';
+            featured.forEach(prop => {
+                const card = createPropertyCard(prop);
+                featuredGrid.appendChild(card);
+            });
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        } catch (error) {
             console.error('Error loading featured properties:', error);
             featuredGrid.innerHTML = '<p class="text-center">Erreur lors du chargement des propriétés.</p>';
-            return;
         }
-
-        if (props.length === 0) {
-            featuredGrid.innerHTML = '<p class="text-center">Aucune propriété vedette pour le moment.</p>';
-            return;
-        }
+    };
 
         featuredGrid.innerHTML = '';
         props.forEach(prop => {

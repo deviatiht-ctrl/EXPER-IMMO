@@ -475,54 +475,9 @@
     <!-- ======================================================
          FOOTER
          ====================================================== -->
-    <footer class="footer" style="margin-top:0;">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-about">
-                    <div class="footer-logo">
-                        <img src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'">
-                        <span>EXPERIMMO</span>
-                    </div>
-                    <p data-site="description">Votre partenaire de confiance pour la gestion immobilière en Haiti.</p>
-                    <div class="social-links" style="margin-top:24px;">
-                        <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
-                        <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
-                        <a href="#" aria-label="Twitter" data-site="twitter"><i data-lucide="twitter"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4>Navigation</h4>
-                    <nav class="footer-links">
-                        <a href="index.html">Accueil</a>
-                        <a href="proprietes.html">Propriétés</a>
-                        <a href="services.html">Services</a>
-                        <a href="a-propos.html">À Propos</a>
-                    </nav>
-                </div>
-                <div>
-                    <h4>Support</h4>
-                    <nav class="footer-links">
-                        <a href="contact.html">Contact</a>
-                        <a href="login.html">Connexion</a>
-                        <a href="inscription.html">Inscription</a>
-                        <a href="#">FAQ</a>
-                    </nav>
-                </div>
-                <div>
-                    <h4>Contact</h4>
-                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haiti</span></div>
-                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
-                    <div class="footer-contact-item"><i data-lucide="mail"></i><span data-site="email">info@experimmo.ht</span></div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>2026 EXPERIMMO. Tous droits réservés.</p>
-                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a></p>
-            </div>
-        </div>
-    </footer>
+    
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    
     <script src="js/load-navbar.js"></script>
     <script type="module" src="js/site-config.js"></script>
     <script src="js/navbar-controller.js"></script>
@@ -549,5 +504,57 @@
             animItems.forEach(el => obs.observe(el));
         });
     </script>
+
+<footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="index.html" class="footer-logo">
+                        <img src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'">
+                        <span>EXPERIMMO</span>
+                    </a>
+                    <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
+                </div>
+                <div>
+                    <h4>Liens Rapides</h4>
+                    <nav class="footer-links">
+                        <a href="index.html">Accueil</a>
+                        <a href="proprietes.html">Propriétés</a>
+                        <a href="agents.html">Nos Agents</a>
+                        <a href="calculateur.html">Simulateur</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <nav class="footer-links">
+                        <a href="contact.html">Contact</a>
+                        <a href="a-propos.html">À Propos</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Mentions Légales</a>
+                    </nav>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item">
+                        <i data-lucide="map-pin"></i>
+                        <span data-site="address">Pétion-Ville, Haïti</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="phone"></i>
+                        <span data-site="phone">+509 3700-0000</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" data-site="facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" data-site="instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" data-site="twitter"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤ pour Haïti</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

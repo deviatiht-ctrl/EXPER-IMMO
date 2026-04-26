@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -119,17 +119,31 @@
                 <a href="proprietes.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--ruby);color:#fff;border-radius:10px;font-weight:600;text-decoration:none;font-size:0.95rem;transition:background .2s;">Voir les propriétés</a>
                 <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:#fff;color:var(--charcoal);border:1.5px solid var(--border);border-radius:10px;font-weight:600;text-decoration:none;font-size:0.95rem;transition:all .2s;">Nous contacter</a>
             </div>
-        </div>
-    </section>
+           
 
-    <footer class="footer">
+    
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+
+<footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-about">
-                    <div class="footer-logo">
-
+                    <a href="index.html" class="footer-logo">
+                        <img src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'">
                         <span>EXPERIMMO</span>
-                    </div>
+                    </a>
                     <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
                 </div>
                 <div>
@@ -168,43 +182,10 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                © 2026 EXPERIMMO. Tous droits réservés.</p>
-                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> é Fait avec ❤ pour Haïti</p>
+                <p>© 2026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤ pour Haïti</p>
             </div>
         </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="js/load-navbar.js"></script>
-    <script type="module" src="js/site-config.js"></script>
-    <script src="js/navbar-controller.js"></script>
-    <script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
-    <script>
-    if('serviceWorker' in navigator){
-        window.addEventListener('load',function(){
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(r){console.log('[PWA] SW OK',r.scope);})
-                .catch(function(e){console.warn('[PWA] SW err',e);});
-        });
-    }
-    </script>
-</body>
-</html>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="js/load-navbar.js"></script>
-    <script type="module" src="js/site-config.js"></script>
-    <script src="js/navbar-controller.js"></script>
-    <script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
-    <script>
-    if('serviceWorker' in navigator){
-        window.addEventListener('load',function(){
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(r){console.log('[PWA] SW OK',r.scope);})
-                .catch(function(e){console.warn('[PWA] SW err',e);});
-        });
-    }
-    </script>
 </body>
 </html>

@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: exper-immo-api
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: exper-immo-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: BASE_URL
+        value: https://exper-immo-api.onrender.com
+
+databases:
+  - name: exper-immo-db
+    databaseName: exper_immo
+    user: exper_immo_user

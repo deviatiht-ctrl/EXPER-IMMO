@@ -13,20 +13,26 @@ const initAuth = async () => {
     }
     currentUser = user;
 
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single();
+
     const { data: loc } = await supabaseClient
         .from('locataires')
-        .select('*')
+        .select('id')
         .eq('user_id', user.id)
         .single();
     
     if (loc) {
-        locataireId = loc.id_locataire;
-        document.getElementById('user-name').textContent = `${loc.prenom} ${loc.nom}`;
+        locataireId = loc.id;
+        document.getElementById('user-name').textContent = profile?.full_name || 'Locataire';
     }
 
     const lastLogin = new Date(user.last_sign_in_at).toLocaleString('fr-FR');
     document.getElementById('last-login').textContent = lastLogin;
-    document.getElementById('welcome-title').textContent = `Bonjour, ${loc?.prenom || 'M.'}`;
+    document.getElementById('welcome-title').textContent = `Bonjour, ${profile?.full_name?.split(' ')[0] || 'M.'}`;
 };
 
 const loadDashboardData = async () => {
@@ -38,7 +44,7 @@ const loadDashboardData = async () => {
         .select('*, proprietes(titre)')
         .eq('locataire_id', locataireId)
         .eq('statut', 'actif')
-        .single();
+        .maybeSingle();
 
     if (contrat) {
         document.getElementById('stat-bien-occupe').textContent = contrat.proprietes?.titre || 'Oui';

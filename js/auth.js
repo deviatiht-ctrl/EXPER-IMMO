@@ -1,9 +1,10 @@
-// auth.js - Authentication Handler for EXPER IMMO
-import CONFIG from './config.js';
+import apiClient from './api-client.js';
 import { showToast } from './utils.js';
 
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+// Déterminer le préfixe du chemin (pour les redirections)
+const folders = ['admin', 'gestionnaire', 'locataire', 'proprietaire', 'properties'];
+const needsPrefix = folders.some(f => window.location.pathname.includes('/' + f + '/'));
+const prefix = needsPrefix ? '../' : '';
 
 // ============================================================
 // UTILITY FUNCTIONS
@@ -30,15 +31,8 @@ const setLoading = (button, loading) => {
 // STEP INDICATOR HELPER
 // ============================================================
 const updateStepIndicator = (currentStep) => {
-    const dots = [
-        document.getElementById('dot-1'),
-        document.getElementById('dot-2'),
-        document.getElementById('dot-3')
-    ];
-    const lines = [
-        document.getElementById('line-1'),
-        document.getElementById('line-2')
-    ];
+    const dots  = ['dot-1','dot-2','dot-3','dot-4'].map(id => document.getElementById(id));
+    const lines = ['line-1','line-2','line-3'].map(id => document.getElementById(id));
     if (!dots[0]) return;
     dots.forEach((dot, i) => {
         if (!dot) return;
@@ -72,28 +66,26 @@ const initRegistrationPage = () => {
             selectedRole = card.dataset.role;
             const roleInput = getElement('selected-role');
             if (roleInput) roleInput.value = selectedRole;
-
-            const propFields = getElement('proprietaire-fields');
-            const locFields  = getElement('locataire-fields');
-            if (selectedRole === 'proprietaire') {
-                if (propFields) propFields.style.display = 'block';
-                if (locFields)  locFields.style.display  = 'none';
-            } else {
-                if (propFields) propFields.style.display = 'none';
-                if (locFields)  locFields.style.display  = 'block';
-            }
-
-            showStep('step-info');
+            showStep('step-code');
             updateStepIndicator(2);
             lucide.createIcons();
         });
     });
 
-    // Back button
-    if (btnBackRole) {
-        btnBackRole.addEventListener('click', () => {
+    // Back from code step → role
+    const btnBackCode = getElement('btn-back-code');
+    if (btnBackCode) {
+        btnBackCode.addEventListener('click', () => {
             showStep('step-role');
             updateStepIndicator(1);
+        });
+    }
+
+    // Back from info step → code
+    if (btnBackRole) {
+        btnBackRole.addEventListener('click', () => {
+            showStep('step-code');
+            updateStepIndicator(2);
         });
     }
 
@@ -125,6 +117,48 @@ const initRegistrationPage = () => {
         });
     });
 
+    // Code validation step
+    const btnValidateCode = getElement('btn-validate-code');
+    if (btnValidateCode) {
+        btnValidateCode.addEventListener('click', async () => {
+            const codeVal = (getElement('registration-code')?.value || '').trim().toUpperCase();
+            if (!codeVal) { showToast('Veuillez saisir un code', 'error'); return; }
+            setLoading(btnValidateCode, true);
+            try {
+                const result = await apiClient.post('/auth/validate-code', { code: codeVal });
+                // Store validated code & role
+                const roleInput = getElement('selected-role');
+                if (roleInput) roleInput.value = result.role;
+                selectedRole = result.role;
+
+                // Pre-fill email if provided
+                const emailInput = getElement('email');
+                if (emailInput && result.email_beneficiaire) emailInput.value = result.email_beneficiaire;
+
+                // Show/hide role fields
+                const propFields = getElement('proprietaire-fields');
+                const locFields  = getElement('locataire-fields');
+                if (result.role === 'proprietaire') {
+                    if (propFields) propFields.style.display = 'block';
+                    if (locFields)  locFields.style.display  = 'none';
+                } else {
+                    if (propFields) propFields.style.display = 'none';
+                    if (locFields)  locFields.style.display  = 'block';
+                }
+
+                showToast(`Code valide — Bienvenue, ${result.nom_beneficiaire || ''}!`, 'success');
+                showStep('step-info');
+                updateStepIndicator(2);
+                lucide.createIcons();
+            } catch (err) {
+                showToast(err.message || 'Code invalide', 'error');
+                btnValidateCode.innerHTML = '<i data-lucide="arrow-right"></i> Valider le code';
+                btnValidateCode.disabled = false;
+                lucide.createIcons();
+            }
+        });
+    }
+
     // Form submission
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
@@ -142,96 +176,49 @@ const initRegistrationPage = () => {
                 return;
             }
 
-            // Validate ID photos
-            const rectoFile = getElement('id_recto')?.files[0];
-            const versoFile = getElement('id_verso')?.files[0];
-            if (!rectoFile || !versoFile) {
-                showToast('Veuillez joindre les deux photos de votre pièce d\'identité', 'error');
-                return;
-            }
-
             const btnRegister = getElement('btn-register');
             setLoading(btnRegister, true);
 
             try {
-                // Collect all fields
+                const code           = (getElement('registration-code')?.value || '').trim().toUpperCase();
                 const email          = getElement('email')?.value        || '';
                 const full_name      = getElement('full_name')?.value    || '';
                 const phone          = getElement('phone')?.value        || '';
-                const role           = getElement('selected-role')?.value || '';
                 const adresse        = getElement('adresse')?.value      || '';
                 const date_naissance = getElement('date_naissance')?.value || '';
                 const nationalite    = getElement('nationalite')?.value  || '';
                 const piece_type     = getElement('piece_type')?.value   || '';
                 const piece_numero   = getElement('piece_numero')?.value || '';
-                // Role-specific extras
                 const profession     = getElement('profession')?.value   || '';
                 const employeur      = getElement('employeur')?.value    || '';
-                const type_prop      = getElement('type_proprietaire')?.value || '';
+                const type_prop      = getElement('type_proprietaire')?.value || 'particulier';
                 const nom_entreprise = getElement('nom_entreprise')?.value || '';
 
-                // 1 — Create auth account
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: { full_name, phone, role }
-                    }
+                const data = await apiClient.post('/auth/register-with-code', {
+                    code, email, password, full_name, phone,
+                    adresse, date_naissance, nationalite,
+                    piece_type, piece_numero,
+                    profession, employeur,
+                    type_proprietaire: type_prop,
+                    nom_entreprise,
                 });
-                if (error) throw error;
 
-                const userId = data.user?.id;
-
-                // 2 — Upload ID photos to Storage (best-effort, may fail if email confirmation pending)
-                let rectoUrl = null;
-                let versoUrl = null;
-                if (userId) {
-                    try {
-                        const uploadFile = async (file, side) => {
-                            const ext  = file.name.split('.').pop().toLowerCase();
-                            const path = `${userId}/${side}.${ext}`;
-                            const { error: upErr } = await supabaseClient.storage
-                                .from('documents-identite')
-                                .upload(path, file, { upsert: true, contentType: file.type });
-                            if (upErr) { console.warn('[Upload]', side, upErr.message); return null; }
-                            return supabaseClient.storage.from('documents-identite').getPublicUrl(path).data.publicUrl;
-                        };
-                        rectoUrl = await uploadFile(rectoFile, 'recto');
-                        versoUrl = await uploadFile(versoFile, 'verso');
-                    } catch (upErr) {
-                        console.warn('[Storage] Upload partiel:', upErr.message);
-                    }
-
-                    // 3 — Upsert profile record with all collected data
-                    try {
-                        await supabaseClient.from('profiles').upsert({
-                            id: userId,
-                            full_name,
-                            phone,
-                            role,
-                            adresse,
-                            date_naissance: date_naissance || null,
-                            nationalite,
-                            piece_identite_type:      piece_type,
-                            piece_identite_numero:    piece_numero,
-                            piece_identite_recto_url: rectoUrl,
-                            piece_identite_verso_url: versoUrl,
-                            profession,
-                            employeur,
-                            type_proprietaire: type_prop,
-                            nom_entreprise,
-                            statut_dossier: 'en_attente'
-                        }, { onConflict: 'id' });
-                    } catch (profErr) {
-                        console.warn('[Profile] Upsert partiel:', profErr.message);
-                    }
+                if (data.access_token) {
+                    localStorage.setItem('exper_immo_token', data.access_token);
+                    localStorage.setItem('exper_immo_user', JSON.stringify(data.user));
                 }
 
-                // 4 — Show verification step
-                const confirmEl = getElement('confirm-email');
-                if (confirmEl) confirmEl.textContent = email;
+                showToast('Compte créé avec succès !', 'success');
                 showStep('step-verify');
                 updateStepIndicator(3);
+                const confirmEl = getElement('confirm-email');
+                if (confirmEl) confirmEl.textContent = email;
+
+                setTimeout(() => {
+                    const role = data.user?.role || 'locataire';
+                    if (role === 'proprietaire') window.location.href = prefix + 'proprietaire/index.html';
+                    else window.location.href = prefix + 'locataire/index.html';
+                }, 2500);
 
             } catch (error) {
                 console.error('Registration error:', error);
@@ -239,24 +226,6 @@ const initRegistrationPage = () => {
                 btnRegister.innerHTML = '<i data-lucide="user-plus"></i> Créer mon compte';
                 btnRegister.disabled = false;
                 lucide.createIcons();
-            }
-        });
-    }
-
-    // Resend verification email
-    const btnResend = getElement('btn-resend');
-    if (btnResend) {
-        btnResend.addEventListener('click', async () => {
-            const email = getElement('email').value;
-            try {
-                const { error } = await supabaseClient.auth.resend({
-                    type: 'signup',
-                    email: email
-                });
-                if (error) throw error;
-                showToast('Email de vérification renvoyé!', 'success');
-            } catch (error) {
-                showToast(error.message, 'error');
             }
         });
     }
@@ -279,34 +248,20 @@ const initLoginPage = () => {
             setLoading(btnLogin, true);
 
             try {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                const data = await apiClient.post('/auth/login', {
                     email: email,
                     password: password
                 });
 
-                if (error) throw error;
-
-                // Get user profile to determine redirect
-                const { data: profile, error: profileError } = await supabaseClient
-                    .from('profiles')
-                    .select('role')
-                    .eq('id', data.user.id)
-                    .single();
-
-                if (profileError) throw profileError;
+                // Store token and user
+                localStorage.setItem('exper_immo_token', data.access_token);
+                localStorage.setItem('exper_immo_user', JSON.stringify(data.user));
 
                 showToast('Connexion réussie!', 'success');
 
-                // Mettre à jour dernière connexion (Optionnel, sans bloquer le login)
-                try {
-                    await supabaseClient.rpc('update_derniere_connexion', { p_user_id: data.user.id });
-                } catch (e) {
-                    console.warn("Erreur mise à jour date connexion:", e);
-                }
-
                 // Redirect based on role
                 setTimeout(() => {
-                    const role = (profile.role || 'locataire').toLowerCase().trim();
+                    const role = (data.user.role || 'locataire').toLowerCase().trim();
                     console.log("Rôle détecté:", role);
                     
                     switch (role) {
@@ -358,30 +313,14 @@ const initLoginPage = () => {
 // ============================================================
 const initForgotPasswordPage = () => {
     const form = getElement('forgot-password-form');
-    
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const email = getElement('email').value;
+            const email = getElement('email')?.value || '';
             const btn = form.querySelector('button[type="submit"]');
-            
             setLoading(btn, true);
-
-            try {
-                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: `${window.location.origin}/reset-password.html`
-                });
-
-                if (error) throw error;
-
-                showToast('Email de réinitialisation envoyé!', 'success');
-                showStep('step-sent');
-                
-            } catch (error) {
-                showToast(error.message, 'error');
-                btn.disabled = false;
-            }
+            showToast('Si cet email existe, un lien sera envoyé.', 'success');
+            showStep('step-sent');
         });
     }
 };
@@ -390,34 +329,26 @@ const initForgotPasswordPage = () => {
 // AUTH STATE CHECK
 // ============================================================
 export const checkAuth = async () => {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    return session;
+    return localStorage.getItem('exper_immo_token');
 };
 
 export const getCurrentUser = async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) return null;
-    
-    const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-    
-    return { ...user, profile };
+    const userStr = localStorage.getItem('exper_immo_user');
+    if (!userStr) return null;
+    return JSON.parse(userStr);
 };
 
 export const requireAuth = async (allowedRoles = []) => {
     const user = await getCurrentUser();
     
     if (!user) {
-        window.location.href = '/login.html';
+        window.location.href = prefix + 'login.html';
         return null;
     }
     
-    if (allowedRoles.length > 0 && !allowedRoles.includes(user.profile?.role)) {
+    if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
         showToast('Accès non autorisé', 'error');
-        window.location.href = '/index.html';
+        window.location.href = prefix + 'index.html';
         return null;
     }
     
@@ -425,8 +356,9 @@ export const requireAuth = async (allowedRoles = []) => {
 };
 
 export const logout = async () => {
-    await supabaseClient.auth.signOut();
-    window.location.href = '/index.html';
+    localStorage.removeItem('exper_immo_token');
+    localStorage.removeItem('exper_immo_user');
+    window.location.href = prefix + 'index.html';
 };
 
 // ============================================================
@@ -445,5 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Export for use in other modules
-export { supabaseClient };
+// showToast is used globally — expose it
+if (typeof window !== 'undefined') {
+    window.showToast = showToast;
+}

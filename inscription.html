@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -258,6 +258,8 @@
                 <div class="reg-step-dot" id="dot-2">2</div>
                 <div class="reg-step-line" id="line-2"></div>
                 <div class="reg-step-dot" id="dot-3">3</div>
+                <div class="reg-step-line" id="line-3"></div>
+                <div class="reg-step-dot" id="dot-4">4</div>
             </div>
 
             <!-- Error banner -->
@@ -283,7 +285,38 @@
                 </div>
             </div>
 
-            <!-- ===== STEP 2: Informations ===== -->
+            <!-- ===== STEP 2: Code d'inscription ===== -->
+            <div id="step-code" class="reg-step">
+                <button class="reg-btn-back" id="btn-back-code" type="button">
+                    <i data-lucide="arrow-left"></i> Retour
+                </button>
+                <p class="reg-step-title">Code d'inscription</p>
+                <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:24px;">
+                    Saisissez le code que vous avez reçu de l'équipe EXPERIMMO suite à la signature de votre contrat.
+                </p>
+
+                <div class="reg-form-group full" style="margin-bottom:20px;">
+                    <label for="registration-code">Code d'inscription *</label>
+                    <input type="text" id="registration-code" name="registration-code"
+                        placeholder="ex : AB3X9QKZ"
+                        maxlength="12"
+                        autocomplete="off"
+                        style="text-transform:uppercase;letter-spacing:4px;font-size:1.25rem;font-weight:700;text-align:center;"
+                        required>
+                    <small style="color:var(--text-muted);">Code alphanumérique fourni par l'administrateur</small>
+                </div>
+
+                <button type="button" id="btn-validate-code" class="auth-btn-primary" style="width:100%;">
+                    <i data-lucide="arrow-right"></i>
+                    Valider le code
+                </button>
+
+                <p style="margin-top:16px;font-size:0.8rem;text-align:center;color:var(--text-muted);">
+                    Vous n'avez pas de code ? Contactez votre gestionnaire EXPERIMMO.
+                </p>
+            </div>
+
+            <!-- ===== STEP 3: Informations ===== -->
             <div id="step-info" class="reg-step">
                 <button class="reg-btn-back" id="btn-back-role" type="button">
                     <i data-lucide="arrow-left"></i> Retour
@@ -455,26 +488,11 @@
     <!-- Toast -->
     <div class="toast-container"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    
     <script type="module">
-        import CONFIG from './js/config.js?v=4/02_081512';
-        const { createClient } = supabase;
-        const _db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
-        (async () => {
-            try {
-                const [r1, r2, r3] = await Promise.all([
-                    _db.from('proprietes').select('*', { count: 'exact', head: true }),
-                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'proprietaire'),
-                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'locataire')
-                ]);
-                const map = { biens: r1.count, proprietaires: r2.count, locataires: r3.count };
-                Object.entries(map).forEach(([key, val]) => {
-                    if (val === null || val === undefined) return;
-                    const el = document.querySelector('[data-stat="' + key + '"]');
-                    if (el) el.textContent = val + '+';
-                });
-            } catch (e) { console.warn('[Sétats]', e.message); }
-        })();
+        // Stats can be loaded from the Python API if needed
+        // For now, using static values or a simple fetch
+        console.log('Inscription page loaded');
     </script>
     <script type="module" src="js/auth.js?v=4/02_081512"></script>
     <script>

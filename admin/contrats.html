@@ -10,9 +10,9 @@
     <meta http-equiv="Expires" content="0">
     
     <!-- Favicon / Logo -->
-    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">
-    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">
-    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <link rel="icon" type="image/png" href="../../../assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="../../../assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="../../../assets/EXPER IMMO LOGO.png">
     <title>Contrats | EXPERIMMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/global.css">
@@ -22,8 +22,8 @@
 <body class="admin-body">
 
     <aside class="admin-sidebar" id="sidebar">
-        <a href="dashboard.html" class="sidebar-logo">
-            <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" class="sidebar-logo-img">
+        <a href="../index.html" class="sidebar-logo">
+            <img src="../../../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" class="sidebar-logo-img">
             <div class="sidebar-logo-text"><strong>EXPERIMMO</strong><span>Administration</span></div>
         </a>
         <nav class="sidebar-nav">
@@ -32,7 +32,7 @@
             <div class="sidebar-section-label">Dossiers</div>
             <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
             <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
-            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
+            <a href="../../proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
             <div class="sidebar-section-label">Finances</div>
             <a href="contrats.html" class="nav-link active"><i data-lucide="file-text"></i> <span>Contrats</span></a>
             <a href="paiements.html" class="nav-link"><i data-lucide="wallet"></i> <span>Paiements</span></a>
@@ -46,7 +46,7 @@
                 <p class="header-subtitle">Suivi des baux et locations</p>
             </div>
             <div class="header-actions">
-                <button class="btn-primary" onclick="window.location.reload()"><i data-lucide="plus"></i> <span>Nouveau Contrat</span></button>
+                <button class="btn-primary" onclick="openModal('add-contrat')"><i data-lucide="plus"></i> <span>Nouveau Contrat</span></button>
             </div>
         </header>
 
@@ -72,12 +72,12 @@
                             <thead>
                                 <tr>
                                     <th>Référence</th>
+                                    <th>Propriétaire</th>
                                     <th>Locataire</th>
                                     <th>Propriété</th>
-                                    <th>Période</th>
                                     <th>Loyer</th>
                                     <th>Statut</th>
-                                    <th>Actions</th>
+                                    <th>Codes</th>
                                 </tr>
                             </thead>
                             <tbody id="contrats-table">
@@ -90,7 +90,120 @@
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <!-- MODAL NOUVEAU CONTRAT -->
+    <div id="add-contrat" class="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;overflow-y:auto;padding:20px;">
+        <div style="background:#fff;border-radius:16px;padding:32px;width:100%;max-width:640px;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+                <h3 style="margin:0;font-size:1.2rem;"><i data-lucide="file-plus" style="vertical-align:middle;margin-right:8px;"></i>Nouveau Contrat</h3>
+                <button onclick="closeModal('add-contrat')" style="background:none;border:none;cursor:pointer;font-size:1.5rem;color:#64748b;">&times;</button>
+            </div>
+            <form id="contrat-form">
+                <p style="font-size:13px;color:#64748b;margin-bottom:16px;background:#f0f9ff;padding:12px;border-radius:8px;">
+                    <i data-lucide="info" style="vertical-align:middle;width:14px;height:14px;"></i>
+                    Après création, des <strong>codes d'inscription</strong> seront générés pour le propriétaire et le locataire. Ces codes leur permettront de créer leur compte.
+                </p>
+
+                <h4 style="font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;">Propriétaire</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Nom complet *</label>
+                        <input type="text" id="ctr-nom-prop" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Email *</label>
+                        <input type="email" id="ctr-email-prop" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                </div>
+
+                <h4 style="font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;">Locataire</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Nom complet *</label>
+                        <input type="text" id="ctr-nom-loc" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Email *</label>
+                        <input type="email" id="ctr-email-loc" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                </div>
+
+                <h4 style="font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;">Propriété & Finances</h4>
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Propriété</label>
+                    <select id="ctr-propriete" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                        <option value="">— Sélectionner une propriété —</option>
+                    </select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Loyer mensuel *</label>
+                        <input type="number" id="ctr-loyer" required min="0" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Devise</label>
+                        <select id="ctr-devise" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                            <option value="HTG">HTG</option>
+                            <option value="USD">USD</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Caution</label>
+                        <input type="number" id="ctr-caution" min="0" value="0" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Date début *</label>
+                        <input type="date" id="ctr-date-debut" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Date fin *</label>
+                        <input type="date" id="ctr-date-fin" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                    </div>
+                </div>
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Notes</label>
+                    <textarea id="ctr-notes" rows="2" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;resize:vertical;"></textarea>
+                </div>
+                <div style="display:flex;gap:10px;justify-content:flex-end;">
+                    <button type="button" onclick="closeModal('add-contrat')" style="padding:10px 20px;border:1px solid #e2e8f0;background:#fff;border-radius:8px;cursor:pointer;font-size:14px;">Annuler</button>
+                    <button type="submit" style="padding:10px 24px;background:#c41e3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">Créer le contrat</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CODES D'INSCRIPTION -->
+    <div id="codes-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1001;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:16px;padding:32px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+                <h3 style="margin:0;font-size:1.2rem;">Codes d'inscription générés</h3>
+                <button onclick="closeModal('codes-modal')" style="background:none;border:none;cursor:pointer;font-size:1.5rem;color:#64748b;">&times;</button>
+            </div>
+            <p style="font-size:13px;color:#64748b;margin-bottom:20px;">Transmettez ces codes aux bénéficiaires. Chaque code est unique et à usage unique.</p>
+
+            <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:16px;margin-bottom:12px;">
+                <div style="font-size:11px;font-weight:700;color:#0369a1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Propriétaire</div>
+                <div id="code-prop-name" style="font-weight:600;color:#1e293b;margin-bottom:4px;"></div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <code id="code-prop-val" style="font-size:1.5rem;font-weight:800;letter-spacing:4px;color:#0369a1;background:#e0f2fe;padding:8px 16px;border-radius:8px;flex:1;text-align:center;"></code>
+                    <button onclick="copyCode('code-prop-val')" style="padding:8px 12px;background:#0369a1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;">Copier</button>
+                </div>
+            </div>
+
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px;margin-bottom:20px;">
+                <div style="font-size:11px;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Locataire</div>
+                <div id="code-loc-name" style="font-weight:600;color:#1e293b;margin-bottom:4px;"></div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <code id="code-loc-val" style="font-size:1.5rem;font-weight:800;letter-spacing:4px;color:#15803d;background:#dcfce7;padding:8px 16px;border-radius:8px;flex:1;text-align:center;"></code>
+                    <button onclick="copyCode('code-loc-val')" style="padding:8px 12px;background:#15803d;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;">Copier</button>
+                </div>
+            </div>
+
+            <button onclick="closeModal('codes-modal')" style="width:100%;padding:12px;background:#c41e3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">Fermer</button>
+        </div>
+    </div>
+
     <script type="module" src="../js/admin/contrats.js"></script>
     <script>document.addEventListener('DOMContentLoaded',()=>{ if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
 </body>

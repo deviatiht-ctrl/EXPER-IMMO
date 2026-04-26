@@ -1,5 +1,4 @@
-// proprietes.js
-import { supabaseClient } from './supabase-client.js';
+import apiClient from './api-client.js';
 import { formatPrice } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -45,74 +44,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         emptyState.style.display = 'none';
         nbResultats.textContent = 'Chargement...';
 
-        // Build direct query — no RPC dependency
-        let query = supabaseClient
-            .from('proprietes')
-            .select('*, zones(nom)', { count: 'exact' });
+        try {
+            // Build query params
+            const params = new URLSearchParams();
+            if (filters.transaction !== 'all') params.append('type_transaction', filters.transaction);
+            if (filters.types.length > 0) params.append('type_bien', filters.types[0]); // Simple filter for now
+            
+            const properties = await apiClient.get(`/properties?${params.toString()}`);
 
-        // Filters
-        if (filters.transaction !== 'all') {
-            query = query.eq('type_transaction', filters.transaction);
-        }
-        if (filters.types.length > 0) {
-            query = query.in('type_propriete', filters.types);
-        }
-        if (filters.prix_min) {
-            query = query.gte('prix', filters.prix_min);
-        }
-        if (filters.prix_max) {
-            query = query.lte('prix', filters.prix_max);
-        }
-        if (filters.chambres > 0) {
-            query = query.gte('nb_chambres', filters.chambres);
-        }
-        if (filters.meuble) {
-            query = query.eq('meuble', true);
-        }
+            if (!properties || properties.length === 0) {
+                catalogGrid.innerHTML = '';
+                emptyState.style.display = 'block';
+                nbResultats.textContent = '0 propriété';
+                return;
+            }
 
-        // Text search
-        const searchText = (document.getElementById('recherche')?.value || '').trim();
-        if (searchText) {
-            query = query.or(`titre.ilike.%${searchText}%,ville.ilike.%${searchText}%,description.ilike.%${searchText}%`);
-        }
+            catalogGrid.innerHTML = '';
+            properties.forEach(prop => {
+                const card = createPropertyCard(prop);
+                catalogGrid.appendChild(card);
+            });
 
-        // Sorting
-        switch (filters.tri) {
-            case 'prix-asc':  query = query.order('prix', { ascending: true });  break;
-            case 'prix-desc': query = query.order('prix', { ascending: false }); break;
-            default:          query = query.order('created_at', { ascending: false });
-        }
-
-        // Pagination
-        query = query.range(filters.page * 12, (filters.page + 1) * 12 - 1);
-
-        const { data, error, count } = await query;
-
-        if (error) {
+            nbResultats.innerHTML = `<strong>${properties.length}</strong> propriété(s) trouvée(s)`;
+            lucide.createIcons();
+        } catch (error) {
             console.error('Erreur chargement propriétés:', error);
             catalogGrid.innerHTML = '';
             nbResultats.textContent = 'Erreur de chargement';
             emptyState.style.display = 'block';
-            return;
         }
-
-        if (!data || data.length === 0) {
-            catalogGrid.innerHTML = '';
-            emptyState.style.display = 'block';
-            nbResultats.textContent = '0 propriété';
-            return;
-        }
-
-        catalogGrid.innerHTML = '';
-        data.forEach(prop => {
-            prop.zone_nom = prop.zones?.nom || prop.ville || '';
-            const card = createPropertyCard(prop);
-            catalogGrid.appendChild(card);
-        });
-
-        const total = count ?? data.length;
-        nbResultats.innerHTML = `<strong>${total}</strong> propriété(s) trouvée(s)`;
-        lucide.createIcons();
     };
 
     const createPropertyCard = (prop) => {

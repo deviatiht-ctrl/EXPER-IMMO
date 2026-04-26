@@ -1,4 +1,4 @@
-import { supabaseClient as supabase } from '../supabase-client.js';
+import apiClient from '../api-client.js';
 
 let locataires = [];
 let currentLocataire = null;
@@ -10,40 +10,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 });
 
-async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
-    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-    if (profile?.role !== 'admin') { window.location.href = '../index.html'; }
+function checkAuth() {
+    const userStr = localStorage.getItem('exper_immo_user');
+    if (!userStr) { window.location.href = '../login.html'; return; }
+    const user = JSON.parse(userStr);
+    if (user.role !== 'admin') { window.location.href = '../index.html'; }
 }
 
 async function loadLocataires() {
+    const tbody = document.getElementById('locataires-table');
+    if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Chargement...</td></tr>';
     try {
-        const { data, error } = await supabase
-            .from('locataires')
-            .select('*, user:profiles(full_name, email, phone, avatar_url, adresse, ville, date_naissance)')
-            .order('created_at', { ascending: false });
-        if (error) throw error;
-        locataires = data || [];
+        locataires = await apiClient.get('/locataires') || [];
         renderLocatairesTable();
     } catch (err) {
         console.error('loadLocataires:', err);
-        showToast('Erreur de chargement des locataires', 'error');
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="color:red">Erreur: ${err.message}</td></tr>`;
     }
 }
 
 async function loadStats() {
     try {
-        const [{ count: total }, { count: actifs }, { count: contrats }, { count: retards }] = await Promise.all([
-            supabase.from('locataires').select('*', { count: 'exact', head: true }),
-            supabase.from('locataires').select('*', { count: 'exact', head: true }).eq('est_actif', true),
-            supabase.from('contrats').select('*', { count: 'exact', head: true }).eq('statut', 'actif'),
-            supabase.from('paiements').select('*', { count: 'exact', head: true }).eq('statut', 'en_retard'),
-        ]);
-        setEl('stat-total-loc', total || 0);
-        setEl('stat-actifs-loc', actifs || 0);
-        setEl('stat-contrats-loc', contrats || 0);
-        setEl('stat-retards-loc', retards || 0);
+        const total  = locataires.length;
+        const actifs = locataires.filter(l => l.est_actif !== false).length;
+        setEl('stat-total-loc', total);
+        setEl('stat-actifs-loc', actifs);
     } catch (err) { console.error('loadStats:', err); }
 }
 
@@ -55,22 +46,18 @@ function renderLocatairesTable() {
         return;
     }
     tbody.innerHTML = locataires.map(l => {
-        const u = l.user || {};
-        const name = u.full_name || 'N/A';
-        const av = u.avatar_url
-            ? '<img src="' + esc(u.avatar_url) + '" style="width:38px;height:38px;border-radius:10px;object-fit:cover;">'
-            : '<div style="width:38px;height:38px;border-radius:10px;background:#7c3aed;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">' + name.split(' ').map(function(n){return n[0]||'';}).join('').substring(0,2).toUpperCase() + '</div>';
+        const name = l.full_name || 'N/A';
+        const initials = name.split(' ').map(n => n[0]||'').join('').substring(0,2).toUpperCase();
+        const av = '<div style="width:38px;height:38px;border-radius:10px;background:#7c3aed;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">' + initials + '</div>';
         const actif = l.est_actif !== false;
-        return '<tr data-id="' + l.id_locataire + '">' +
-            '<td><div class="table-user">' + av + '<div class="table-user-info"><h4>' + esc(name) + '</h4><p>' + esc(u.email || '') + '</p></div></div></td>' +
-            '<td>' + esc(u.phone || 'N/A') + '</td>' +
+        return '<tr data-id="' + l.id + '">' +
+            '<td><div class="table-user">' + av + '<div class="table-user-info"><h4>' + esc(name) + '</h4><p>' + esc(l.email || '') + '</p></div></div></td>' +
+            '<td>' + esc(l.phone || 'N/A') + '</td>' +
             '<td>' + esc(l.profession || 'N/A') + '</td>' +
-            '<td>' + (l.revenu_mensuel ? '$' + Number(l.revenu_mensuel).toLocaleString('fr-FR') : 'N/A') + '</td>' +
+            '<td>' + (l.revenu_mensuel ? Number(l.revenu_mensuel).toLocaleString('fr-FR') + ' HTG' : 'N/A') + '</td>' +
             '<td><span class="status-badge ' + (actif ? 'actif' : 'inactive') + '">' + (actif ? 'Actif' : 'Inactif') + '</span></td>' +
             '<td><div class="action-btns">' +
-            '<button class="action-btn view" onclick="viewLocataire(\'' + l.id_locataire + '\')" title="Voir"><i data-lucide="eye"></i></button>' +
-            '<button class="action-btn edit" onclick="editLocataire(\'' + l.id_locataire + '\')" title="Modifier"><i data-lucide="edit-2"></i></button>' +
-            '<button class="action-btn delete" onclick="deleteLocataire(\'' + l.id_locataire + '\')" title="Supprimer"><i data-lucide="trash-2"></i></button>' +
+            '<button class="action-btn view" onclick="viewLocataire(\'' + l.id + '\')" title="Voir"><i data-lucide="eye"></i></button>' +
             '</div></td></tr>';
     }).join('');
     if (typeof lucide !== 'undefined') lucide.createIcons();

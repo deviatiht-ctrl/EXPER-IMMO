@@ -108,12 +108,43 @@
         </div>
     </main>
 
-    <footer class="footer">
+    
+
+    
+    <script src="js/load-navbar.js"></script>
+    <script type="module" src="js/site-config.js"></script>
+    <script src="js/navbar-controller.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { 
+            lucide.createIcons(); 
+            var f = document.getElementById('contact-main-form');
+            if (f) f.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Merci ! Votre message a été envoyé.');
+                e.target.reset();
+            });
+        });
+    </script>
+    <script>
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(r){console.log('[PWA] SW OK',r.scope);})
+                .catch(function(e){console.warn('[PWA] SW err',e);});
+        });
+    }
+    </script>
+
+<footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-about">
-
-                    <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haiti.</p>
+                    <a href="index.html" class="footer-logo">
+                        <img src="assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'">
+                        <span>EXPERIMMO</span>
+                    </a>
+                    <p data-site="description">Votre partenaire de confiance pour l'achat, la vente et la location de propriétés en Haïti.</p>
                 </div>
                 <div>
                     <h4>Liens Rapides</h4>
@@ -135,8 +166,14 @@
                 </div>
                 <div>
                     <h4>Contact</h4>
-                    <div class="footer-contact-item"><i data-lucide="map-pin"></i><span data-site="address">Pétion-Ville, Haiti</span></div>
-                    <div class="footer-contact-item"><i data-lucide="phone"></i><span data-site="phone">+509 3700-0000</span></div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="map-pin"></i>
+                        <span data-site="address">Pétion-Ville, Haïti</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="phone"></i>
+                        <span data-site="phone">+509 3700-0000</span>
+                    </div>
                     <div class="social-links">
                         <a href="#" data-site="facebook"><i data-lucide="facebook"></i></a>
                         <a href="#" data-site="instagram"><i data-lucide="instagram"></i></a>
@@ -145,65 +182,10 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                2026 EXPERIMMO. Tous droits réservés.</p>
-                <p>Site web créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener noreferrer" style="color: var(--ruby); font-weight: 600;">Cvisual</a> </p>
+                <p>© 2026 EXPERIMMO. Tous droits réservés.</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤ pour Haïti</p>
             </div>
         </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="js/load-navbar.js"></script>
-    <script type="module" src="js/site-config.js"></script>
-    <script src="js/navbar-controller.js"></script>
-    <script type="module" src="js/utils.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => { 
-            lucide.createIcons(); 
-            var f = document.getElementById('contact-main-form');
-            if (f) f.addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('Merci ! Votre message a été envoyé.');
-                e.target.reset();
-            });
-        });
-    </script>
-    <script>
-    if('serviceWorker' in navigator){
-        window.addEventListener('load',function(){
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(r){console.log('[PWA] SW OK',r.scope);})
-                .catch(function(e){console.warn('[PWA] SW err',e);});
-        });
-    }
-    </script>
-</body>
-</html>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="js/load-navbar.js"></script>
-    <script type="module" src="js/site-config.js"></script>
-    <script src="js/navbar-controller.js"></script>
-    <script type="module" src="js/utils.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => { 
-            lucide.createIcons(); 
-            var f = document.getElementById('contact-main-form');
-            if (f) f.addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('Merci ! Votre message a été envoyé.');
-                e.target.reset();
-            });
-        });
-    </script>
-    <script>
-    if('serviceWorker' in navigator){
-        window.addEventListener('load',function(){
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(r){console.log('[PWA] SW OK',r.scope);})
-                .catch(function(e){console.warn('[PWA] SW err',e);});
-        });
-    }
-    </script>
 </body>
 </html>

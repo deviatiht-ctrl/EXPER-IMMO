@@ -1,5 +1,4 @@
-// propriete.js
-import { supabaseClient } from './supabase-client.js';
+import apiClient from './api-client.js';
 import { formatPrice, showToast } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -12,21 +11,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const loadProperty = async () => {
-        const { data: prop, error } = await supabaseClient
-            .from('proprietes')
-            .select(`
-                *,
-                zones (nom),
-                agents (*)
-            `)
-            .eq('slug', slug)
-            .single();
+        try {
+            const prop = await apiClient.get(`/properties/${slug}`);
 
-        if (error || !prop) {
-            console.error('Error loading property:', error);
-            showToast("Propriété introuvable.", "error");
-            return;
-        }
+            if (!prop) {
+                showToast("Propriété introuvable.", "error");
+                return;
+            }
 
         // Update UI
         document.title = `${prop.titre} | EXPER IMMO`;
@@ -81,8 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        // Increment Views
-        await supabaseClient.rpc('incrementer_vues', { p_id: prop.id });
+        // Increment Views (Handled by backend or removed for now)
+        // await apiClient.post(`/properties/${prop.id}/view`);
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
     };

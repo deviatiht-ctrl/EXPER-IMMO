@@ -1,19 +1,10 @@
-/**
- * EXPERIMMO - Navbar Controller
- * Gestion navbar + auth state (non-module, utilise Supabase CDN global)
- */
+import apiClient from './api-client.js';
 
-// ── Config Supabase (clé publique anon, sans risque) ──────────────────────
-var _SB_URL = 'https://gerkqyydddtjeyfkxuyu.supabase.co';
-var _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdlcmtxeXlkZGR0amV5Zmt4dXl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjE4ODgsImV4cCI6MjA5MDI5Nzg4OH0.BrlZlFcjRQ39mpbX2vEl7ZxXcWRVC114WlVaXnIBKk4';
-var _sb = null;
+// Déterminer le préfixe du chemin
+const folders = ['admin', 'gestionnaire', 'locataire', 'proprietaire', 'properties'];
+const needsPrefix = folders.some(f => window.location.pathname.includes('/' + f + '/'));
+const prefix = needsPrefix ? '../' : '';
 
-function getSB() {
-    if (!_sb && window.supabase) {
-        _sb = window.supabase.createClient(_SB_URL, _SB_KEY);
-    }
-    return _sb;
-}
 
 // Attendre que le DOM soit prêt
 document.addEventListener('DOMContentLoaded', function() {
@@ -147,55 +138,27 @@ function initNavbar() {
 
 // ── Auth: vérifier session et mettre à jour l'interface ──────────────────
 async function checkNavbarAuth() {
-    var sb = getSB();
-    if (!sb) return;
-
-    try {
-        var result = await sb.auth.getSession();
-        var session = result.data && result.data.session;
-
-        if (session && session.user) {
-            var userId = session.user.id;
-            var profileResult = await sb.from('profiles').select('full_name, role').eq('id', userId).single();
-            var profile = profileResult.data;
-            if (profile) {
-                navbarShowConnected(profile.full_name, profile.role);
-                navbarUpdateUser(profile.full_name, profile.role);
-            } else {
-                navbarShowConnected(session.user.email, 'locataire');
-                navbarUpdateUser(session.user.email, 'locataire');
-            }
-            // Mettre à jour dernière connexion (si jamais elle n'est pas à jour)
-            sb.rpc('update_derniere_connexion', { p_user_id: userId }).catch(function(){});
-        } else {
+    const userStr = localStorage.getItem('exper_immo_user');
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            navbarShowConnected(user.full_name, user.role);
+            navbarUpdateUser(user.full_name, user.role);
+        } catch (e) {
             navbarShowDisconnected();
         }
-    } catch (err) {
+    } else {
         navbarShowDisconnected();
     }
-
-    // Écouter les changements d'auth
-    sb.auth.onAuthStateChange(function(event, session) {
-        if (event === 'SIGNED_IN' && session) {
-            sb.from('profiles').select('full_name, role').eq('id', session.user.id).single()
-                .then(function(r) {
-                    var p = r.data || { full_name: session.user.email, role: 'locataire' };
-                    navbarShowConnected(p.full_name, p.role);
-                    navbarUpdateUser(p.full_name, p.role);
-                });
-        } else if (event === 'SIGNED_OUT') {
-            navbarShowDisconnected();
-        }
-    });
 
     // Bouton déconnexion
     var btnLogout  = document.getElementById('btn-logout');
     var sideLogout = document.getElementById('sidebar-logout');
     function doLogout(e) {
         if (e) e.preventDefault();
-        getSB().auth.signOut().then(function() {
-            window.location.href = 'index.html';
-        });
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = prefix + 'index.html';
     }
     if (btnLogout)  btnLogout.addEventListener('click', doLogout);
     if (sideLogout) sideLogout.addEventListener('click', doLogout);

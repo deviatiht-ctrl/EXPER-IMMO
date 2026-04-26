@@ -10,9 +10,9 @@
     <meta http-equiv="Expires" content="0">
     
     <!-- Favicon / Logo -->
-    <link rel="icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">
-    <link rel="shortcut icon" type="image/png" href="../assets/EXPER IMMO LOGO.png">
-    <link rel="apple-touch-icon" href="../assets/EXPER IMMO LOGO.png">
+    <link rel="icon" type="image/png" href="../../../assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="../../../assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="../../../assets/EXPER IMMO LOGO.png">
     <title>Rapports d'Opération | EXPERIMMO</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,10 +39,12 @@
 <body class="portal-body">
 <div class="portal-layout">
     <aside class="portal-sidebar proprietaire" id="sidebar">
-        <div class="sidebar-logo">
-            <div class="logo-icon"><img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';"></div>
-            <span>EXPERIMMO</span>
-        </div>
+        <a href="../index.html" class="sidebar-logo">
+                <div class="logo-icon">
+                    <img src="../assets/EXPER IMMO LOGO.png" alt="EXPERIMMO" onerror="this.style.display='none'; this.parentNode.innerHTML='<i data-lucide=home></i>';">
+                </div>
+                <span>EXPERIMMO</span>
+            </a>
         <div class="portal-user">
             <div class="portal-user-avatar" id="user-avatar">P</div>
             <div class="portal-user-info">
@@ -53,7 +55,7 @@
         <nav class="portal-nav">
             <div class="portal-nav-section">
                 <h5>Menu Principal</h5>
-                <a href="index.html"><i data-lucide="layout-dashboard"></i> Tableau de bord</a>
+                <a href="../../index.html"><i data-lucide="layout-dashboard"></i> Tableau de bord</a>
                 <a href="mes-proprietes.html"><i data-lucide="building-2"></i> Mes Propriétés</a>
                 <a href="contrats.html"><i data-lucide="file-text"></i> Contrats</a>
                 <a href="paiements.html"><i data-lucide="wallet"></i> Finances</a>
@@ -145,7 +147,7 @@
         </div>
     </main>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
 <script type="module" src="../js/proprietaire-dashboard.js"></script>
 <script>document.addEventListener('DOMContentLoaded', () => { if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
 </body>

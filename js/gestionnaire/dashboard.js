@@ -51,9 +51,9 @@ async function loadRecentDossiers(userId) {
     try {
         const { data, error } = await supabaseClient
             .from('proprietes')
-            .select('titre, code_propriete, date_creation')
+            .select('titre, reference, created_at')
             .eq('gestionnaire_responsable', userId)
-            .order('date_creation', { ascending: false })
+            .order('created_at', { ascending: false })
             .limit(5);
 
         if (error) throw error;
@@ -66,9 +66,9 @@ async function loadRecentDossiers(userId) {
                     </div>
                     <div class="activity-content">
                         <h4>${item.titre}</h4>
-                        <p>Code: ${item.code_propriete || 'N/A'}</p>
+                        <p>Ref: ${item.reference || 'N/A'}</p>
                     </div>
-                    <span class="activity-time">${new Date(item.date_creation).toLocaleDateString()}</span>
+                    <span class="activity-time">${new Date(item.created_at).toLocaleDateString()}</span>
                 </div>
             `).join('');
             lucide.createIcons();

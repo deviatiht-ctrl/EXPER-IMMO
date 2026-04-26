@@ -1,5 +1,5 @@
 // admin/propriete-form.js
-import { supabaseClient } from '../supabase-client.js';
+import apiClient from '../api-client.js';
 
 function showToast(msg, type) {
     type = type || 'info';
@@ -19,14 +19,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load Dropdowns
     const loadDropdowns = async () => {
-        const { data: zones } = await supabaseClient.from('zones').select('id, nom').order('nom');
-        const { data: agents } = await supabaseClient.from('agents').select('id, prenom, nom').order('prenom');
+        try {
+            const zones = await apiClient.get('/zones');
+            const agents = await apiClient.get('/agents');
 
-        const zoneSelect = document.getElementById('zone_id');
-        const agentSelect = document.getElementById('agent_id');
+            const zoneSelect = document.getElementById('zone_id');
+            const agentSelect = document.getElementById('agent_id');
 
-        zones?.forEach(z => zoneSelect.innerHTML += `<option value="${z.id}">${z.nom}</option>`);
-        agents?.forEach(a => agentSelect.innerHTML += `<option value="${a.id}">${a.prenom} ${a.nom}</option>`);
+            zones?.forEach(z => zoneSelect.innerHTML += `<option value="${z.id}">${z.nom}</option>`);
+            agents?.forEach(a => agentSelect.innerHTML += `<option value="${a.id}">${a.prenom} ${a.nom}</option>`);
+        } catch (e) {
+            console.error("Dropdowns error:", e);
+        }
     };
 
     // Load Data if Edit
@@ -34,43 +38,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!propId) return;
         document.getElementById('form-title').textContent = "Modifier la Propriété";
         
-        const { data: p, error } = await supabaseClient
-            .from('proprietes')
-            .select('*')
-            .eq('id_propriete', propId)
-            .single();
+        try {
+            // Note: If using ID, we might need a /properties/id/{id} endpoint
+            // For now, let's assume we can fetch by slug or implement a get-by-id
+            const p = await apiClient.get(`/properties/id/${propId}`);
 
-        if (error) { showToast("Erreur chargement", "error"); return; }
-
-        // Populate fields
-        document.getElementById('titre').value = p.titre;
-        document.getElementById('type_transaction').value = p.type_transaction;
-        document.getElementById('type_propriete').value = p.type_propriete;
-        document.getElementById('description').value = p.description;
-        document.getElementById('prix_location').value = p.prix_location || '';
-        document.getElementById('prix_vente').value = p.prix_vente || '';
-        document.getElementById('statut').value = p.statut || 'disponible';
-        document.getElementById('devise').value = p.devise || 'USD';
-        document.getElementById('nb_chambres').value = p.nb_chambres;
-        document.getElementById('nb_salles_bain').value = p.nb_salles_bain;
-        document.getElementById('nb_garages').value = p.nb_garages;
-        document.getElementById('superficie_m2').value = p.superficie_m2;
-        document.getElementById('est_vedette').checked = p.est_vedette;
-        document.getElementById('zone_id').value = p.zone_id;
-        document.getElementById('agent_id').value = p.agent_id;
-        document.getElementById('adresse').value = p.adresse || '';
-        // existing images shown in preview
-        (p.images || []).forEach(function(url) {
-            var div = document.createElement('div');
-            div.className = 'preview-item';
-            div.innerHTML = '<img src="' + url + '" alt="">';
-            if (uploadPreview) uploadPreview.appendChild(div);
-        });
+            // Populate fields
+            document.getElementById('titre').value = p.titre;
+            document.getElementById('type_transaction').value = p.type_transaction;
+            document.getElementById('type_propriete').value = p.type_propriete;
+            document.getElementById('description').value = p.description;
+            document.getElementById('prix_location').value = p.prix_location || '';
+            document.getElementById('prix_vente').value = p.prix_vente || '';
+            document.getElementById('statut').value = p.statut || 'disponible';
+            document.getElementById('devise').value = p.devise || 'USD';
+            document.getElementById('nb_chambres').value = p.nb_chambres;
+            document.getElementById('nb_salles_bain').value = p.nb_salles_bain;
+            document.getElementById('nb_garages').value = p.nb_garages;
+            document.getElementById('superficie_m2').value = p.superficie_m2;
+            document.getElementById('est_vedette').checked = p.est_vedette;
+            document.getElementById('zone_id').value = p.zone_id;
+            document.getElementById('agent_id').value = p.agent_id;
+            document.getElementById('adresse').value = p.adresse || '';
+        } catch (e) {
+            console.error("Load prop error:", e);
+        }
     };
 
     // Logout
-    document.getElementById('btn-logout')?.addEventListener('click', async function() {
-        await supabaseClient.auth.signOut();
+    document.getElementById('btn-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
         window.location.href = '../login.html';
     });
 
@@ -132,25 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnSave.innerHTML = '<i class="spinner-small"></i> <span>Enregistrement...</span>';
 
         try {
-            // 1. Upload new files if any
-            const newImageUrls = [];
-            for (const file of uploadedFiles) {
-                const filePath = `properties/${Date.now()}_${file.name}`;
-                const { error: upErr } = await supabaseClient.storage.from('property-images').upload(filePath, file);
-                if (upErr) throw upErr;
-                const { data: { publicUrl } } = supabaseClient.storage.from('property-images').getPublicUrl(filePath);
-                newImageUrls.push(publicUrl);
-            }
-
-            // 2. Get existing images if editing
-            let existingImages = [];
-            if (propId) {
-                const { data: p } = await supabaseClient.from('proprietes').select('images').eq('id_propriete', propId).single();
-                existingImages = p.images || [];
-            }
-
-            // 3. Prepare data
-            const titre = document.getElementById('titre').value;
+            // 1. Prepare data
             const slug = titre.toLowerCase()
                 .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
                 .replace(/\s+/g, '-')
@@ -163,9 +143,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 type_transaction: document.getElementById('type_transaction').value,
                 type_propriete: document.getElementById('type_propriete').value,
                 description: document.getElementById('description').value,
+                prix: parseFloat(document.getElementById('prix_vente').value || document.getElementById('prix_location').value) || 0,
                 prix_location: parseFloat(document.getElementById('prix_location').value) || null,
                 prix_vente: parseFloat(document.getElementById('prix_vente').value) || null,
-                statut: document.getElementById('statut').value || 'disponible',
+                statut_bien: document.getElementById('statut').value || 'disponible',
                 devise: document.getElementById('devise').value,
                 nb_chambres: parseInt(document.getElementById('nb_chambres').value) || 0,
                 nb_salles_bain: parseInt(document.getElementById('nb_salles_bain').value) || 0,
@@ -175,19 +156,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 zone_id: document.getElementById('zone_id').value || null,
                 agent_id: document.getElementById('agent_id').value || null,
                 adresse: document.getElementById('adresse').value,
-                images: [...existingImages, ...newImageUrls]
+                reference: 'REF-' + Date.now().toString().slice(-6)
             };
 
             if (!propId) formData.slug = slug;
 
             let result;
             if (propId) {
-                result = await supabaseClient.from('proprietes').update(formData).eq('id_propriete', propId);
+                result = await apiClient.put(`/properties/${propId}`, formData);
             } else {
-                result = await supabaseClient.from('proprietes').insert([formData]);
+                result = await apiClient.post('/properties', formData);
             }
-
-            if (result.error) throw result.error;
 
             showToast(propId ? "Propriété mise à jour !" : "Propriété créée avec succès !", "success");
             

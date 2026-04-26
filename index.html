@@ -1,26 +1,29 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Anti-cache meta tags -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+
     <!-- Favicon / Logo -->
     <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
     <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
     <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
-    
+
     <title>EXPERIMMO | Votre Bien, Notre Mission</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- CSS (variables + reset must come first) - with cache busting -->
     <link rel="stylesheet" href="css/variables.css?v=4/02_081512">
@@ -65,6 +68,7 @@
             padding: 120px 0 80px;
             overflow: hidden;
         }
+
         .page-hero-bg {
             position: absolute;
             inset: 0;
@@ -73,22 +77,25 @@
             background-position: center;
             filter: brightness(0.38);
         }
+
         .page-hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(26,26,26,0.88) 0%, rgba(196,30,58,0.12) 100%);
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.88) 0%, rgba(196, 30, 58, 0.12) 100%);
         }
+
         .page-hero-content {
             position: relative;
             z-index: 2;
         }
+
         .hero-eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: 8px 18px;
-            background: rgba(196,30,58,0.15);
-            border: 1px solid rgba(196,30,58,0.35);
+            background: rgba(196, 30, 58, 0.15);
+            border: 1px solid rgba(196, 30, 58, 0.35);
             border-radius: 100px;
             color: #ff7a93;
             font-size: 12px;
@@ -97,6 +104,7 @@
             letter-spacing: 0.1em;
             margin-bottom: 28px;
         }
+
         .page-hero-title {
             font-family: var(--font-display);
             font-size: clamp(2.8rem, 6vw, 5rem);
@@ -105,28 +113,32 @@
             line-height: 1.07;
             margin-bottom: 22px;
         }
+
         .page-hero-title em {
             color: var(--ruby);
             font-style: italic;
         }
+
         .page-hero-subtitle {
             font-size: 1.05rem;
-            color: rgba(255,255,255,0.72);
+            color: rgba(255, 255, 255, 0.72);
             max-width: 500px;
             line-height: 1.75;
             margin-bottom: 48px;
         }
+
         .hero-action-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 16px;
             max-width: 700px;
         }
+
         .hero-action-card {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.11);
+            border: 1px solid rgba(255, 255, 255, 0.11);
             border-radius: 16px;
             padding: 24px 16px;
             text-align: center;
@@ -134,16 +146,18 @@
             color: #fff;
             transition: all 0.3s ease;
         }
+
         .hero-action-card:hover {
-            background: rgba(196,30,58,0.13);
-            border-color: rgba(196,30,58,0.4);
+            background: rgba(196, 30, 58, 0.13);
+            border-color: rgba(196, 30, 58, 0.4);
             transform: translateY(-5px);
-            box-shadow: 0 14px 36px rgba(196,30,58,0.18);
+            box-shadow: 0 14px 36px rgba(196, 30, 58, 0.18);
         }
+
         .hero-action-icon {
             width: 48px;
             height: 48px;
-            background: rgba(196,30,58,0.18);
+            background: rgba(196, 30, 58, 0.18);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -151,33 +165,45 @@
             margin: 0 auto 14px;
             color: #ff7a93;
         }
-        .hero-action-icon svg { width: 22px; height: 22px; }
+
+        .hero-action-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
         .hero-action-card h3 {
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 5px;
         }
+
         .hero-action-card p {
             font-size: 0.76rem;
-            color: rgba(255,255,255,0.52);
+            color: rgba(255, 255, 255, 0.52);
             line-height: 1.45;
         }
 
         /* ---- STATS STRIP ---- */
         .stats-strip {
             background: var(--charcoal-dark);
-            border-top: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
+
         .stats-strip-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
         }
+
         .stats-strip-item {
             text-align: center;
             padding: 28px 16px;
-            border-right: 1px solid rgba(255,255,255,0.07);
+            border-right: 1px solid rgba(255, 255, 255, 0.07);
         }
-        .stats-strip-item:last-child { border-right: none; }
+
+        .stats-strip-item:last-child {
+            border-right: none;
+        }
+
         .stats-strip-item .s-val {
             font-family: var(--font-display);
             font-size: 2.2rem;
@@ -186,9 +212,10 @@
             display: block;
             line-height: 1;
         }
+
         .stats-strip-item .s-lbl {
             font-size: 0.78rem;
-            color: rgba(255,255,255,0.52);
+            color: rgba(255, 255, 255, 0.52);
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-top: 8px;
@@ -196,12 +223,17 @@
         }
 
         /* ---- SERVICES ---- */
-        .services-section { padding: 96px 0; background: var(--bg-main); }
+        .services-section {
+            padding: 96px 0;
+            background: var(--bg-main);
+        }
+
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
+
         .svc-card {
             background: #fff;
             border: 1px solid var(--border);
@@ -211,31 +243,47 @@
             overflow: hidden;
             transition: all 0.3s ease;
         }
+
         .svc-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 3px;
             background: var(--ruby);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.35s ease;
         }
-        .svc-card:hover::before { transform: scaleX(1); }
+
+        .svc-card:hover::before {
+            transform: scaleX(1);
+        }
+
         .svc-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.09);
-            border-color: rgba(196,30,58,0.12);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.09);
+            border-color: rgba(196, 30, 58, 0.12);
         }
+
         .svc-icon {
-            width: 52px; height: 52px;
+            width: 52px;
+            height: 52px;
             background: var(--ruby-pale);
             border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 20px;
             color: var(--ruby);
         }
-        .svc-icon svg { width: 24px; height: 24px; }
+
+        .svc-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
         .svc-card h3 {
             font-family: var(--font-display);
             font-size: 1.15rem;
@@ -243,6 +291,7 @@
             color: var(--text-primary);
             margin-bottom: 10px;
         }
+
         .svc-card p {
             font-size: 0.875rem;
             color: var(--text-secondary);
@@ -250,31 +299,42 @@
         }
 
         /* ---- PROCESS ---- */
-        .process-section { padding: 96px 0; background: var(--bg-secondary); }
+        .process-section {
+            padding: 96px 0;
+            background: var(--bg-secondary);
+        }
+
         .process-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 0;
             position: relative;
         }
+
         .process-grid::after {
             content: '';
             position: absolute;
             top: 35px;
-            left: 12.5%; right: 12.5%;
+            left: 12.5%;
+            right: 12.5%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(196,30,58,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(196, 30, 58, 0.3), transparent);
         }
+
         .process-step {
             text-align: center;
             padding: 0 20px;
         }
+
         .process-num {
-            width: 70px; height: 70px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             border: 2px solid var(--ruby);
             background: #fff;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: var(--font-display);
             font-size: 1.4rem;
             font-weight: 700;
@@ -284,12 +344,14 @@
             z-index: 1;
             box-shadow: 0 0 0 6px var(--ruby-pale);
         }
+
         .process-step h4 {
             font-weight: 700;
             font-size: 0.95rem;
             color: var(--text-primary);
             margin-bottom: 8px;
         }
+
         .process-step p {
             font-size: 0.82rem;
             color: var(--text-secondary);
@@ -304,18 +366,24 @@
             position: relative;
             overflow: hidden;
         }
+
         .cta-section::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at center bottom, rgba(196,30,58,0.14) 0%, transparent 65%);
+            background: radial-gradient(ellipse at center bottom, rgba(196, 30, 58, 0.14) 0%, transparent 65%);
         }
-        .cta-section .container { position: relative; z-index: 1; }
+
+        .cta-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
         .cta-eyebrow {
             display: inline-block;
             padding: 6px 18px;
-            background: rgba(196,30,58,0.18);
-            border: 1px solid rgba(196,30,58,0.35);
+            background: rgba(196, 30, 58, 0.18);
+            border: 1px solid rgba(196, 30, 58, 0.35);
             border-radius: 100px;
             color: #ff7a93;
             font-size: 11px;
@@ -324,6 +392,7 @@
             letter-spacing: 0.1em;
             margin-bottom: 20px;
         }
+
         .cta-section h2 {
             font-family: var(--font-display);
             font-size: clamp(2rem, 4vw, 3rem);
@@ -331,16 +400,22 @@
             margin-bottom: 16px;
             line-height: 1.2;
         }
-        .cta-section h2 em { color: var(--ruby-light); font-style: italic; }
+
+        .cta-section h2 em {
+            color: var(--ruby-light);
+            font-style: italic;
+        }
+
         .cta-section p {
             font-size: 1rem;
-            color: rgba(255,255,255,0.58);
+            color: rgba(255, 255, 255, 0.58);
             margin-bottom: 40px;
             max-width: 480px;
             margin-left: auto;
             margin-right: auto;
             line-height: 1.7;
         }
+
         .btn-cta {
             display: inline-flex;
             align-items: center;
@@ -353,10 +428,11 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
+
         .btn-cta:hover {
             background: var(--ruby-dark);
             transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(196,30,58,0.35);
+            box-shadow: 0 12px 32px rgba(196, 30, 58, 0.35);
         }
 
         /* ---- ANIMATE ON SCROLL ---- */
@@ -365,6 +441,7 @@
             transform: translateY(28px);
             transition: opacity 0.55s ease, transform 0.55s ease;
         }
+
         .anim-item.visible {
             opacity: 1;
             transform: translateY(0);
@@ -372,24 +449,68 @@
 
         /* ---- RESPONSIVE ---- */
         @media (max-width: 1024px) {
-            .hero-action-grid { max-width: 100%; }
-            .services-grid { grid-template-columns: repeat(2, 1fr); }
-            .process-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
-            .process-grid::after { display: none; }
-            .stats-strip-grid { grid-template-columns: repeat(2, 1fr); }
-            .stats-strip-item:nth-child(2) { border-right: none; }
+            .hero-action-grid {
+                max-width: 100%;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+
+            .process-grid::after {
+                display: none;
+            }
+
+            .stats-strip-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-strip-item:nth-child(2) {
+                border-right: none;
+            }
         }
+
         @media (max-width: 768px) {
-            .page-hero { padding: 110px 0 60px; min-height: auto; }
-            .hero-action-grid { grid-template-columns: 1fr; max-width: 300px; }
-            .services-grid { grid-template-columns: 1fr; }
-            .process-grid { grid-template-columns: 1fr; }
-            .services-section, .process-section, .cta-section { padding: 64px 0; }
-            .stats-strip-item { padding: 20px 12px; }
-            .stats-strip-item .s-val { font-size: 1.8rem; }
+            .page-hero {
+                padding: 110px 0 60px;
+                min-height: auto;
+            }
+
+            .hero-action-grid {
+                grid-template-columns: 1fr;
+                max-width: 300px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-section,
+            .process-section,
+            .cta-section {
+                padding: 64px 0;
+            }
+
+            .stats-strip-item {
+                padding: 20px 12px;
+            }
+
+            .stats-strip-item .s-val {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- NAVBAR injected by load-navbar.js -->
@@ -409,7 +530,8 @@
                 Gérez. Valorisez.<br><em>Réussissez.</em>
             </h1>
             <p class="page-hero-subtitle">
-                EXPERIMMO — Votre partenaire de confiance en gestion immobilière professionnelle. Nous gérons vos biens avec rigueur et excellence.
+                EXPERIMMO — Votre partenaire de confiance en gestion immobilière professionnelle. Nous gérons vos biens
+                avec rigueur et excellence.
             </p>
             <div class="hero-action-grid">
                 <a href="proprietes.html?type=location" class="hero-action-card">
@@ -499,7 +621,8 @@
          ====================================================== -->
     <section class="featured-section bg-secondary">
         <div class="container">
-            <div class="section-header" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+            <div class="section-header"
+                style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
                 <div>
                     <span class="section-tag">Catalogue sélectionné</span>
                     <h2 class="section-title" style="margin-bottom:0;">Propriétés <em>en vedette</em></h2>
@@ -524,23 +647,27 @@
             <div class="section-header text-center">
                 <span class="section-tag">Ce que nous faisons</span>
                 <h2 class="section-title">Nos <em>expertises</em></h2>
-                <p class="section-subtitle" style="margin:0 auto;">Une gamme complète de services immobiliers adaptés à vos besoins.</p>
+                <p class="section-subtitle" style="margin:0 auto;">Une gamme complète de services immobiliers adaptés à
+                    vos besoins.</p>
             </div>
             <div class="services-grid">
                 <div class="svc-card anim-item">
                     <div class="svc-icon"><i data-lucide="building-2"></i></div>
                     <h3>Gestion Locative</h3>
-                    <p>Prise en charge complète de vos biens : recherche de locataires, rédaction de contrats, suivi des paiements et maintenance.</p>
+                    <p>Prise en charge complète de vos biens : recherche de locataires, rédaction de contrats, suivi des
+                        paiements et maintenance.</p>
                 </div>
                 <div class="svc-card anim-item">
                     <div class="svc-icon"><i data-lucide="trending-up"></i></div>
                     <h3>Valorisation Immobilière</h3>
-                    <p>Stratégies sur mesure pour augmenter la valeur de votre patrimoine immobilier sur le marché haitien.</p>
+                    <p>Stratégies sur mesure pour augmenter la valeur de votre patrimoine immobilier sur le marché
+                        haitien.</p>
                 </div>
                 <div class="svc-card anim-item">
                     <div class="svc-icon"><i data-lucide="file-text"></i></div>
                     <h3>Gestion Contractuelle</h3>
-                    <p>Rédaction, suivi et archivage de vos contrats de bail, mandats et actes notariés avec rigueur.</p>
+                    <p>Rédaction, suivi et archivage de vos contrats de bail, mandats et actes notariés avec rigueur.
+                    </p>
                 </div>
                 <div class="svc-card anim-item">
                     <div class="svc-icon"><i data-lucide="users"></i></div>
@@ -618,10 +745,12 @@
             <div class="footer-grid">
                 <div class="footer-about">
                     <div class="footer-logo">
-"assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
+                        "assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO"
+                        style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
                         <span>EXPERIMMO</span>
                     </div>
-                    <p data-site="description">Votre partenaire de confiance pour la gestion, l'achat et la location de propriétés de prestige en Haiti.</p>
+                    <p data-site="description">Votre partenaire de confiance pour la gestion, l'achat et la location de
+                        propriétés de prestige en Haiti.</p>
                     <div class="social-links" style="margin-top:24px;">
                         <a href="#" aria-label="Facebook" data-site="facebook"><i data-lucide="facebook"></i></a>
                         <a href="#" aria-label="Instagram" data-site="instagram"><i data-lucide="instagram"></i></a>
@@ -665,7 +794,8 @@
             </div>
             <div class="footer-bottom">
                 © 2026 EXPERIMMO. Tous droits réservés.</p>
-                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener" style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤️ pour Haiti</p>
+                <p>Créé par <a href="https://cvisual.netlify.app/" target="_blank" rel="noopener"
+                        style="color:var(--ruby-light);font-weight:600;">Cvisual</a> · Fait avec ❤️ pour Haiti</p>
             </div>
         </div>
     </footer>
@@ -673,7 +803,7 @@
     <!-- ======================================================
          SCRIPTS
          ====================================================== -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    
     <script type="module" src="js/config.js?v=4/02_081512"></script>
     <script type="module" src="js/supabase-client.js?v=4/02_081512"></script>
     <script src="js/load-navbar.js?v=4/02_081512"></script>
@@ -756,4 +886,5 @@
         }
     </script>
 </body>
+
 </html>

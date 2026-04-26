@@ -1,4 +1,4 @@
-import { supabaseClient as supabase } from '../supabase-client.js';
+import apiClient from '../api-client.js';
 
 let proprietaires = [];
 
@@ -8,23 +8,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
+    const userStr = localStorage.getItem('exper_immo_user');
+    if (!userStr) { window.location.href = '../login.html'; return; }
 }
 
 async function loadProprietaires() {
     try {
         console.log("Chargement propriétaires...");
-        const { data, error } = await supabase
-            .from('proprietaires')
-            .select('*, profiles:user_id(full_name, email, phone)')
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            console.error("Erreur Supabase Propriétaires:", error);
-            throw error;
-        }
-
+        const data = await apiClient.get('/users?role=proprietaire');
         proprietaires = data || [];
         renderTable();
     } catch (err) {
@@ -44,15 +35,15 @@ function renderTable() {
     }
 
     tbody.innerHTML = proprietaires.map(p => `
-        <tr data-id="${p.id_proprietaire}">
-            <td><strong>${p.profiles?.full_name || 'Inconnu'}</strong></td>
-            <td>${p.profiles?.email || 'N/A'}</td>
-            <td>${p.profiles?.phone || 'N/A'}</td>
-            <td>${p.code_proprietaire || (p.id_proprietaire||'').substring(0,8)}</td>
+        <tr data-id="${p.id}">
+            <td><strong>${p.full_name || 'Inconnu'}</strong></td>
+            <td>${p.email || 'N/A'}</td>
+            <td>${p.phone || 'N/A'}</td>
+            <td>${(p.id||'').substring(0,8)}</td>
             <td>
                 <div class="action-btns">
-                    <button class="action-btn view" onclick="window.viewProprietaire('${p.id_proprietaire}')"><i data-lucide="eye"></i></button>
-                    <button class="action-btn edit" onclick="window.editProprietaire('${p.id_proprietaire}')"><i data-lucide="edit-2"></i></button>
+                    <button class="action-btn view" onclick="window.viewProprietaire('${p.id}')"><i data-lucide="eye"></i></button>
+                    <button class="action-btn edit" onclick="window.editProprietaire('${p.id}')"><i data-lucide="edit-2"></i></button>
                 </div>
             </td>
         </tr>
