@@ -10,9 +10,9 @@
     <meta http-equiv="Expires" content="0">
     
     <!-- Favicon / Logo -->
-    <link rel="icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
-    <link rel="shortcut icon" type="image/png" href="assets/EXPER IMMO LOGO.png">
-    <link rel="apple-touch-icon" href="assets/EXPER IMMO LOGO.png">
+    <link rel="icon" type="image/png" href="/assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="/assets/EXPER IMMO LOGO.png">
+    <link rel="apple-touch-icon" href="/assets/EXPER IMMO LOGO.png">
     
     <title>Connexion | EXPERIMMO</title>
 
@@ -22,11 +22,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS with cache busting -->
-    <link rel="stylesheet" href="css/variables.css?v=4/02_081512">
-    <link rel="stylesheet" href="css/reset.css?v=4/02_081512">
-    <link rel="stylesheet" href="css/portal.css?v=4/02_081512">
-    <link rel="stylesheet" href="css/components.css?v=4/02_081512">
-    <link rel="stylesheet" href="css/bottom-nav.css?v=4/02_081512">
+    <link rel="stylesheet" href="/css/variables.css?v=4/02_081512">
+    <link rel="stylesheet" href="/css/reset.css?v=4/02_081512">
+    <link rel="stylesheet" href="/css/portal.css?v=4/02_081512">
+    <link rel="stylesheet" href="/css/components.css?v=4/02_081512">
+    <link rel="stylesheet" href="/css/bottom-nav.css?v=4/02_081512">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -34,8 +34,8 @@
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#C41E3A">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/EXPER IMMO LOGO.png">
-    <link rel="shortcut icon" href="assets/EXPER IMMO LOGO.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/EXPER IMMO LOGO.png">
+    <link rel="shortcut icon" href="/assets/EXPER IMMO LOGO.png">
 
     <style>
         /* ========================================================
@@ -445,7 +445,7 @@
     <!-- SCRIPTS -->
     
     <script type="module">
-        import CONFIG from './js/config.js?v=4/02_081512';
+        import CONFIG from '/js/config.js?v=4/02_081512';
         const { createClient } = supabase;
         const _db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
         (async () => {
@@ -464,7 +464,7 @@
             } catch (e) { console.warn('[Stats]', e.message); }
         })();
     </script>
-    <script type="module" src="js/auth.js?v=4/02_081512"></script>
+    <script type="module" src="/js/auth.js?v=4/02_081512"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
