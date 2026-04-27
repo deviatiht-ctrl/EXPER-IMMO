@@ -766,6 +766,181 @@ def get_proprietaires(db: Session = Depends(database.get_db)):
 
 
 # ─────────────────────────────────────────────
+# PAIMENTS ENDPOINTS
+# ─────────────────────────────────────────────
+class PaiementCreate(BaseModel):
+    contrat_id: Optional[str] = None
+    montant: float
+    devise: str = "HTG"
+    date_paiement: Optional[str] = None
+    date_echeance: Optional[str] = None
+    statut: str = "en_attente"  # en_attente, paye, en_retard
+    notes: Optional[str] = None
+
+class PaiementUpdate(BaseModel):
+    montant: Optional[float] = None
+    devise: Optional[str] = None
+    date_paiement: Optional[str] = None
+    date_echeance: Optional[str] = None
+    statut: Optional[str] = None
+    notes: Optional[str] = None
+
+def _paiement_dict(p: models.Paiement):
+    return {
+        "id": p.id,
+        "contrat_id": p.contrat_id,
+        "montant": float(p.montant) if p.montant else 0,
+        "devise": p.devise,
+        "date_paiement": p.date_paiement.isoformat() if p.date_paiement else None,
+        "date_echeance": p.date_echeance.isoformat() if p.date_echeance else None,
+        "statut": p.statut,
+        "notes": p.notes,
+        "created_at": p.created_at.isoformat() if p.created_at else None,
+    }
+
+@app.get("/paiements")
+def list_paiements(
+    statut: Optional[str] = None,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Liste tous les paiements (admin/gestionnaire) ou seulement ceux liés au locataire connecté"""
+    query = db.query(models.Paiement)
+    
+    if statut:
+        query = query.filter(models.Paiement.statut == statut)
+    
+    # Si locataire, ne voir que ses paiements
+    if current_user.role == "locataire" and current_user.locataire:
+        # Trouver les contrats du locataire
+        contrat_ids = db.query(models.Contrat.id).filter(
+            models.Contrat.locataire_id == current_user.locataire.id
+        ).all()
+        contrat_ids = [c[0] for c in contrat_ids]
+        if contrat_ids:
+            query = query.filter(models.Paiement.contrat_id.in_(contrat_ids))
+        else:
+            return []
+    
+    paiements = query.order_by(models.Paiement.date_echeance.desc()).all()
+    return [_paiement_dict(p) for p in paiements]
+
+
+@app.post("/paiements")
+def create_paiement(
+    payload: PaiementCreate,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Créer un nouveau paiement (admin/gestionnaire uniquement)"""
+    if current_user.role not in ["admin", "gestionnaire"]:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    
+    from datetime import datetime
+    
+    p = models.Paiement(
+        id=str(uuid.uuid4()),
+        contrat_id=payload.contrat_id,
+        montant=payload.montant,
+        devise=payload.devise,
+        date_paiement=datetime.fromisoformat(payload.date_paiement) if payload.date_paiement else None,
+        date_echeance=datetime.fromisoformat(payload.date_echeance) if payload.date_echeance else None,
+        statut=payload.statut,
+        notes=payload.notes,
+    )
+    db.add(p)
+    db.commit()
+    db.refresh(p)
+    return _paiement_dict(p)
+
+
+@app.put("/paiements/{paiement_id}")
+def update_paiement(
+    paiement_id: str,
+    payload: PaiementUpdate,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Mettre à jour un paiement"""
+    if current_user.role not in ["admin", "gestionnaire"]:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    
+    p = db.query(models.Paiement).filter(models.Paiement.id == paiement_id).first()
+    if not p:
+        raise HTTPException(status_code=404, detail="Paiement non trouvé")
+    
+    from datetime import datetime
+    
+    if payload.montant is not None:
+        p.montant = payload.montant
+    if payload.devise:
+        p.devise = payload.devise
+    if payload.date_paiement:
+        p.date_paiement = datetime.fromisoformat(payload.date_paiement)
+    if payload.date_echeance:
+        p.date_echeance = datetime.fromisoformat(payload.date_echeance)
+    if payload.statut:
+        p.statut = payload.statut
+    if payload.notes is not None:
+        p.notes = payload.notes
+    
+    db.commit()
+    db.refresh(p)
+    return _paiement_dict(p)
+
+
+@app.delete("/paiements/{paiement_id}")
+def delete_paiement(
+    paiement_id: str,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Supprimer un paiement (admin uniquement)"""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    
+    p = db.query(models.Paiement).filter(models.Paiement.id == paiement_id).first()
+    if not p:
+        raise HTTPException(status_code=404, detail="Paiement non trouvé")
+    
+    db.delete(p)
+    db.commit()
+    return {"message": "Paiement supprimé"}
+
+
+@app.get("/paiements/stats")
+def paiements_stats(
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Statistiques des paiements"""
+    from datetime import datetime
+    
+    now = datetime.now()
+    first_day = datetime(now.year, now.month, 1).date()
+    
+    # Compter par statut
+    payes = db.query(models.Paiement).filter(models.Paiement.statut == "paye").count()
+    attente = db.query(models.Paiement).filter(models.Paiement.statut == "en_attente").count()
+    retard = db.query(models.Paiement).filter(models.Paiement.statut == "en_retard").count()
+    
+    # Revenus du mois
+    revenus = db.query(models.Paiement).filter(
+        models.Paiement.statut == "paye",
+        models.Paiement.date_paiement >= first_day
+    ).all()
+    total_revenus = sum(float(r.montant) for r in revenus) if revenus else 0
+    
+    return {
+        "payes": payes,
+        "en_attente": attente,
+        "en_retard": retard,
+        "revenus_mois": total_revenus,
+        "devise": "HTG"
+    }
+
+
+# ─────────────────────────────────────────────
 # ADMIN SETUP ENDPOINT (for Render free tier - no shell access)
 # ─────────────────────────────────────────────
 class SetupAdminRequest(BaseModel):

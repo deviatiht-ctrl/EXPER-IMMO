@@ -1,29 +1,25 @@
-﻿import { supabaseClient as supabase } from '../supabase-client.js';
+﻿import { apiClient } from '../api-client.js';
 
 let paiements = [];
 let currentPaiement = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkAuth();
-    await Promise.all([loadPaiements(), loadStats(), populateLocataires(), populateProprietes()]);
+    await Promise.all([loadPaiements(), loadStats()]);
     setupEventListeners();
     if (typeof lucide !== 'undefined') lucide.createIcons();
 });
 
 async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
-    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-    if (profile?.role !== 'admin') { window.location.href = '../index.html'; }
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return; }
+    if (user.role !== 'admin') { window.location.href = '../index.html'; }
 }
 
 async function loadPaiements() {
     try {
-        const { data, error } = await supabase
-            .from('paiements')
-            .select('*, locataire:locataires(user:profiles(full_name, email)), propriete:proprietes(titre)')
-            .order('date_echeance', { ascending: false });
-        if (error) throw error;
+        const data = await apiClient.get('/paiements');
         paiements = data || [];
         renderTable(paiements);
     } catch (err) {
@@ -34,70 +30,36 @@ async function loadPaiements() {
 
 async function loadStats() {
     try {
-        const now = new Date();
-        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().substring(0,10);
-        const [{ count: payes }, { count: attente }, { count: retard }] = await Promise.all([
-            supabase.from('paiements').select('*', { count: 'exact', head: true }).eq('statut', 'paye'),
-            supabase.from('paiements').select('*', { count: 'exact', head: true }).eq('statut', 'en_attente'),
-            supabase.from('paiements').select('*', { count: 'exact', head: true }).eq('statut', 'en_retard'),
-        ]);
-        const { data: revenus } = await supabase
-            .from('paiements').select('montant_total').eq('statut', 'paye').gte('date_paiement', firstDay);
-        const total = (revenus || []).reduce(function(s, r){ return s + (r.montant_total || 0); }, 0);
-        setEl('stat-revenus-pay', '$' + fmtNum(total));
-        setEl('stat-payes', payes || 0);
-        setEl('stat-attente-pay', attente || 0);
-        setEl('stat-retard-pay', retard || 0);
-    } catch (err) { console.error('loadStats:', err); }
-}
-
-async function populateLocataires() {
-    const sel = document.getElementById('pay-locataire');
-    if (!sel) return;
-    const { data } = await supabase.from('locataires').select('id_locataire, user:profiles(full_name)').order('created_at');
-    (data || []).forEach(function(l) {
-        var opt = document.createElement('option');
-        opt.value = l.id_locataire;
-        opt.textContent = (l.user && l.user.full_name) || l.id_locataire;
-        sel.appendChild(opt);
-    });
-}
-
-async function populateProprietes() {
-    const sel = document.getElementById('pay-propriete');
-    if (!sel) return;
-    const { data } = await supabase.from('proprietes').select('id_propriete, titre').order('titre');
-    (data || []).forEach(function(p) {
-        var opt = document.createElement('option');
-        opt.value = p.id_propriete;
-        opt.textContent = p.titre || p.id_propriete;
-        sel.appendChild(opt);
-    });
+        const stats = await apiClient.get('/paiements/stats');
+        setEl('stat-revenus-pay', stats.revenus_mois + ' ' + stats.devise);
+        setEl('stat-payes', stats.payes || 0);
+        setEl('stat-attente-pay', stats.en_attente || 0);
+        setEl('stat-retard-pay', stats.en_retard || 0);
+    } catch (err) { 
+        console.error('loadStats:', err); 
+    }
 }
 
 function renderTable(data) {
     const tbody = document.getElementById('paiements-table');
     if (!tbody) return;
     if (!data.length) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:50px;color:#64748b;">Aucun paiement trouv&#233;</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:50px;color:#64748b;">Aucun paiement trouvé</td></tr>';
         return;
     }
-    const LABELS = { paye: 'Pay&#233;', en_attente: 'En attente', en_retard: 'En retard', annule: 'Annul&#233;' };
+    const LABELS = { paye: 'Payé', en_attente: 'En attente', en_retard: 'En retard', annule: 'Annulé' };
     tbody.innerHTML = data.map(function(p) {
-        var name = (p.locataire && p.locataire.user && p.locataire.user.full_name) || 'N/A';
-        var prop = (p.propriete && p.propriete.titre) || 'N/A';
         var label = LABELS[p.statut] || p.statut;
-        return '<tr data-id="' + p.id_paiement + '">' +
-            '<td><strong>' + esc(p.reference || '#' + (p.id_paiement||'').substring(0,8)) + '</strong></td>' +
-            '<td>' + esc(name) + '</td>' +
-            '<td>' + esc(prop) + '</td>' +
-            '<td><strong>$' + fmtNum(p.montant_total || 0) + '</strong></td>' +
+        return '<tr data-id="' + p.id + '">' +
+            '<td><strong>' + esc(p.id.substring(0,8)) + '</strong></td>' +
+            '<td>' + esc(p.contrat_id ? p.contrat_id.substring(0,8) : 'N/A') + '</td>' +
+            '<td><strong>' + fmtNum(p.montant || 0) + ' ' + esc(p.devise || 'HTG') + '</strong></td>' +
             '<td>' + (p.date_echeance || '').substring(0,10) + '</td>' +
-            '<td>' + esc(p.methode_paiement || '&#8212;') + '</td>' +
+            '<td>' + (p.date_paiement || '—').substring(0,10) + '</td>' +
             '<td><span class="status-badge ' + esc(p.statut) + '">' + label + '</span></td>' +
             '<td><div class="action-btns">' +
-            '<button class="action-btn view" onclick="viewPaiement(\'' + p.id_paiement + '\')" title="Voir"><i data-lucide="eye"></i></button>' +
-            '<button class="action-btn edit" onclick="editPaiement(\'' + p.id_paiement + '\')" title="Modifier"><i data-lucide="edit-2"></i></button>' +
+            '<button class="action-btn view" onclick="viewPaiement(\'' + p.id + '\')" title="Voir"><i data-lucide="eye"></i></button>' +
+            '<button class="action-btn edit" onclick="editPaiement(\'' + p.id + '\')" title="Modifier"><i data-lucide="edit-2"></i></button>' +
             '</div></td></tr>';
     }).join('');
     if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -117,32 +79,25 @@ window.closeModal = function(id) {
 };
 
 window.viewPaiement = function(id) {
-    var p = paiements.find(function(x){ return x.id_paiement === id; });
+    var p = paiements.find(function(x){ return x.id === id; });
     if (!p) return;
-    var name = (p.locataire && p.locataire.user && p.locataire.user.full_name) || 'N/A';
-    showModal('Paiement â€” ' + esc(p.reference || id), '<div class="detail-section">' +
-        '<div class="detail-row"><strong>R&#233;f&#233;rence</strong><span>' + esc(p.reference || id) + '</span></div>' +
-        '<div class="detail-row"><strong>Locataire</strong><span>' + esc(name) + '</span></div>' +
-        '<div class="detail-row"><strong>Propri&#233;t&#233;</strong><span>' + esc((p.propriete && p.propriete.titre) || 'N/A') + '</span></div>' +
-        '<div class="detail-row"><strong>Montant</strong><span><strong>$' + fmtNum(p.montant_total || 0) + '</strong></span></div>' +
-        '<div class="detail-row"><strong>&#201;ch&#233;ance</strong><span>' + (p.date_echeance || '').substring(0,10) + '</span></div>' +
-        '<div class="detail-row"><strong>Date paiement</strong><span>' + (p.date_paiement || '&#8212;').substring(0,10) + '</span></div>' +
-        '<div class="detail-row"><strong>M&#233;thode</strong><span>' + esc(p.methode_paiement || '&#8212;') + '</span></div>' +
+    showModal('Paiement — ' + esc(id.substring(0,8)), '<div class="detail-section">' +
+        '<div class="detail-row"><strong>ID</strong><span>' + esc(id) + '</span></div>' +
+        '<div class="detail-row"><strong>Montant</strong><span><strong>' + fmtNum(p.montant || 0) + ' ' + esc(p.devise || 'HTG') + '</strong></span></div>' +
+        '<div class="detail-row"><strong>Échéance</strong><span>' + (p.date_echeance || '').substring(0,10) + '</span></div>' +
+        '<div class="detail-row"><strong>Date paiement</strong><span>' + (p.date_paiement || '—').substring(0,10) + '</span></div>' +
         '<div class="detail-row"><strong>Statut</strong><span><span class="status-badge ' + esc(p.statut) + '">' + esc(p.statut) + '</span></span></div>' +
         (p.notes ? '<div class="detail-row"><strong>Notes</strong><span>' + esc(p.notes) + '</span></div>' : '') +
         '</div>');
 };
 
 window.editPaiement = function(id) {
-    var p = paiements.find(function(x){ return x.id_paiement === id; });
+    var p = paiements.find(function(x){ return x.id === id; });
     if (!p) return;
     currentPaiement = p;
     setEl('pay-modal-title', 'Modifier le Paiement');
-    setVal('pay-locataire', p.locataire_id || '');
-    setVal('pay-propriete', p.propriete_id || '');
-    setVal('pay-montant', p.montant_total || '');
+    setVal('pay-montant', p.montant || '');
     setVal('pay-echeance', (p.date_echeance || '').substring(0,10));
-    setVal('pay-methode', p.methode_paiement || 'virement');
     setVal('pay-statut', p.statut || 'en_attente');
     setVal('pay-notes', p.notes || '');
     openModal('add-paiement');
@@ -155,11 +110,9 @@ window.savePaiement = async function(e) {
     if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-small"></span> Enregistrement...'; }
     try {
         var payData = {
-            locataire_id: getVal('pay-locataire') || null,
-            propriete_id: getVal('pay-propriete') || null,
-            montant_total: parseFloat(getVal('pay-montant')) || 0,
+            montant: parseFloat(getVal('pay-montant')) || 0,
+            devise: 'HTG',
             date_echeance: getVal('pay-echeance'),
-            methode_paiement: getVal('pay-methode'),
             statut: getVal('pay-statut'),
             notes: getVal('pay-notes') || null,
         };
@@ -167,13 +120,11 @@ window.savePaiement = async function(e) {
             payData.date_paiement = new Date().toISOString().substring(0,10);
         }
         if (currentPaiement) {
-            var { error } = await supabase.from('paiements').update(payData).eq('id_paiement', currentPaiement.id_paiement);
-            if (error) throw error;
-            showToast('Paiement mis &#224; jour', 'success');
+            await apiClient.put('/paiements/' + currentPaiement.id, payData);
+            showToast('Paiement mis à jour', 'success');
         } else {
-            var { error: ie } = await supabase.from('paiements').insert([payData]);
-            if (ie) throw ie;
-            showToast('Paiement enregistr&#233;', 'success');
+            await apiClient.post('/paiements', payData);
+            showToast('Paiement enregistré', 'success');
         }
         closeModal('add-paiement');
         await Promise.all([loadPaiements(), loadStats()]);
@@ -186,8 +137,9 @@ window.savePaiement = async function(e) {
 };
 
 function setupEventListeners() {
-    document.getElementById('btn-logout')?.addEventListener('click', async function() {
-        await supabase.auth.signOut();
+    document.getElementById('btn-logout')?.addEventListener('click', function() {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
         window.location.href = '../login.html';
     });
     document.getElementById('search-paiements')?.addEventListener('input', function(e) {
