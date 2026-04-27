@@ -49,6 +49,7 @@
             <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Contrats</span></a>
             <a href="paiements.html" class="nav-link"><i data-lucide="credit-card"></i><span>Paiements</span></a>
             <a href="../../agents.html" class="nav-link"><i data-lucide="briefcase"></i><span>Agents</span></a>
+            <a href="gestionnaires.html" class="nav-link"><i data-lucide="shield-check"></i><span>Gestionnaires</span></a>
             <a href="contacts.html" class="nav-link"><i data-lucide="message-square"></i><span>Messages</span></a>
             <a href="statistiques.html" class="nav-link active"><i data-lucide="bar-chart-3"></i><span>Statistiques</span></a>
             <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i><span>Paramètres</span></a>
@@ -66,42 +67,51 @@
         <div class="admin-content">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon blue"><i data-lucide="trending-up"></i></div>
-                    <div class="stat-info"><h3>+23%</h3><p>Crééoissance annuelle</p></div>
+                    <div class="stat-icon blue"><i data-lucide="home"></i></div>
+                    <div class="stat-info"><h3 id="stat-proprietes">0</h3><p>Propriétés</p></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon green"><i data-lucide="dollar-sign"></i></div>
-                    <div class="stat-info"><h3>$542K</h3><p>Revenus totaux</p></div>
+                    <div class="stat-icon green"><i data-lucide="users"></i></div>
+                    <div class="stat-info"><h3 id="stat-locataires">0</h3><p>Locataires</p></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon purple"><i data-lucide="home"></i></div>
-                    <div class="stat-info"><h3>89%</h3><p>Taux d'occupation</p></div>
+                    <div class="stat-icon purple"><i data-lucide="user-check"></i></div>
+                    <div class="stat-info"><h3 id="stat-proprietaires">0</h3><p>Propriétaires</p></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon orange"><i data-lucide="users"></i></div>
-                    <div class="stat-info"><h3>4.8</h3><p>Note moyenne</p></div>
+                    <div class="stat-icon orange"><i data-lucide="credit-card"></i></div>
+                    <div class="stat-info"><h3 id="stat-revenus">0 HTG</h3><p>Revenus ce mois</p></div>
                 </div>
             </div>
 
             <div class="dashboard-grid">
                 <div class="admin-card">
-                    <div class="card-header"><h3><i data-lucide="bar-chart-2"></i> Revenus Mensuels</h3></div>
-                    <div class="card-body"><div class="chart-container"><p>Graphique des revenus sur 12 mois</p></div></div>
+                    <div class="card-header"><h3><i data-lucide="bar-chart-2"></i> Paiements par Statut</h3></div>
+                    <div class="card-body">
+                        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            <div class="stat-card">
+                                <div class="stat-icon green"><i data-lucide="check-circle"></i></div>
+                                <div class="stat-info"><h3 id="stat-payes">0</h3><p>Payés</p></div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon orange"><i data-lucide="clock"></i></div>
+                                <div class="stat-info"><h3 id="stat-attente">0</h3><p>En attente</p></div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon red"><i data-lucide="alert-circle"></i></div>
+                                <div class="stat-info"><h3 id="stat-retard">0</h3><p>En retard</p></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="admin-card">
-                    <div class="card-header"><h3><i data-lucide="pie-chart"></i> Répartition par Type</h3></div>
-                    <div class="card-body"><div class="chart-container"><p>Graphique circulaire des propriétés</p></div></div>
-                </div>
-            </div>
-
-            <div class="dashboard-grid" style="margin-top: 24px;">
-                <div class="admin-card">
-                    <div class="card-header"><h3><i data-lucide="map-pin"></i> Répartition Géographique</h3></div>
-                    <div class="card-body"><div class="chart-container"><p>Carte des propriétés par zone</p></div></div>
-                </div>
-                <div class="admin-card">
-                    <div class="card-header"><h3><i data-lucide="activity"></i> Taux de Conversion</h3></div>
-                    <div class="card-body"><div class="chart-container"><p>Graphique de conversion visiteurs/locataires</p></div></div>
+                    <div class="card-header"><h3><i data-lucide="pie-chart"></i> Contrats</h3></div>
+                    <div class="card-body">
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i data-lucide="file-text"></i></div>
+                            <div class="stat-info"><h3 id="stat-contrats">0</h3><p>Contrats actifs</p></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

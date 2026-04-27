@@ -1,128 +1,67 @@
-import { supabase } from '../supabase-client.js';
+import { apiClient } from '../api-client.js';
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
-    await checkAuth();
+    checkAuth();
     await loadStats();
     setupEventListeners();
 });
 
 // Check auth
-async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-        window.location.href = '../login.html';
-        return;
-    }
-    
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        /* .eq('id', user.id) - TODO: filter nan server */
-        [0];
-    
-    if (profile?.role !== 'admin') {
-        window.location.href = '../index.html';
-        return;
-    }
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return; }
+    if (user.role !== 'admin') { window.location.href = '../index.html'; }
 }
 
 // Load all statistics
 async function loadStats() {
     try {
-        // Get all stats in parallel
-        const [
-            totalProprietaires,
-            totalLocataires,
-            totalProprietes,
-            proprietesDisponibles,
-            proprietesLouees,
-            contratsActifs,
-            paiementsEnAttente,
-            ticketsOuverts,
-            revenusMensuels,
-            revenusTotaux
-        ] = await Promise.all([
-            getCount('proprietaires'),
-            getCount('locataires'),
-            getCount('proprietes'),
-            getCount('proprietes', 'statut', 'disponible'),
-            getCount('proprietes', 'statut', 'loue'),
-            getCount('contrats', 'statut', 'actif'),
-            getCount('paiements', 'statut', 'en_attente'),
-            getCount('tickets_support', 'statut', 'ouvert'),
-            getRevenusMensuels(),
-            getRevenusTotaux()
+        // Load all data from API
+        const [proprietes, locataires, proprietaires, paiements, contrats] = await Promise.all([
+            apiClient.get('/properties').catch(() => []),
+            apiClient.get('/locataires').catch(() => []),
+            apiClient.get('/admin/proprietaires').catch(() => []),
+            apiClient.get('/paiements/stats').catch(() => ({ payes: 0, en_attente: 0, en_retard: 0, revenus_mois: 0, devise: 'HTG' })),
+            apiClient.get('/admin/contrats').catch(() => [])
         ]);
 
-        // Calculate occupancy rate
-        const tauxOccupation = totalProprietes > 0 
-            ? Math.round((proprietesLouees / totalProprietes) * 100) 
-            : 0;
+        // Update main stats
+        setEl('stat-proprietes', proprietes.length || 0);
+        setEl('stat-locataires', locataires.length || 0);
+        setEl('stat-proprietaires', proprietaires.length || 0);
+        setEl('stat-revenus', (paiements.revenus_mois || 0) + ' ' + (paiements.devise || 'HTG'));
 
-        // Calculate growth (simplified - would need historical data)
-        const croissance = '+23%'; // Placeholder
+        // Update payment stats
+        setEl('stat-payes', paiements.payes || 0);
+        setEl('stat-attente', paiements.en_attente || 0);
+        setEl('stat-retard', paiements.en_retard || 0);
 
-        // Update stat cards
-        updateStatCard(0, `${croissance}`, 'Croissance annuelle');
-        updateStatCard(1, `$${revenusTotaux.toLocaleString()}K`, 'Revenus totaux');
-        updateStatCard(2, `${tauxOccupation}%`, 'Taux d\'occupation');
-        updateStatCard(3, '4.8', 'Note moyenne');
-
-        // Update detailed charts
-        updateRevenueChart(revenusMensuels);
-        updateTypeChart(totalProprietes, proprietesDisponibles, proprietesLouees);
-        updateGeographicChart();
-        updateConversionChart(totalLocataires, contratsActifs);
+        // Update contracts count
+        const activeContrats = contrats.filter(c => c.statut === 'actif').length;
+        setEl('stat-contrats', activeContrats);
 
     } catch (error) {
         console.error('Error loading stats:', error);
         showToast('Erreur lors du chargement des statistiques', 'error');
+        
+        // Set fallback values
+        setEl('stat-proprietes', '0');
+        setEl('stat-locataires', '0');
+        setEl('stat-proprietaires', '0');
+        setEl('stat-revenus', '0 HTG');
+        setEl('stat-payes', '0');
+        setEl('stat-attente', '0');
+        setEl('stat-retard', '0');
+        setEl('stat-contrats', '0');
     }
 }
 
-// Get count with optional filter
-async function getCount(table, column = null, value = null) {
-    let query = supabase.from(table);
-    
-    if (column && value) {
-        query = query.eq(column, value);
-    }
-
-    const { count } = await query;
-    return count || 0;
-}
-
-// Get monthly revenue
-async function getRevenusMensuels() {
-    const { data } = await supabase
-        .from('paiements')
-        .select('montant_total')
-        /* .eq('statut', 'paye') - TODO: filter nan server */
-        .gte('date_paiement', new Date(new Date().setDate(1)).toISOString());
-
-    return data?.reduce((sum, p) => sum + (p.montant_total || 0), 0) || 0;
-}
-
-// Get total revenue
-async function getRevenusTotaux() {
-    const { data } = await supabase
-        .from('paiements')
-        .select('montant_total')
-        /* .eq('statut', 'paye') - TODO: filter nan server */;
-
-    return (data?.reduce((sum, p) => sum + (p.montant_total || 0), 0) || 0) / 1000;
-}
-
-// Update stat card display
-function updateStatCard(index, value, label) {
-    const statCards = document.querySelectorAll('.stats-grid .stat-card h3');
-    const labels = document.querySelectorAll('.stats-grid .stat-card p');
-    
-    if (statCards[index] && labels[index]) {
-        statCards[index].textContent = value;
-        labels[index].textContent = label;
-    }
+// Helper to set element text
+function setEl(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
 }
 
 // Update revenue chart (placeholder for Chart.js integration)
