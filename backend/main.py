@@ -768,42 +768,42 @@ def get_proprietaires(db: Session = Depends(database.get_db)):
 # ─────────────────────────────────────────────
 # ADMIN SETUP ENDPOINT (for Render free tier - no shell access)
 # ─────────────────────────────────────────────
+class SetupAdminRequest(BaseModel):
+    secret: str
+    email: str = "admin@experimmo.com"
+    password: str = "Admin@Exp2024!"
+    full_name: str = "Administrateur EXPERIMMO"
+
 @app.post("/setup/admin")
-def setup_admin(
-    secret: str,
-    email: str = "admin@experimmo.com",
-    password: str = "Admin@Exp2024!",
-    full_name: str = "Administrateur EXPERIMMO",
-    db: Session = Depends(database.get_db)
-):
+def setup_admin(payload: SetupAdminRequest, db: Session = Depends(database.get_db)):
     """
     Endpoint to create or reset admin user.
     Requires SECRET_KEY as 'secret' parameter for security.
     """
     expected_secret = os.getenv("SECRET_KEY", "dev-secret-key")
-    if secret != expected_secret:
+    if payload.secret != expected_secret:
         raise HTTPException(status_code=403, detail="Invalid secret key")
     
     # Check if admin exists
-    existing = db.query(models.User).filter(models.User.email == email).first()
+    existing = db.query(models.User).filter(models.User.email == payload.email).first()
     
     if existing:
         # Reset password
-        existing.hashed_password = auth.get_password_hash(password)
+        existing.hashed_password = auth.get_password_hash(payload.password)
         db.commit()
         return {
             "message": "Admin password reset successfully",
-            "email": email,
-            "password": password,
+            "email": payload.email,
+            "password": payload.password,
             "action": "password_reset"
         }
     
     # Create new admin
     user = models.User(
         id=str(uuid.uuid4()),
-        email=email,
-        hashed_password=auth.get_password_hash(password),
-        full_name=full_name,
+        email=payload.email,
+        hashed_password=auth.get_password_hash(payload.password),
+        full_name=payload.full_name,
         role="admin",
         is_active=True
     )
@@ -814,7 +814,7 @@ def setup_admin(
     # Create profile
     profile = models.Profile(
         id=user.id,
-        full_name=full_name,
+        full_name=payload.full_name,
         role="admin"
     )
     db.add(profile)
@@ -822,8 +822,8 @@ def setup_admin(
     
     return {
         "message": "Admin created successfully",
-        "email": email,
-        "password": password,
+        "email": payload.email,
+        "password": payload.password,
         "action": "created"
     }
 
