@@ -1,53 +1,69 @@
-import CONFIG from '../config.js';
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from '../api-client.js';
 
 let allOps = [];
 let currentUser = null;
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
-    currentUser = user;
-
-    document.getElementById('btn-logout')?.addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
-        window.location.href = '../login.html';
-    });
-
-    await loadBienOptions(user.id);
-    await loadOperations(user.id);
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadBienOptions();
+    loadOperations();
     setupEventListeners();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    setupLogout();
 });
 
-async function loadBienOptions(userId) {
-    const select = document.getElementById('op-bien');
-    if (!select) return;
-    const { data } = await supabaseClient
-        .from('proprietes')
-        .select('id_propriete, titre, code_propriete')
-        /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */
-        ;
-    select.innerHTML = '<option value="">-- Choisir un bien --</option>' +
-        (data || []).map(p => `<option value="${p.id_propriete}">${esc(p.titre)} (${p.code_propriete || '-'})</option>`).join('');
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) {
+        window.location.href = '../login.html';
+        return;
+    }
+    if (user.role !== 'gestionnaire' && user.role !== 'admin') {
+        window.location.href = '../index.html';
+    }
+    currentUser = user;
 }
 
-async function loadOperations(userId) {
-    const tbody = document.getElementById('ops-tbody');
-    try {
-        const { data, error } = await supabaseClient
-            .from('operations')
-            .select('*, proprietes(titre, code_propriete, gestionnaire_responsable)')
-            ;
+function setupLogout() {
+    document.getElementById('btn-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = '../login.html';
+    });
+}
 
-        allOps = (data || []).filter(op => op.proprietes?.gestionnaire_responsable === userId);
+async function loadBienOptions() {
+    const select = document.getElementById('op-bien');
+    if (!select) return;
+    try {
+        const data = await apiClient.get('/properties').catch(() => []);
+        select.innerHTML = '<option value="">-- Choisir un bien --</option>' +
+            (data || []).map(p => `<option value="${p.id}">${p.title || p.titre || 'Sans titre'} (${p.code || p.code_propriete || '-'})</option>`).join('');
+    } catch (err) {
+        console.error('loadBienOptions:', err);
+    }
+}
+
+async function loadOperations() {
+    const tbody = document.getElementById('ops-tbody');
+    if (!tbody) return;
+    
+    // Opérations endpoint pa disponib ankò, montre mesaj
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#9ca3af;">Module opérations en cours de développement</td></tr>';
+    setEl('count-ops', '0 opération(s)');
+    
+    /*
+    // Lè API a prè:
+    try {
+        const data = await apiClient.get('/operations').catch(() => []);
+        allOps = data || [];
         setEl('count-ops', allOps.length + ' opération(s)');
         renderTable(allOps);
     } catch (err) {
         console.error('loadOperations:', err);
         if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:red;padding:20px;">Erreur de chargement</td></tr>';
     }
+    */
 }
 
 function renderTable(data) {

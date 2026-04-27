@@ -1,42 +1,43 @@
-import CONFIG from '../config.js';
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from '../api-client.js';
 
 let allLocataires = [];
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
-
-    document.getElementById('btn-logout')?.addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
-        window.location.href = '../login.html';
-    });
-
-    await loadLocataires(user.id);
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadLocataires();
+    setupLogout();
     setupFilters();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
 });
 
-async function loadLocataires(userId) {
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) {
+        window.location.href = '../login.html';
+        return;
+    }
+    if (user.role !== 'gestionnaire' && user.role !== 'admin') {
+        window.location.href = '../index.html';
+    }
+}
+
+function setupLogout() {
+    document.getElementById('btn-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = '../login.html';
+    });
+}
+
+async function loadLocataires() {
     const tbody = document.getElementById('locataires-tbody');
     try {
-        const { data, error } = await supabaseClient
-            .from('locataires')
-            .select('id_locataire, nom, prenom, code_locataire, user:profiles!locataires_user_id_fkey(full_name, email, phone)')
-            /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */
-            ;
-
+        const data = await apiClient.get('/locataires').catch(() => []);
         allLocataires = data || [];
 
-        const { count: contrats } = await supabaseClient
-            .from('contrats')/* .eq('statut', 'actif') - TODO: filter nan server */;
-        const { count: retards } = await supabaseClient
-            .from('paiements')/* .eq('statut', 'en_retard') - TODO: filter nan server */;
-
         setEl('stat-total', allLocataires.length);
-        setEl('stat-contrats', contrats || 0);
-        setEl('stat-retards', retards || 0);
+        setEl('stat-contrats', '0');
+        setEl('stat-retards', '0');
 
         renderTable(allLocataires);
     } catch (err) {

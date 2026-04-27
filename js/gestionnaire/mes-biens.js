@@ -1,32 +1,38 @@
-import CONFIG from '../config.js';
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from '../api-client.js';
 
 let allBiens = [];
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
-
-    document.getElementById('btn-logout')?.addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
-        window.location.href = '../login.html';
-    });
-
-    await loadBiens(user.id);
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadBiens();
+    setupLogout();
     setupFilters();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
 });
 
-async function loadBiens(userId) {
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) {
+        window.location.href = '../login.html';
+        return;
+    }
+    if (user.role !== 'gestionnaire' && user.role !== 'admin') {
+        window.location.href = '../index.html';
+    }
+}
+
+function setupLogout() {
+    document.getElementById('btn-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = '../login.html';
+    });
+}
+
+async function loadBiens() {
     const tbody = document.getElementById('biens-tbody');
     try {
-        const { data, error } = await supabaseClient
-            .from('proprietes')
-            .select('id_propriete, code_propriete, titre, adresse, type_propriete, statut, statut_bien, type_mandat, zones(nom), proprietaire:proprietaires(code_proprietaire, user:profiles!proprietaires_user_id_fkey(full_name))')
-            /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */
-            ;
-
+        const data = await apiClient.get('/properties').catch(() => []);
         allBiens = data || [];
 
         setEl('stat-total', allBiens.length);

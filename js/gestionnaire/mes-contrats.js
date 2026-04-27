@@ -1,37 +1,39 @@
-import CONFIG from '../config.js';
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from '../api-client.js';
 
 let allContrats = [];
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
-
-    document.getElementById('btn-logout')?.addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
-        window.location.href = '../login.html';
-    });
-
-    await loadContrats(user.id);
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadContrats();
+    setupLogout();
     setupFilters();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
 });
 
-async function loadContrats(userId) {
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) {
+        window.location.href = '../login.html';
+        return;
+    }
+    if (user.role !== 'gestionnaire' && user.role !== 'admin') {
+        window.location.href = '../index.html';
+    }
+}
+
+function setupLogout() {
+    document.getElementById('btn-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = '../login.html';
+    });
+}
+
+async function loadContrats() {
     const tbody = document.getElementById('contrats-tbody');
     try {
-        const { data, error } = await supabaseClient
-            .from('contrats')
-            .select(`
-                id_contrat, reference, code_contrat, date_debut, date_fin, loyer_mensuel, statut,
-                propriete:proprietes(titre, code_propriete, gestionnaire_responsable),
-                locataire:locataires(code_locataire, user:profiles!locataires_user_id_fkey(full_name)),
-                proprietaire:proprietaires(code_proprietaire, user:profiles!proprietaires_user_id_fkey(full_name))
-            `)
-            ;
-
-        allContrats = (data || []).filter(c => c.propriete?.gestionnaire_responsable === userId);
+        const data = await apiClient.get('/admin/contrats').catch(() => []);
+        allContrats = data || [];
 
         const now = new Date();
         const in30 = new Date(); in30.setDate(in30.getDate() + 30);
