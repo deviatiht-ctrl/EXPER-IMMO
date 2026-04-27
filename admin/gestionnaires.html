@@ -29,13 +29,13 @@
         <nav class="sidebar-nav">
              <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
              <div class="sidebar-section-label">Dossiers</div>
-             <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
+             <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>PropriÃ©taires</span></a>
              <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
-             <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
+             <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>PropriÃ©tÃ©s</span></a>
              <div class="sidebar-section-label">Finances</div>
              <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i> <span>Contrats</span></a>
              <a href="paiements.html" class="nav-link"><i data-lucide="wallet"></i> <span>Paiements</span></a>
-             <div class="sidebar-section-label">Système</div>
+             <div class="sidebar-section-label">SystÃ¨me</div>
              <a href="gestionnaires.html" class="nav-link active"><i data-lucide="shield-check"></i> <span>Gestionnaires</span></a>
         </nav>
     </aside>
@@ -44,11 +44,11 @@
         <header class="admin-header">
             <div>
                 <h1>Gestionnaires & Personnel</h1>
-                <p class="header-subtitle">Gérez les accès administratifs et les agents</p>
+                <p class="header-subtitle">GÃ©rez les accÃ¨s administratifs et les agents</p>
             </div>
             <div class="header-actions">
                 <button class="btn-primary" onclick="openModal('add-gestionnaire')">
-                    <i data-lucide="plus"></i> <span>Ajouter un employé</span>
+                    <i data-lucide="plus"></i> <span>Ajouter un employÃ©</span>
                 </button>
             </div>
         </header>
@@ -65,8 +65,8 @@
                                 <tr>
                                     <th>Nom Complet</th>
                                     <th>Email</th>
-                                    <th>Rôle</th>
-                                    <th>Dernière connexion</th>
+                                    <th>RÃ´le</th>
+                                    <th>DerniÃ¨re connexion</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -84,13 +84,13 @@
     <div id="add-gestionnaire" class="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
         <div class="modal-content" style="background:#fff;border-radius:16px;padding:32px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
             <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-                <h3 style="margin:0;font-size:1.2rem;">Ajouter un employé</h3>
+                <h3 style="margin:0;font-size:1.2rem;">Ajouter un employÃ©</h3>
                 <button onclick="closeModal('add-gestionnaire')" style="background:none;border:none;cursor:pointer;font-size:1.4rem;color:#64748b;">&times;</button>
             </div>
             <form id="gest-form">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
                     <div class="form-group">
-                        <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Prénom *</label>
+                        <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">PrÃ©nom *</label>
                         <input type="text" id="gest-prenom" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
                     </div>
                     <div class="form-group">
@@ -104,16 +104,16 @@
                 </div>
                 <div class="form-group" style="margin-bottom:12px;">
                     <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Mot de passe temporaire *</label>
-                    <input type="password" id="gest-password" required minlength="8" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;" placeholder="Minimum 8 caractères">
-                    <small style="color:#64748b;font-size:11px;">L'employé devra changer ce mot de passe lors de sa première connexion.</small>
+                    <input type="password" id="gest-password" required minlength="8" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;" placeholder="Minimum 8 caractÃ¨res">
+                    <small style="color:#64748b;font-size:11px;">L'employÃ© devra changer ce mot de passe lors de sa premiÃ¨re connexion.</small>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
                     <div class="form-group">
-                        <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Téléphone</label>
+                        <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">TÃ©lÃ©phone</label>
                         <input type="tel" id="gest-phone" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;" placeholder="+509...">
                     </div>
                     <div class="form-group">
-                        <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Rôle *</label>
+                        <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">RÃ´le *</label>
                         <select id="gest-role" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
                             <option value="gestionnaire">Gestionnaire</option>
                             <option value="assistante">Assistante</option>
@@ -123,7 +123,7 @@
                 </div>
                 <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
                     <button type="button" onclick="closeModal('add-gestionnaire')" style="padding:10px 20px;border:1px solid #e2e8f0;background:#fff;border-radius:8px;cursor:pointer;font-size:14px;">Annuler</button>
-                    <button type="submit" class="btn-primary" style="padding:10px 24px;background:#c41e3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">Créer le compte</button>
+                    <button type="submit" class="btn-primary" style="padding:10px 24px;background:#c41e3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">CrÃ©er le compte</button>
                 </div>
             </form>
         </div>

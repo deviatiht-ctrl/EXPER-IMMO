@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         div.innerHTML = `
             <div class="prop-img-wrap">
-                <img src="${mainImg}" alt="${prop.titre}" loading="lazy">
+                <img src="${mainImg}" alt="${prop.titre}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800'">
                 <div class="prop-badge-group">
                     <span class="badge-statut badge-${prop.type_transaction}">
                         <i data-lucide="tag"></i> ${prop.type_transaction === 'vente' ? 'Vente' : 'Location'}

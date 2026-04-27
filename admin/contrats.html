@@ -28,8 +28,8 @@
         </a>
         <nav class="sidebar-nav">
             <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
-            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
-            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
+            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>PropriÃ©tÃ©s</span></a>
+            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>PropriÃ©taires</span></a>
             <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
             <a href="contrats.html" class="nav-link active"><i data-lucide="file-text"></i> <span>Contrats</span></a>
             <a href="paiements.html" class="nav-link"><i data-lucide="credit-card"></i> <span>Paiements</span></a>
@@ -37,10 +37,10 @@
             <a href="gestionnaires.html" class="nav-link"><i data-lucide="shield-check"></i> <span>Gestionnaires</span></a>
             <a href="contacts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Messages</span></a>
             <a href="statistiques.html" class="nav-link"><i data-lucide="bar-chart-3"></i> <span>Statistiques</span></a>
-            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i> <span>Paramètres</span></a>
+            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i> <span>ParamÃ¨tres</span></a>
         </nav>
         <div class="sidebar-footer">
-            <button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button>
+            <button id="btn-logout"><i data-lucide="log-out"></i>DÃ©connexion</button>
         </div>
     </aside>
 
@@ -76,10 +76,10 @@
                         <table class="admin-table">
                             <thead>
                                 <tr>
-                                    <th>Référence</th>
-                                    <th>Propriétaire</th>
+                                    <th>RÃ©fÃ©rence</th>
+                                    <th>PropriÃ©taire</th>
                                     <th>Locataire</th>
-                                    <th>Propriété</th>
+                                    <th>PropriÃ©tÃ©</th>
                                     <th>Loyer</th>
                                     <th>Statut</th>
                                     <th>Codes</th>
@@ -105,10 +105,10 @@
             <form id="contrat-form">
                 <p style="font-size:13px;color:#64748b;margin-bottom:16px;background:#f0f9ff;padding:12px;border-radius:8px;">
                     <i data-lucide="info" style="vertical-align:middle;width:14px;height:14px;"></i>
-                    Après création, des <strong>codes d'inscription</strong> seront générés pour le propriétaire et le locataire. Ces codes leur permettront de créer leur compte.
+                    AprÃ¨s crÃ©ation, des <strong>codes d'inscription</strong> seront gÃ©nÃ©rÃ©s pour le propriÃ©taire et le locataire. Ces codes leur permettront de crÃ©er leur compte.
                 </p>
 
-                <h4 style="font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;">Propriétaire</h4>
+                <h4 style="font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;">PropriÃ©taire</h4>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
                     <div>
                         <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Nom complet *</label>
@@ -132,11 +132,11 @@
                     </div>
                 </div>
 
-                <h4 style="font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;">Propriété & Finances</h4>
+                <h4 style="font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;">PropriÃ©tÃ© & Finances</h4>
                 <div style="margin-bottom:12px;">
-                    <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Propriété</label>
+                    <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">PropriÃ©tÃ©</label>
                     <select id="ctr-propriete" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
-                        <option value="">- Sélectionner une propriété -</option>
+                        <option value="">- SÃ©lectionner une propriÃ©tÃ© -</option>
                     </select>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
@@ -158,7 +158,7 @@
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
                     <div>
-                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Date début *</label>
+                        <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Date dÃ©but *</label>
                         <input type="date" id="ctr-date-debut" required style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
                     </div>
                     <div>
@@ -172,7 +172,7 @@
                 </div>
                 <div style="display:flex;gap:10px;justify-content:flex-end;">
                     <button type="button" onclick="closeModal('add-contrat')" style="padding:10px 20px;border:1px solid #e2e8f0;background:#fff;border-radius:8px;cursor:pointer;font-size:14px;">Annuler</button>
-                    <button type="submit" style="padding:10px 24px;background:#c41e3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">Créer le contrat</button>
+                    <button type="submit" style="padding:10px 24px;background:#c41e3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">CrÃ©er le contrat</button>
                 </div>
             </form>
         </div>
@@ -182,13 +182,13 @@
     <div id="codes-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1001;align-items:center;justify-content:center;">
         <div style="background:#fff;border-radius:16px;padding:32px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-                <h3 style="margin:0;font-size:1.2rem;">Codes d'inscription générés</h3>
+                <h3 style="margin:0;font-size:1.2rem;">Codes d'inscription gÃ©nÃ©rÃ©s</h3>
                 <button onclick="closeModal('codes-modal')" style="background:none;border:none;cursor:pointer;font-size:1.5rem;color:#64748b;">&times;</button>
             </div>
-            <p style="font-size:13px;color:#64748b;margin-bottom:20px;">Transmettez ces codes aux bénéficiaires. Chaque code est unique et à usage unique.</p>
+            <p style="font-size:13px;color:#64748b;margin-bottom:20px;">Transmettez ces codes aux bÃ©nÃ©ficiaires. Chaque code est unique et Ã  usage unique.</p>
 
             <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:16px;margin-bottom:12px;">
-                <div style="font-size:11px;font-weight:700;color:#0369a1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Propriétaire</div>
+                <div style="font-size:11px;font-weight:700;color:#0369a1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">PropriÃ©taire</div>
                 <div id="code-prop-name" style="font-weight:600;color:#1e293b;margin-bottom:4px;"></div>
                 <div style="display:flex;align-items:center;gap:8px;">
                     <code id="code-prop-val" style="font-size:1.5rem;font-weight:800;letter-spacing:4px;color:#0369a1;background:#e0f2fe;padding:8px 16px;border-radius:8px;flex:1;text-align:center;"></code>

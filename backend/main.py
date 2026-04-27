@@ -11,7 +11,10 @@ import uvicorn
 import os
 import uuid
 import shutil
+import base64
+import io
 from pathlib import Path
+from PIL import Image as PILImage
 from datetime import date
 from sqlalchemy import text
 
@@ -698,7 +701,8 @@ def _prop_dict(p: models.Propriete):
 # IMAGE UPLOAD
 # ─────────────────────────────────────────────
 ALLOWED_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
-MAX_SIZE = 10 * 1024 * 1024  # 10 MB
+MAX_SIZE = 8 * 1024 * 1024  # 8 MB
+MAX_DIMENSION = 1200  # resize to max 1200px wide
 
 @app.post("/upload/image")
 async def upload_image(
@@ -707,22 +711,33 @@ async def upload_image(
     db: Session = Depends(database.get_db)
 ):
     if file.content_type not in ALLOWED_TYPES:
-        raise HTTPException(status_code=400, detail="Type non supporté (JPG, PNG, WebP seulement)")
+        raise HTTPException(status_code=400, detail="Type non support\u00e9 (JPG, PNG, WebP seulement)")
 
     contents = await file.read()
     if len(contents) > MAX_SIZE:
-        raise HTTPException(status_code=400, detail="Fichier trop grand (max 10 MB)")
+        raise HTTPException(status_code=400, detail="Fichier trop grand (max 8 MB)")
 
-    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else "jpg"
-    filename = f"{uuid.uuid4()}.{ext}"
-    dest = UPLOAD_DIR / filename
+    try:
+        img = PILImage.open(io.BytesIO(contents))
+        if img.mode not in ("RGB", "RGBA"):
+            img = img.convert("RGB")
+        # Resize if larger than MAX_DIMENSION
+        w, h = img.size
+        if w > MAX_DIMENSION:
+            ratio = MAX_DIMENSION / w
+            img = img.resize((MAX_DIMENSION, int(h * ratio)), PILImage.LANCZOS)
+        elif h > MAX_DIMENSION:
+            ratio = MAX_DIMENSION / h
+            img = img.resize((int(w * ratio), MAX_DIMENSION), PILImage.LANCZOS)
+        # Convert to JPEG base64
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG", quality=82, optimize=True)
+        b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+        data_url = f"data:image/jpeg;base64,{b64}"
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Image invalide: {str(e)}")
 
-    with open(dest, "wb") as f:
-        f.write(contents)
-
-    base_url = os.getenv("BASE_URL") or os.getenv("RENDER_EXTERNAL_URL", "")
-    url = f"{base_url}/static/uploads/{filename}"
-    return {"url": url, "filename": filename}
+    return {"url": data_url, "filename": file.filename}
 
 # ─────────────────────────────────────────────
 # AGENTS & ZONES

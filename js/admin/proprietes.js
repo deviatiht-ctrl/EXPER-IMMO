@@ -76,8 +76,9 @@ function renderProps(props) {
         if (mainImg && mainImg.startsWith('/static/')) mainImg = API_URL + mainImg;
         var price = p.prix ? (p.devise || 'USD') + ' ' + Number(p.prix).toLocaleString('fr-FR') : '&#8212;';
         var statut = p.statut_bien || p.statut || '&#8212;';
+        var fallbackThumb = 'this.onerror=null;this.style.cssText="width:50px;height:40px;border-radius:6px;background:#f1f5f9;"';
         var imgCell = mainImg
-            ? '<img src="' + mainImg + '" class="table-thumb" style="width:50px;height:40px;object-fit:cover;border-radius:6px;">'
+            ? '<img src="' + mainImg + '" class="table-thumb" style="width:50px;height:40px;object-fit:cover;border-radius:6px;" onerror="' + fallbackThumb + '">'
             : '<div style="width:50px;height:40px;border-radius:6px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;"><i data-lucide="image" style="width:16px;"></i></div>';
         return '<tr>' +
             '<td>' + imgCell + '</td>' +
