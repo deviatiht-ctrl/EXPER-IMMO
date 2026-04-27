@@ -31,12 +31,18 @@ async function loadPaiements() {
 async function loadStats() {
     try {
         const stats = await apiClient.get('/paiements/stats');
-        setEl('stat-revenus-pay', stats.revenus_mois + ' ' + stats.devise);
+        console.log('Paiements stats:', stats);
+        setEl('stat-revenus-pay', (stats.revenus_mois || 0) + ' ' + (stats.devise || 'HTG'));
         setEl('stat-payes', stats.payes || 0);
         setEl('stat-attente-pay', stats.en_attente || 0);
         setEl('stat-retard-pay', stats.en_retard || 0);
     } catch (err) { 
-        console.error('loadStats:', err); 
+        console.error('loadStats error:', err);
+        // Fallback values
+        setEl('stat-revenus-pay', '0 HTG');
+        setEl('stat-payes', '0');
+        setEl('stat-attente-pay', '0');
+        setEl('stat-retard-pay', '0');
     }
 }
 
