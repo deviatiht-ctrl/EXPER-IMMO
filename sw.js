@@ -3,8 +3,8 @@
 // Version 1.0.0
 // ============================================================
 
-const CACHE_NAME = 'experImmo-v4';
-const STATIC_CACHE = 'experImmo-static-v4';
+const CACHE_NAME = 'experImmo-v5';
+const STATIC_CACHE = 'experImmo-static-v5';
 
 // App shell : fichiers à mettre en cache pour le mode hors-ligne
 const APP_SHELL = [

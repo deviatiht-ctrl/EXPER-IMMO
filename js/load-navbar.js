@@ -128,6 +128,12 @@ const navbarHTML = `
                 </div>
             </div>
 
+            <!-- CONNECTED: Direct Logout Button (always visible) -->
+            <a href="#" id="nav-logout-btn" title="Se déconnecter" style="display:none;align-items:center;gap:5px;padding:7px 13px;border-radius:50px;font-weight:600;font-size:12px;color:#dc2626;border:1.5px solid #dc2626;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#dc2626';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#dc2626'">
+                <i data-lucide="log-out" style="width:14px;height:14px;"></i>
+                <span class="nav-logout-text">Déconnexion</span>
+            </a>
+
             <!-- Mobile Menu Button -->
             <button class="btn-menu-mobile" id="btn-menu">
                 <i data-lucide="menu"></i>
@@ -342,9 +348,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
         }
 
+        // ── Show direct logout button ──────────────────────────
+        const navLogoutBtn = el('nav-logout-btn');
+        if (navLogoutBtn) navLogoutBtn.style.display = 'flex';
+
         // ── Logout ─────────────────────────────────────────────
         el('btn-logout')?.addEventListener('click', doLogout);
         el('sidebar-logout')?.addEventListener('click', doLogout);
+        navLogoutBtn?.addEventListener('click', doLogout);
 
     } else {
         // Not logged in - ensure login buttons visible
