@@ -345,8 +345,10 @@ class NavbarController {
             e.preventDefault();
             
             try {
-                const { error } = localStorage.removeItem('exper_immo_token'); localStorage.removeItem('exper_immo_user');
-                window.location.href = 'index.html';
+                localStorage.removeItem('exper_immo_token');
+                localStorage.removeItem('exper_immo_user');
+                const p = ['admin','gestionnaire','locataire','proprietaire'].some(f => window.location.pathname.includes('/'+f+'/')) ? '../' : '';
+                window.location.href = p + 'login.html';
             } catch (err) {
                 console.error('Logout error:', err);
                 alert('Erreur lors de la déconnexion');

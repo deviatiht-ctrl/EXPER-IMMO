@@ -3,14 +3,18 @@
  * Charge le navbar moderne sur toutes les pages
  */
 
-// Déterminer le préfixe du chemin (si on est dans un sous-dossier)
-const pathDepth = window.location.pathname.split('/').length - (window.location.pathname.endsWith('/') ? 1 : 0);
-const isSubdir = pathDepth > 2 || (pathDepth === 2 && !window.location.pathname.startsWith('/index.html') && window.location.pathname.includes('/'));
-// Plus simple: si on est dans admin/, gestionnaire/, locataire/ ou proprietaire/
 const folders = ['admin', 'gestionnaire', 'locataire', 'proprietaire', 'properties'];
 const currentPath = window.location.pathname;
 const needsPrefix = folders.some(f => currentPath.includes('/' + f + '/'));
 const prefix = needsPrefix ? '../' : '';
+
+// Role config: dashboard URL, icon, label
+const ROLE_CONFIG = {
+    admin:        { href: 'admin/dashboard.html',        icon: 'shield',           label: 'Admin',          color: '#C53636' },
+    gestionnaire: { href: 'gestionnaire/dashboard.html', icon: 'settings-2',       label: 'Gestionnaire',   color: '#7c3aed' },
+    proprietaire: { href: 'proprietaire/index.html',     icon: 'home',             label: 'Propriétaire',   color: '#0ea5e9' },
+    locataire:    { href: 'locataire/index.html',        icon: 'key',              label: 'Locataire',      color: '#10b981' },
+};
 
 const navbarHTML = `
 <!-- NAVBAR MODERNE -->
@@ -40,14 +44,8 @@ const navbarHTML = `
                 <i data-lucide="search"></i>
             </button>
 
-            <!-- Favorites -->
-            <button class="nav-icon-btn" id="btn-favoris" title="Mes favoris">
-                <i data-lucide="heart"></i>
-                <span class="nav-badge" id="fav-count" style="display:none">0</span>
-            </button>
-
             <!-- NOT CONNECTED: Login/Register Buttons -->
-            <div id="nav-not-connected" data-auth="visible">
+            <div id="nav-not-connected" style="display:flex;gap:8px;align-items:center;">
                 <a href="${prefix}login.html" class="nav-cta nav-cta-secondary">
                     <i data-lucide="log-in"></i>
                     <span>Connexion</span>
@@ -58,80 +56,77 @@ const navbarHTML = `
                 </a>
             </div>
 
-            <!-- CONNECTED: User Menu -->
-            <div class="nav-user-menu" id="nav-connected" data-auth="hidden" style="display:none">
-                <button class="nav-user-btn" id="nav-user-toggle">
-                    <div class="nav-user-avatar" id="nav-user-avatar">U</div>
-                    <span class="nav-user-name" id="nav-user-name">Utilisateur</span>
-                    <i data-lucide="chevron-down"></i>
+            <!-- CONNECTED: Role Dashboard Button (prominent) -->
+            <a href="#" id="nav-role-btn" style="display:none;align-items:center;gap:6px;padding:8px 16px;border-radius:50px;font-weight:600;font-size:13px;color:#fff;text-decoration:none;transition:opacity .2s;" title="Mon espace">
+                <i data-lucide="layout-dashboard" id="nav-role-icon" style="width:16px;height:16px;"></i>
+                <span id="nav-role-label">Dashboard</span>
+            </a>
+
+            <!-- CONNECTED: User Avatar + Dropdown -->
+            <div class="nav-user-menu" id="nav-connected" style="display:none;position:relative;">
+                <button class="nav-user-btn" id="nav-user-toggle" style="display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:50px;">
+                    <div class="nav-user-avatar" id="nav-user-avatar" style="width:36px;height:36px;border-radius:50%;background:#C53636;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">U</div>
+                    <i data-lucide="chevron-down" style="width:14px;height:14px;color:#64748b;"></i>
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div class="nav-dropdown" id="nav-dropdown">
-                    <div class="nav-dropdown-header">
-                        <strong id="dropdown-name">Utilisateur</strong>
-                        <span id="dropdown-role">Locataire</span>
+                <div class="nav-dropdown" id="nav-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 8px);background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.12);min-width:220px;z-index:9999;overflow:hidden;">
+                    <div style="padding:16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
+                        <strong id="dropdown-name" style="display:block;font-size:14px;color:#1e293b;">Utilisateur</strong>
+                        <span id="dropdown-role" style="font-size:12px;color:#64748b;"></span>
                     </div>
 
                     <!-- Links for Proprietaire -->
-                    <div id="menu-proprietaire" style="display:none">
-                        <a href="${prefix}proprietaire/index.html">
-                            <i data-lucide="layout-dashboard"></i> Mon dashboard
+                    <div id="menu-proprietaire" style="display:none;">
+                        <a href="${prefix}proprietaire/index.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="layout-dashboard" style="width:15px;"></i> Mon dashboard
                         </a>
-                        <a href="${prefix}proprietaire/mes-proprietes.html">
-                            <i data-lucide="building"></i> Mes propriétés
-                        </a>
-                        <a href="${prefix}propriete-form.html">
-                            <i data-lucide="plus-circle"></i> Ajouter un bien
+                        <a href="${prefix}proprietaire/mes-proprietes.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="building" style="width:15px;"></i> Mes propriétés
                         </a>
                     </div>
 
                     <!-- Links for Locataire -->
-                    <div id="menu-locataire" style="display:none">
-                        <a href="${prefix}locataire/index.html">
-                            <i data-lucide="layout-dashboard"></i> Mon dashboard
+                    <div id="menu-locataire" style="display:none;">
+                        <a href="${prefix}locataire/index.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="layout-dashboard" style="width:15px;"></i> Mon dashboard
                         </a>
-                        <a href="${prefix}locataire/mes-paiements.html">
-                            <i data-lucide="credit-card"></i> Mes paiements
+                        <a href="${prefix}locataire/mes-paiements.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="credit-card" style="width:15px;"></i> Mes paiements
                         </a>
-                        <a href="${prefix}tickets.html">
-                            <i data-lucide="ticket"></i> Support
+                        <a href="${prefix}tickets.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="ticket" style="width:15px;"></i> Support
+                        </a>
+                    </div>
+
+                    <!-- Links for Gestionnaire -->
+                    <div id="menu-gestionnaire" style="display:none;">
+                        <a href="${prefix}gestionnaire/dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="settings-2" style="width:15px;"></i> Dashboard Gest.
                         </a>
                     </div>
 
                     <!-- Links for Admin -->
-                    <div id="menu-admin" style="display:none">
-                        <a href="${prefix}admin/dashboard.html">
-                            <i data-lucide="shield"></i> Administration
-                            <span class="nav-admin-badge">Admin</span>
+                    <div id="menu-admin" style="display:none;">
+                        <a href="${prefix}admin/dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#C53636;font-weight:600;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background=''">
+                            <i data-lucide="shield" style="width:15px;"></i> Administration
                         </a>
-                        <a href="${prefix}admin/proprietes.html">
-                            <i data-lucide="building-2"></i> Gestion propriétés
+                        <a href="${prefix}admin/proprietes.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="building-2" style="width:15px;"></i> Gestion propriétés
                         </a>
-                        <a href="${prefix}admin/agents.html">
-                            <i data-lucide="users"></i> Gestion agents
+                        <a href="${prefix}admin/contrats.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                            <i data-lucide="file-text" style="width:15px;"></i> Contrats
                         </a>
                     </div>
 
-                    <!-- Common Links -->
-                    <div class="nav-dropdown-divider"></div>
-                    <a href="${prefix}profil.html">
-                        <i data-lucide="user-cog"></i> Mon profil
-                    </a>
-                    <a href="${prefix}parametres.html">
-                        <i data-lucide="settings"></i> Paramètres
-                    </a>
-                    <div class="nav-dropdown-divider"></div>
-                    <a href="#" class="logout" id="btn-logout">
-                        <i data-lucide="log-out"></i> Déconnexion
-                    </a>
+                    <!-- Déconnexion -->
+                    <div style="border-top:1px solid #e2e8f0;margin-top:4px;">
+                        <a href="#" id="btn-logout" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:#dc2626;text-decoration:none;font-size:13px;font-weight:500;transition:background .15s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background=''">
+                            <i data-lucide="log-out" style="width:15px;"></i> Déconnexion
+                        </a>
+                    </div>
                 </div>
             </div>
-
-            <!-- Admin Quick Access (only for admin) -->
-            <a href="${prefix}admin/dashboard.html" class="nav-icon-btn" id="nav-admin-btn" title="Administration" style="display:none">
-                <i data-lucide="shield-check"></i>
-            </a>
 
             <!-- Mobile Menu Button -->
             <button class="btn-menu-mobile" id="btn-menu">
@@ -215,17 +210,17 @@ const navbarHTML = `
 
             <!-- Connected Links -->
             <div id="sidebar-menu-connected" style="display:none">
-                <a href="${prefix}proprietaire/index.html" id="sidebar-link-proprietaire" style="display:none">
-                    <i data-lucide="layout-dashboard"></i> Dashboard Propriétaire
-                </a>
-                <a href="${prefix}locataire/index.html" id="sidebar-link-locataire" style="display:none">
-                    <i data-lucide="layout-dashboard"></i> Dashboard Locataire
-                </a>
                 <a href="${prefix}admin/dashboard.html" id="sidebar-link-admin" style="display:none">
                     <i data-lucide="shield"></i> Administration
                 </a>
-                <a href="${prefix}profil.html">
-                    <i data-lucide="user-cog"></i> Mon profil
+                <a href="${prefix}gestionnaire/dashboard.html" id="sidebar-link-gestionnaire" style="display:none">
+                    <i data-lucide="settings-2"></i> Dashboard Gestionnaire
+                </a>
+                <a href="${prefix}proprietaire/index.html" id="sidebar-link-proprietaire" style="display:none">
+                    <i data-lucide="home"></i> Dashboard Propriétaire
+                </a>
+                <a href="${prefix}locataire/index.html" id="sidebar-link-locataire" style="display:none">
+                    <i data-lucide="key"></i> Dashboard Locataire
                 </a>
                 <div class="mobile-nav-divider"></div>
                 <a href="#" class="text-danger" id="sidebar-logout">
@@ -266,92 +261,97 @@ document.body.insertAdjacentHTML('afterbegin', navbarHTML);
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('exper_immo_token');
     const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
-    
+
+    const doLogout = (e) => {
+        if (e) e.preventDefault();
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = prefix + 'login.html';
+    };
+
     if (token && user.id) {
-        // User is logged in
-        const navNotConnected = document.getElementById('nav-not-connected');
-        const navConnected = document.getElementById('nav-connected');
-        const sidebarNotConnected = document.getElementById('sidebar-not-connected');
-        const sidebarConnected = document.getElementById('sidebar-connected');
-        const sidebarMenuConnected = document.getElementById('sidebar-menu-connected');
-        const bottomNavUser = document.getElementById('bottom-nav-user');
-        
-        // Hide login buttons, show user menu
-        if (navNotConnected) navNotConnected.style.display = 'none';
-        if (navConnected) navConnected.style.display = 'block';
-        
-        // Mobile sidebar
-        if (sidebarNotConnected) sidebarNotConnected.style.display = 'none';
-        if (sidebarConnected) sidebarConnected.style.display = 'block';
-        if (sidebarMenuConnected) sidebarMenuConnected.style.display = 'block';
-        
-        // Update user info
-        const userName = user.prenom || user.nom || user.email || 'Utilisateur';
-        const userRole = user.role || 'Utilisateur';
-        
-        const navUserName = document.getElementById('nav-user-name');
-        if (navUserName) navUserName.textContent = userName.split(' ')[0];
-        
-        const dropdownName = document.getElementById('dropdown-name');
-        if (dropdownName) dropdownName.textContent = userName;
-        
-        const dropdownRole = document.getElementById('dropdown-role');
-        if (dropdownRole) dropdownRole.textContent = userRole;
-        
-        const sidebarName = document.getElementById('sidebar-name');
-        if (sidebarName) sidebarName.textContent = userName.split(' ')[0];
-        
-        const sidebarRole = document.getElementById('sidebar-role');
-        if (sidebarRole) sidebarRole.textContent = userRole;
-        
-        // Update avatar
-        const initial = (user.prenom?.[0] || user.nom?.[0] || user.email?.[0] || 'U').toUpperCase();
-        
-        const navUserAvatar = document.getElementById('nav-user-avatar');
-        if (navUserAvatar) navUserAvatar.textContent = initial;
-        
-        const sidebarAvatar = document.getElementById('sidebar-avatar');
-        if (sidebarAvatar) sidebarAvatar.textContent = initial;
-        
-        // Show role-specific menu items
-        if (user.role === 'proprietaire') {
-            const menuProp = document.getElementById('menu-proprietaire');
-            if (menuProp) menuProp.style.display = 'block';
-            const sidebarProp = document.getElementById('sidebar-link-proprietaire');
-            if (sidebarProp) sidebarProp.style.display = 'block';
-        } else if (user.role === 'locataire') {
-            const menuLoc = document.getElementById('menu-locataire');
-            if (menuLoc) menuLoc.style.display = 'block';
-            const sidebarLoc = document.getElementById('sidebar-link-locataire');
-            if (sidebarLoc) sidebarLoc.style.display = 'block';
-        } else if (user.role === 'admin') {
-            const menuAdmin = document.getElementById('menu-admin');
-            if (menuAdmin) menuAdmin.style.display = 'block';
-            const sidebarAdmin = document.getElementById('sidebar-link-admin');
-            if (sidebarAdmin) sidebarAdmin.style.display = 'block';
-            const navAdminBtn = document.getElementById('nav-admin-btn');
-            if (navAdminBtn) navAdminBtn.style.display = 'flex';
+        const role = user.role || 'locataire';
+        const cfg = ROLE_CONFIG[role] || ROLE_CONFIG['locataire'];
+
+        // ── Show connected UI ──────────────────────────────────
+        const el = (id) => document.getElementById(id);
+        if (el('nav-not-connected')) el('nav-not-connected').style.display = 'none';
+        if (el('nav-connected'))     el('nav-connected').style.display = 'flex';
+        if (el('sidebar-not-connected')) el('sidebar-not-connected').style.display = 'none';
+        if (el('sidebar-connected'))     el('sidebar-connected').style.display = 'block';
+        if (el('sidebar-menu-connected')) el('sidebar-menu-connected').style.display = 'block';
+
+        // ── Role dashboard button (prominent) ──────────────────
+        const roleBtn = el('nav-role-btn');
+        if (roleBtn) {
+            roleBtn.href = prefix + cfg.href;
+            roleBtn.style.display = 'flex';
+            roleBtn.style.background = cfg.color;
+            const iconEl = el('nav-role-icon');
+            if (iconEl) iconEl.setAttribute('data-lucide', cfg.icon);
+            const labelEl = el('nav-role-label');
+            if (labelEl) labelEl.textContent = cfg.label;
         }
-        
-        // Update bottom nav
+
+        // ── User info ──────────────────────────────────────────
+        const fullName = [user.prenom, user.nom].filter(Boolean).join(' ') || user.full_name || user.email || 'Utilisateur';
+        const initial = (user.prenom?.[0] || user.nom?.[0] || user.full_name?.[0] || user.email?.[0] || 'U').toUpperCase();
+        const roleLabel = { admin: 'Administrateur', gestionnaire: 'Gestionnaire', proprietaire: 'Propriétaire', locataire: 'Locataire' }[role] || role;
+
+        if (el('nav-user-avatar'))  el('nav-user-avatar').textContent = initial;
+        if (el('dropdown-name'))    el('dropdown-name').textContent = fullName;
+        if (el('dropdown-role'))    { el('dropdown-role').textContent = roleLabel; el('dropdown-role').style.color = cfg.color; }
+        if (el('sidebar-avatar'))   el('sidebar-avatar').textContent = initial;
+        if (el('sidebar-name'))     el('sidebar-name').textContent = fullName;
+        if (el('sidebar-role'))     el('sidebar-role').textContent = roleLabel;
+
+        // ── Role-specific dropdown menus ───────────────────────
+        const showMenu = (id) => { const m = el(id); if (m) m.style.display = 'block'; };
+        const showSidebar = (id) => { const m = el(id); if (m) m.style.display = 'flex'; };
+
+        if (role === 'admin') {
+            showMenu('menu-admin');
+            showSidebar('sidebar-link-admin');
+        } else if (role === 'gestionnaire') {
+            showMenu('menu-gestionnaire');
+            showSidebar('sidebar-link-gestionnaire');
+        } else if (role === 'proprietaire') {
+            showMenu('menu-proprietaire');
+            showSidebar('sidebar-link-proprietaire');
+        } else if (role === 'locataire') {
+            showMenu('menu-locataire');
+            showSidebar('sidebar-link-locataire');
+        }
+
+        // ── Bottom nav update ──────────────────────────────────
+        const bottomNavUser = el('bottom-nav-user');
         if (bottomNavUser) {
-            bottomNavUser.innerHTML = `<i data-lucide="user-check"></i><span>Mon compte</span>`;
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            bottomNavUser.href = prefix + cfg.href;
+            bottomNavUser.innerHTML = `<i data-lucide="${cfg.icon}"></i><span>${cfg.label}</span>`;
         }
-        
-        // Logout handlers
-        document.getElementById('btn-logout')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('exper_immo_token');
-            localStorage.removeItem('exper_immo_user');
-            window.location.href = prefix + 'index.html';
-        });
-        
-        document.getElementById('sidebar-logout')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('exper_immo_token');
-            localStorage.removeItem('exper_immo_user');
-            window.location.href = prefix + 'index.html';
-        });
+
+        // ── Dropdown toggle ────────────────────────────────────
+        const toggle = el('nav-user-toggle');
+        const dropdown = el('nav-dropdown');
+        if (toggle && dropdown) {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = dropdown.style.display === 'block';
+                dropdown.style.display = open ? 'none' : 'block';
+            });
+            document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
+        }
+
+        // ── Logout ─────────────────────────────────────────────
+        el('btn-logout')?.addEventListener('click', doLogout);
+        el('sidebar-logout')?.addEventListener('click', doLogout);
+
+    } else {
+        // Not logged in - ensure login buttons visible
+        const navNC = document.getElementById('nav-not-connected');
+        if (navNC) navNC.style.display = 'flex';
     }
+
+    // Re-render lucide icons after DOM changes
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 });
