@@ -849,17 +849,22 @@ def health_check(db: Session = Depends(database.get_db)):
     }
 
 
+class DebugLoginRequest(BaseModel):
+    email: str
+    password: str
+
 @app.post("/debug/login")
-def debug_login(email: str, password: str, db: Session = Depends(database.get_db)):
-    """Debug endpoint to check login issues - requires secret key"""
-    user = db.query(models.User).filter(models.User.email == email).first()
+def debug_login(payload: DebugLoginRequest, db: Session = Depends(database.get_db)):
+    """Debug endpoint to check login issues"""
+    user = db.query(models.User).filter(models.User.email == payload.email).first()
     
     if not user:
-        return {"error": "User not found", "email": email}
+        return {"error": "User not found", "email": payload.email}
     
     # Check password
+    verify_error = None
     try:
-        is_valid = auth.verify_password(password, user.hashed_password)
+        is_valid = auth.verify_password(payload.password, user.hashed_password)
     except Exception as e:
         is_valid = False
         verify_error = str(e)
@@ -873,7 +878,7 @@ def debug_login(email: str, password: str, db: Session = Depends(database.get_db
         "password_valid": is_valid,
         "password_hash_prefix": user.hashed_password[:30] + "..." if user.hashed_password else None,
         "hash_length": len(user.hashed_password) if user.hashed_password else 0,
-        "verify_error": verify_error if not is_valid else None
+        "verify_error": verify_error if verify_error else None
     }
 
 
