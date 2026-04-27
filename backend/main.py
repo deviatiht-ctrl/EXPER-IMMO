@@ -55,6 +55,21 @@ def create_admin_on_startup():
 
 create_admin_on_startup()
 
+# Auto-migrate: add images column if missing (for existing prod DBs)
+def run_migrations():
+    db = database.SessionLocal()
+    try:
+        db.execute(text("ALTER TABLE proprietes ADD COLUMN IF NOT EXISTS images JSON DEFAULT '[]'::json"))
+        db.commit()
+        print("[OK] Migration: images column ensured")
+    except Exception as e:
+        db.rollback()
+        print(f"[WARN] Migration skipped: {e}")
+    finally:
+        db.close()
+
+run_migrations()
+
 # Create upload directory
 UPLOAD_DIR = Path("static/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -621,6 +636,20 @@ def create_property(
     return _prop_dict(prop)
 
 
+@app.delete("/properties/{prop_id}")
+def delete_property(
+    prop_id: str,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    prop = db.query(models.Propriete).filter(models.Propriete.id == prop_id).first()
+    if not prop:
+        raise HTTPException(status_code=404, detail="Propriété non trouvée")
+    db.delete(prop)
+    db.commit()
+    return {"message": "Propriété supprimée"}
+
+
 @app.put("/properties/{prop_id}")
 def update_property(
     prop_id: str,
@@ -674,7 +703,8 @@ MAX_SIZE = 10 * 1024 * 1024  # 10 MB
 @app.post("/upload/image")
 async def upload_image(
     file: UploadFile = File(...),
-    current_user: models.User = Depends(get_current_user)
+    credentials: Optional[HTTPAuthorizationCredentials] = Security(HTTPBearer(auto_error=False)),
+    db: Session = Depends(database.get_db)
 ):
     if file.content_type not in ALLOWED_TYPES:
         raise HTTPException(status_code=400, detail="Type non supporté (JPG, PNG, WebP seulement)")

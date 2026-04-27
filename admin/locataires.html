@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -53,11 +53,11 @@
             </a>
             <a href="proprietes.html" class="nav-link">
                 <i data-lucide="building-2"></i>
-                <span>PropriÃ©tÃ©s</span>
+                <span>Propriétés</span>
             </a>
             <a href="proprietaires.html" class="nav-link">
                 <i data-lucide="user-circle"></i>
-                <span>PropriÃ©taires</span>
+                <span>Propriétaires</span>
             </a>
             <a href="locataires.html" class="nav-link active">
                 <i data-lucide="users"></i>
@@ -89,14 +89,14 @@
             </a>
             <a href="parametres.html" class="nav-link">
                 <i data-lucide="settings"></i>
-                <span>ParamÃ¨tres</span>
+                <span>Paramètres</span>
             </a>
         </nav>
         
         <div class="sidebar-footer">
             <button id="btn-logout">
                 <i data-lucide="log-out"></i>
-                DÃ©connexion
+                Déconnexion
             </button>
         </div>
     </aside>
@@ -156,7 +156,7 @@
                             <thead>
                                 <tr>
                                     <th>Locataire</th>
-                                    <th>TÃ©lÃ©phone</th>
+                                    <th>Téléphone</th>
                                     <th>Profession</th>
                                     <th>Revenu</th>
                                     <th>Statut</th>
@@ -199,7 +199,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>TÃ©lÃ©phone</label>
+                                <label>Téléphone</label>
                                 <input type="tel" id="loc-phone" placeholder="+509 XX XX XX XX">
                             </div>
                             <div class="form-group">
@@ -224,11 +224,11 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Profession</label>
-                                <input type="text" id="loc-profession" placeholder="IngÃ©nieur, Professeur...">
+                                <input type="text" id="loc-profession" placeholder="Ingénieur, Professeur...">
                             </div>
                             <div class="form-group">
                                 <label>Employeur</label>
-                                <input type="text" id="loc-employeur" placeholder="Nom de la sociÃ©tÃ©">
+                                <input type="text" id="loc-employeur" placeholder="Nom de la société">
                             </div>
                         </div>
                         <div class="form-row">
@@ -251,19 +251,19 @@
                                 <input type="text" id="loc-contact-nom" placeholder="Marie Dupont">
                             </div>
                             <div class="form-group">
-                                <label>TÃ©lÃ©phone du contact</label>
+                                <label>Téléphone du contact</label>
                                 <input type="tel" id="loc-contact-phone" placeholder="+509 XX XX XX XX">
                             </div>
                         </div>
                         <div class="form-row cols-1">
                             <div class="form-group">
                                 <label>Relation</label>
-                                <select id="loc-contact-rÃ©elation">
-                                    <option value="">SÃ©lectionner...</option>
+                                <select id="loc-contact-réelation">
+                                    <option value="">Sélectionner...</option>
                                     <option value="conjoint">Conjoint(e)</option>
                                     <option value="parent">Parent</option>
                                     <option value="ami">Ami(e)</option>
-                                    <option value="collegue">CollÃ¨gue</option>
+                                    <option value="collegue">Collègue</option>
                                     <option value="autre">Autre</option>
                                 </select>
                             </div>
@@ -283,7 +283,7 @@
     </div>
 
     
-    <script type="module" src="/js/admin/locataires.js"></script>
+    <script type="module" src="/js/admin/locataires.js?v=3"></script>
     <script>document.addEventListener('DOMContentLoaded', () => { if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
     <script>
     if('serviceWorker' in navigator){

@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" href="/assets/EXPER IMMO LOGO.png">
     <link rel="shortcut icon" type="image/png" href="/assets/EXPER IMMO LOGO.png">
     <link rel="apple-touch-icon" href="/assets/EXPER IMMO LOGO.png">
-    <title>Gestion des OpÃ©rations | EXPERIMMO</title>
+    <title>Gestion des Opérations | EXPERIMMO</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +45,7 @@
             <div class="sidebar-section-label">Dossiers</div>
             <a href="proprietaires.html" class="nav-link">
                 <i data-lucide="user-check"></i>
-                <span>PropriÃ©taires</span>
+                <span>Propriétaires</span>
             </a>
             <a href="locataires.html" class="nav-link">
                 <i data-lucide="users"></i>
@@ -53,7 +53,7 @@
             </a>
             <a href="../../proprietes.html" class="nav-link">
                 <i data-lucide="building-2"></i>
-                <span>PropriÃ©tÃ©s</span>
+                <span>Propriétés</span>
             </a>
             <div class="sidebar-section-label">Gestion</div>
             <a href="contrats.html" class="nav-link">
@@ -62,7 +62,7 @@
             </a>
             <a href="operations.html" class="nav-link active">
                 <i data-lucide="tool"></i>
-                <span>OpÃ©rations</span>
+                <span>Opérations</span>
             </a>
             <a href="factures.html" class="nav-link">
                 <i data-lucide="receipt"></i>
@@ -73,7 +73,7 @@
                 <i data-lucide="message-square"></i>
                 <span>Messagerie</span>
             </a>
-            <div class="sidebar-section-label">SystÃ¨me</div>
+            <div class="sidebar-section-label">Système</div>
             <a href="rapports.html" class="nav-link">
                 <i data-lucide="bar-chart-3"></i>
                 <span>Rapports</span>
@@ -92,13 +92,13 @@
     <main class="admin-main">
         <header class="admin-header">
             <div>
-                <h1>Module OpÃ©rations</h1>
+                <h1>Module Opérations</h1>
                 <p class="header-subtitle">Suivi technique et financier des interventions</p>
             </div>
             <div class="header-actions">
                 <button class="btn-primary" onclick="window.openModal('add-operation')">
                     <i data-lucide="plus"></i>
-                    Nouvelle OpÃ©ration
+                    Nouvelle Opération
                 </button>
             </div>
         </header>
@@ -113,12 +113,12 @@
                             <input type="text" id="search-op" placeholder="Rechercher...">
                         </div>
                         <div class="form-group">
-                            <label>Type d'opÃ©ration</label>
+                            <label>Type d'opération</label>
                             <select id="filter-type">
                                 <option value="">Tous les types</option>
                                 <option value="visite">Visite</option>
                                 <option value="loyer">Encaissement loyer</option>
-                                <option value="travaux">Travaux de rÃ©paration</option>
+                                <option value="travaux">Travaux de réparation</option>
                                 <option value="taxe">Paiement de taxe</option>
                             </select>
                         </div>
@@ -127,8 +127,8 @@
                             <select id="filter-statut">
                                 <option value="">Tous les statuts</option>
                                 <option value="brouillon">Brouillon</option>
-                                <option value="publie">PubliÃ©</option>
-                                <option value="valide">ValidÃ©</option>
+                                <option value="publie">Publié</option>
+                                <option value="valide">Validé</option>
                             </select>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                         <tbody id="operations-table">
                             <tr>
                                 <td colspan="7" style="text-align: center; padding: 40px;">
-                                    Chargement des opÃ©rations...
+                                    Chargement des opérations...
                                 </td>
                             </tr>
                         </tbody>
@@ -167,7 +167,7 @@
     <div id="add-operation" class="modal">
         <div class="modal-content modal-lg">
             <div class="modal-header">
-                <h3><i data-lucide="plus-circle"></i> Saisie d'OpÃ©ration</h3>
+                <h3><i data-lucide="plus-circle"></i> Saisie d'Opération</h3>
                 <button class="modal-close" onclick="window.closeModal('add-operation')">&times;</button>
             </div>
             <form id="form-operation">
@@ -176,27 +176,27 @@
                         <input type="hidden" id="op-id">
                         
                         <div class="form-group">
-                            <label>Bien concernÃ© (PropriÃ©tÃ©)</label>
+                            <label>Bien concerné (Propriété)</label>
                             <select id="op-propriete" required>
-                                <option value="">SÃ©lectionner un bien...</option>
+                                <option value="">Sélectionner un bien...</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label>Type d'opÃ©ration</label>
+                            <label>Type d'opération</label>
                             <select id="op-type" required>
                                 <option value="visite">Visite du bien</option>
                                 <option value="loyer">Encaissement de loyer</option>
-                                <option value="reparation">Travaux de rÃ©paration</option>
+                                <option value="reparation">Travaux de réparation</option>
                                 <option value="construction">Travaux de construction</option>
-                                <option value="taxe">Paiement de taxe / ImpÃ´ts</option>
+                                <option value="taxe">Paiement de taxe / Impôts</option>
                                 <option value="assurance">Assurance</option>
                                 <option value="autre">Autre</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label>Date de l'opÃ©ration</label>
+                            <label>Date de l'opération</label>
                             <input type="date" id="op-date" required>
                         </div>
 
@@ -206,7 +206,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>RÃ©fÃ©rence dÃ©cision (Email, PDF, etc.)</label>
+                            <label>Référence décision (Email, PDF, etc.)</label>
                             <input type="text" id="op-ref-decision" placeholder="Ex: Email du 12/04/2026">
                         </div>
 
@@ -217,27 +217,27 @@
 
                         <div class="form-group" style="grid-column: span 2;">
                             <label>Description / Remarques</label>
-                            <textarea id="op-remarques" rows="3" placeholder="DÃ©tails de l'intervention..."></textarea>
+                            <textarea id="op-remarques" rows="3" placeholder="Détails de l'intervention..."></textarea>
                         </div>
 
                         <div class="form-group">
                             <label class="checkbox-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                 <input type="checkbox" id="op-publie">
-                                Publier sur le portail propriÃ©taire
+                                Publier sur le portail propriétaire
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" onclick="window.closeModal('add-operation')">Annuler</button>
-                    <button type="submit" class="btn-primary">Enregistrer l'opÃ©ration</button>
+                    <button type="submit" class="btn-primary">Enregistrer l'opération</button>
                 </div>
             </form>
         </div>
     </div>
 
     
-    <script type="module" src="/js/admin/operations.js"></script>
+    <script type="module" src="/js/admin/operations.js?v=3"></script>
     <script>
         // Inline Modal Helpers
         window.openModal = (id) => document.getElementById(id).classList.add('is-open');

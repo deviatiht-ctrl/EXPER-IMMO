@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" href="/assets/EXPER IMMO LOGO.png">
     <link rel="shortcut icon" type="image/png" href="/assets/EXPER IMMO LOGO.png">
     <link rel="apple-touch-icon" href="/assets/EXPER IMMO LOGO.png">
-    <title>PropriÃ©taires | EXPERIMMO</title>
+    <title>Propriétaires | EXPERIMMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/admin-modern.css">
@@ -29,8 +29,8 @@
         </a>
         <nav class="sidebar-nav">
             <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
-            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>PropriÃ©tÃ©s</span></a>
-            <a href="proprietaires.html" class="nav-link active"><i data-lucide="user-check"></i> <span>PropriÃ©taires</span></a>
+            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
+            <a href="proprietaires.html" class="nav-link active"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
             <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
             <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i> <span>Contrats</span></a>
             <a href="paiements.html" class="nav-link"><i data-lucide="credit-card"></i> <span>Paiements</span></a>
@@ -38,28 +38,28 @@
             <a href="gestionnaires.html" class="nav-link"><i data-lucide="shield-check"></i> <span>Gestionnaires</span></a>
             <a href="contacts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Messages</span></a>
             <a href="statistiques.html" class="nav-link"><i data-lucide="bar-chart-3"></i> <span>Statistiques</span></a>
-            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i> <span>ParamÃ¨tres</span></a>
+            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i> <span>Paramètres</span></a>
         </nav>
         <div class="sidebar-footer">
-            <button id="btn-logout"><i data-lucide="log-out"></i>DÃ©connexion</button>
+            <button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button>
         </div>
     </aside>
 
     <main class="admin-main">
         <header class="admin-header">
             <div>
-                <h1>Gestion des PropriÃ©taires</h1>
+                <h1>Gestion des Propriétaires</h1>
                 <p class="header-subtitle">Liste et gestion des bailleurs</p>
             </div>
             <div class="header-actions">
-                <button class="btn-primary" onclick="window.location.reload()"><i data-lucide="plus"></i> <span>Nouveau PropriÃ©taire</span></button>
+                <button class="btn-primary" onclick="window.location.reload()"><i data-lucide="plus"></i> <span>Nouveau Propriétaire</span></button>
             </div>
         </header>
 
         <div class="admin-content">
             <div class="admin-card">
                 <div class="card-header">
-                    <h3><i data-lucide="list"></i> Liste des PropriÃ©taires</h3>
+                    <h3><i data-lucide="list"></i> Liste des Propriétaires</h3>
                 </div>
                 <div class="card-body">
                     <div class="admin-table-container">
@@ -68,13 +68,13 @@
                                 <tr>
                                     <th>Nom / Entreprise</th>
                                     <th>Email</th>
-                                    <th>TÃ©lÃ©phone</th>
+                                    <th>Téléphone</th>
                                     <th>Code</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="proprietaires-table">
-                                <tr><td colspan="5" style="text-align:center; padding:20px;">Chargement des donnÃ©es...</td></tr>
+                                <tr><td colspan="5" style="text-align:center; padding:20px;">Chargement des données...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -84,7 +84,7 @@
     </main>
 
     
-    <script type="module" src="/js/admin/proprietaires.js"></script>
+    <script type="module" src="/js/admin/proprietaires.js?v=3"></script>
     <script>document.addEventListener('DOMContentLoaded',()=>{ if(typeof lucide!=='undefined') lucide.createIcons(); });</script>
 </body>
 </html>

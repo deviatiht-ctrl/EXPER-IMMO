@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -37,13 +37,13 @@
             <div class="sidebar-section-label">Principal</div>
             <a href="dashboard.html" class="nav-link active"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
             <div class="sidebar-section-label">Dossiers</div>
-            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>PropriÃ©taires</span></a>
+            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
             <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
-            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>PropriÃ©tÃ©s</span></a>
+            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
             <div class="sidebar-section-label">Finances</div>
             <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i> <span>Contrats</span></a>
             <a href="paiements.html" class="nav-link"><i data-lucide="wallet"></i> <span>Paiements</span></a>
-            <div class="sidebar-section-label">SystÃ¨me</div>
+            <div class="sidebar-section-label">Système</div>
             <a href="gestionnaires.html" class="nav-link">
                 <i data-lucide="shield-check"></i> <span>Gestionnaires</span>
             </a>
@@ -53,7 +53,7 @@
         </nav>
         <div class="sidebar-footer" style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
             <button id="btn-logout" class="nav-link" style="background:none; border:none; color:rgba(255,255,255,0.6); cursor:pointer; width:100%; display:flex; align-items:center; gap:12px;">
-                <i data-lucide="log-out"></i> <span>DÃ©connexion</span>
+                <i data-lucide="log-out"></i> <span>Déconnexion</span>
             </button>
         </div>
     </aside>
@@ -86,11 +86,11 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon blue"><i data-lucide="building-2"></i></div>
-                    <div class="stat-info"><h3 id="stat-properties">0</h3><span>PropriÃ©tÃ©s</span></div>
+                    <div class="stat-info"><h3 id="stat-properties">0</h3><span>Propriétés</span></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon green"><i data-lucide="user-check"></i></div>
-                    <div class="stat-info"><h3 id="stat-owners">0</h3><span>PropriÃ©taires</span></div>
+                    <div class="stat-info"><h3 id="stat-owners">0</h3><span>Propriétaires</span></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon orange"><i data-lucide="file-text"></i></div>
@@ -106,7 +106,7 @@
                 <div class="flex flex-column gap-4">
                     <!-- Recent Owners -->
                     <div class="admin-card">
-                        <div class="card-header"><h3><i data-lucide="user-plus"></i> Nouveaux PropriÃ©taires</h3></div>
+                        <div class="card-header"><h3><i data-lucide="user-plus"></i> Nouveaux Propriétaires</h3></div>
                         <div class="card-body" id="recent-proprietaires"><p class="empty-state">Chargement...</p></div>
                     </div>
                     <!-- Recent Tenants -->
@@ -124,7 +124,7 @@
                     </div>
                     <!-- Stats rapides -->
                     <div class="admin-card">
-                        <div class="card-header"><h3><i data-lucide="bar-chart"></i> Ã‰tat du parc</h3></div>
+                        <div class="card-header"><h3><i data-lucide="bar-chart"></i> État du parc</h3></div>
                         <div class="card-body">
                             <ul style="list-style:none; display:flex; flex-direction:column; gap:12px;">
                                 <li style="display:flex; justify-content:between;"><span>Tickets ouverts:</span> <strong id="stat-tickets">0</strong></li>
@@ -139,7 +139,7 @@
     </main>
 
     
-    <script type="module" src="/js/admin/dashboard.js?v=4/02_081512"></script>
+    <script type="module" src="/js/admin/dashboard.js?v=3"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => { 
             if(typeof lucide !== 'undefined') lucide.createIcons();

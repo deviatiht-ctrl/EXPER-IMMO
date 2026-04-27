@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -43,8 +43,8 @@
         </a>
         <nav class="sidebar-nav">
             <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
-            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i><span>PropriÃ©tÃ©s</span></a>
-            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-circle"></i><span>PropriÃ©taires</span></a>
+            <a href="proprietes.html" class="nav-link"><i data-lucide="building-2"></i><span>Propriétés</span></a>
+            <a href="proprietaires.html" class="nav-link"><i data-lucide="user-circle"></i><span>Propriétaires</span></a>
             <a href="locataires.html" class="nav-link"><i data-lucide="users"></i><span>Locataires</span></a>
             <a href="contrats.html" class="nav-link"><i data-lucide="file-text"></i><span>Contrats</span></a>
             <a href="paiements.html" class="nav-link active"><i data-lucide="credit-card"></i><span>Paiements</span></a>
@@ -52,10 +52,10 @@
             <a href="gestionnaires.html" class="nav-link"><i data-lucide="shield-check"></i><span>Gestionnaires</span></a>
             <a href="contacts.html" class="nav-link"><i data-lucide="message-square"></i><span>Messages</span></a>
             <a href="statistiques.html" class="nav-link"><i data-lucide="bar-chart-3"></i><span>Statistiques</span></a>
-            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i><span>ParamÃ¨tres</span></a>
+            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i><span>Paramètres</span></a>
         </nav>
         <div class="sidebar-footer">
-            <button id="btn-logout"><i data-lucide="log-out"></i>DÃ©connexion</button>
+            <button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button>
         </div>
     </aside>
 
@@ -70,7 +70,7 @@
         <div class="admin-content">
             <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
                 <div class="stat-card"><div class="stat-icon green"><i data-lucide="credit-card"></i></div><div class="stat-info"><h3 id="stat-revenus-pay">0 HTG</h3><p>Revenus ce mois</p></div></div>
-                <div class="stat-card"><div class="stat-icon blue"><i data-lucide="check-circle"></i></div><div class="stat-info"><h3 id="stat-payes">0</h3><p>Paiements payÃ©s</p></div></div>
+                <div class="stat-card"><div class="stat-icon blue"><i data-lucide="check-circle"></i></div><div class="stat-info"><h3 id="stat-payes">0</h3><p>Paiements payés</p></div></div>
                 <div class="stat-card"><div class="stat-icon orange"><i data-lucide="clock"></i></div><div class="stat-info"><h3 id="stat-attente-pay">0</h3><p>En attente</p></div></div>
                 <div class="stat-card"><div class="stat-icon red"><i data-lucide="alert-circle"></i></div><div class="stat-info"><h3 id="stat-retard-pay">0</h3><p>En retard</p></div></div>
             </div>
@@ -82,10 +82,10 @@
                         <div class="search-input-wrap"><i data-lucide="search"></i><input type="text" placeholder="Ref, locataire..." id="search-paiements"></div>
                         <select class="filter-select" id="filter-statut-pay">
                             <option value="">Tous statuts</option>
-                            <option value="paye">PayÃ©</option>
+                            <option value="paye">Payé</option>
                             <option value="en_attente">En attente</option>
                             <option value="en_retard">En retard</option>
-                            <option value="annule">AnnulÃ©</option>
+                            <option value="annule">Annulé</option>
                         </select>
                     </div>
                 </div>
@@ -94,12 +94,12 @@
                         <table class="admin-table">
                             <thead>
                                 <tr>
-                                    <th>RÃ©fÃ©rence</th>
+                                    <th>Référence</th>
                                     <th>Locataire</th>
-                                    <th>PropriÃ©tÃ©</th>
+                                    <th>Propriété</th>
                                     <th>Montant</th>
-                                    <th>Ã‰chÃ©ance</th>
-                                    <th>MÃ©thode</th>
+                                    <th>Échéance</th>
+                                    <th>Méthode</th>
                                     <th>Statut</th>
                                     <th>Actions</th>
                                 </tr>
@@ -128,11 +128,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Locataire <span class="required">*</span></label>
-                            <select id="pay-locataire" required><option value="">SÃ©lectionner...</option></select>
+                            <select id="pay-locataire" required><option value="">Sélectionner...</option></select>
                         </div>
                         <div class="form-group">
-                            <label>PropriÃ©tÃ©</label>
-                            <select id="pay-propriete"><option value="">SÃ©lectionner...</option></select>
+                            <label>Propriété</label>
+                            <select id="pay-propriete"><option value="">Sélectionner...</option></select>
                         </div>
                     </div>
                     <div class="form-row">
@@ -141,17 +141,17 @@
                             <input type="number" id="pay-montant" required placeholder="1200" min="0" step="0.01">
                         </div>
                         <div class="form-group">
-                            <label>Date d'Ã©chÃ©ance <span class="required">*</span></label>
+                            <label>Date d'échéance <span class="required">*</span></label>
                             <input type="date" id="pay-echeance" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>MÃ©thode de paiement</label>
+                            <label>Méthode de paiement</label>
                             <select id="pay-methode">
                                 <option value="virement">Virement bancaire</option>
-                                <option value="especes">EspÃ¨ces</option>
-                                <option value="cheque">ChÃ¨que</option>
+                                <option value="especes">Espèces</option>
+                                <option value="cheque">Chèque</option>
                                 <option value="mobile">Mobile Money</option>
                                 <option value="carte">Carte bancaire</option>
                             </select>
@@ -160,7 +160,7 @@
                             <label>Statut</label>
                             <select id="pay-statut">
                                 <option value="en_attente">En attente</option>
-                                <option value="paye">PayÃ©</option>
+                                <option value="paye">Payé</option>
                                 <option value="en_retard">En retard</option>
                             </select>
                         </div>
@@ -181,7 +181,7 @@
     </div>
 
     
-    <script type="module" src="/js/admin/paiements.js"></script>
+    <script type="module" src="/js/admin/paiements.js?v=3"></script>
     <script>document.addEventListener('DOMContentLoaded',()=>{if(typeof lucide!=='undefined')lucide.createIcons();});</script>
     <script>
     if('serviceWorker' in navigator){
