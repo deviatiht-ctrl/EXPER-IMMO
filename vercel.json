@@ -8,6 +8,53 @@
     }
   ],
   "routes": [
+    { "handle": "filesystem" },
+    { "src": "/admin", "dest": "/admin/dashboard.html" },
+    { "src": "/admin/(.*)", "dest": "/admin/$1" },
+    { "src": "/proprietaire", "dest": "/proprietaire/index.html" },
+    { "src": "/proprietaire/(.*)", "dest": "/proprietaire/$1" },
+    { "src": "/locataire", "dest": "/locataire/index.html" },
+    { "src": "/locataire/(.*)", "dest": "/locataire/$1" },
+    { "src": "/gestionnaire", "dest": "/gestionnaire/index.html" },
+    { "src": "/gestionnaire/(.*)", "dest": "/gestionnaire/$1" },
     { "src": "/(.*)", "dest": "/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/css/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/js/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
   ]
 }
