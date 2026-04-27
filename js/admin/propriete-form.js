@@ -76,7 +76,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const uploadZone = document.getElementById('upload-zone');
     const fileInput = document.getElementById('file-input');
     const uploadPreview = document.getElementById('upload-preview');
-    let uploadedFiles = [];
+    let uploadedUrls = [];  // URLs already uploaded to backend
+
+    const IMG_API_URL = window.EXPER_API_URL || 'https://exper-immo.onrender.com';
 
     uploadZone.addEventListener('click', () => fileInput.click());
 
@@ -99,47 +101,64 @@ document.addEventListener('DOMContentLoaded', async () => {
     function handleFiles(files) {
         Array.from(files).forEach(file => {
             if (!file.type.startsWith('image/')) return;
-            
+
+            // Create preview placeholder immediately
+            const previewItem = document.createElement('div');
+            previewItem.className = 'preview-item';
+            previewItem.style.cssText = 'position:relative;overflow:hidden;border-radius:8px;background:#f1f5f9;';
+            previewItem.innerHTML = `
+                <div style="height:80px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:12px;">Upload...</div>
+            `;
+            uploadPreview.appendChild(previewItem);
+
+            // Show local preview
             const reader = new FileReader();
             reader.onload = (e) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'preview-item';
                 previewItem.innerHTML = `
-                    <img src="${e.target.result}" alt="${file.name}">
-                    <div class="preview-overlay">
-                        <span class="preview-name">${file.name}</span>
-                    </div>
+                    <img src="${e.target.result}" alt="${file.name}" style="width:100%;height:80px;object-fit:cover;">
+                    <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.5);color:#fff;font-size:10px;padding:2px 4px;text-align:center;">Upload en cours...</div>
                 `;
-                uploadPreview.appendChild(previewItem);
             };
             reader.readAsDataURL(file);
-            uploadedFiles.push(file);
+
+            // Upload to backend immediately
+            uploadSingleFile(file, previewItem);
         });
-        showToast(`${files.length} image(s) sélectionnée(s)`, "info");
     }
 
-    async function uploadAllImages() {
-        const urls = [];
-        for (const file of uploadedFiles) {
-            try {
-                const fd = new FormData();
-                fd.append('file', file);
-                const token = localStorage.getItem('exper_immo_token');
-                const API_URL = window.EXPER_API_URL || 'https://exper-immo.onrender.com';
-                const res = await fetch(`${API_URL}/upload/image`, {
-                    method: 'POST',
-                    headers: token ? { 'Authorization': `Bearer ${token}` } : {},
-                    body: fd
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    urls.push(data.url);
+    async function uploadSingleFile(file, previewItem) {
+        try {
+            const fd = new FormData();
+            fd.append('file', file);
+            const token = localStorage.getItem('exper_immo_token');
+            const res = await fetch(`${IMG_API_URL}/upload/image`, {
+                method: 'POST',
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+                body: fd
+            });
+            if (res.ok) {
+                const data = await res.json();
+                uploadedUrls.push(data.url);
+                // Update overlay to show success
+                const overlay = previewItem.querySelector('div[style*="bottom:0"]');
+                if (overlay) {
+                    overlay.textContent = '\u2713 Uploadé';
+                    overlay.style.background = 'rgba(34,197,94,0.8)';
                 }
-            } catch (err) {
-                console.error('Image upload error:', err);
+                showToast(`Image uploadée (${uploadedUrls.length} total)`, 'success');
+            } else {
+                const errData = await res.json().catch(() => ({}));
+                const msg = errData.detail || `Erreur ${res.status}`;
+                previewItem.style.outline = '2px solid #dc2626';
+                const overlay = previewItem.querySelector('div[style*="bottom:0"]');
+                if (overlay) { overlay.textContent = '\u2717 Échec'; overlay.style.background = 'rgba(220,38,38,0.8)'; }
+                showToast(`Upload échoué: ${msg}`, 'error');
+                console.error('Upload failed:', res.status, msg);
             }
+        } catch (err) {
+            console.error('Upload error:', err);
+            showToast('Erreur réseau lors de l\'upload', 'error');
         }
-        return urls;
     }
 
     btnSave.addEventListener('click', async (e) => {
@@ -154,11 +173,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnSave.innerHTML = '<i class="spinner-small"></i> <span>Enregistrement...</span>';
 
         try {
-            // 1. Upload images first
-            showToast('Upload des images...', 'info');
-            const imageUrls = uploadedFiles.length > 0 ? await uploadAllImages() : [];
-
-            // 2. Prepare data
+            // 1. Prepare data (images already uploaded on selection)
             const slug = titre.toLowerCase()
                 .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
                 .replace(/\s+/g, '-')
@@ -180,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 est_vedette: document.getElementById('est_vedette').checked,
                 adresse: document.getElementById('adresse').value,
                 reference: 'REF-' + Date.now().toString().slice(-6),
-                images: imageUrls
+                images: uploadedUrls
             };
 
             if (!propId) formData.slug = slug;
