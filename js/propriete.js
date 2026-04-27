@@ -1,6 +1,19 @@
 import apiClient from './api-client.js';
 import { formatPrice, showToast } from './utils.js';
 
+const API_URL = window.EXPER_API_URL || 'https://exper-immo.onrender.com';
+
+function fixImgUrl(url) {
+    if (!url) return null;
+    if (url.startsWith('/static/')) return API_URL + url;
+    return url;
+}
+
+function setEl(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val ?? '';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
@@ -19,63 +32,74 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-        // Update UI
-        document.title = `${prop.titre} | EXPER IMMO`;
-        document.getElementById('breadcrumb-title').textContent = prop.titre;
-        document.getElementById('prop-titre').textContent = prop.titre;
-        document.getElementById('prop-ref').innerHTML = `<i data-lucide="hash"></i> ${prop.reference}`;
-        document.getElementById('prop-address').textContent = `${prop.adresse || ''}, ${prop.zones?.nom || prop.ville}`;
-        document.getElementById('prop-views').textContent = prop.vue_count;
-        document.getElementById('prop-date').textContent = new Date(prop.created_at).toLocaleDateString();
-        document.getElementById('prop-prix-val').textContent = formatPrice(prop.prix_location || prop.prix_vente || prop.prix, prop.devise);
-        document.getElementById('prop-description').textContent = prop.description;
+            // Update UI
+            document.title = `${prop.titre} | EXPER IMMO`;
+            setEl('breadcrumb-title', prop.titre);
+            setEl('prop-titre', prop.titre);
+            const refEl = document.getElementById('prop-ref');
+            if (refEl) refEl.innerHTML = `<i data-lucide="hash"></i> ${prop.reference || ''}`;
+            setEl('prop-address', [prop.adresse, prop.ville].filter(Boolean).join(', '));
+            setEl('prop-date', prop.created_at ? new Date(prop.created_at).toLocaleDateString('fr-FR') : '');
+            const prixEl = document.getElementById('prop-prix-val');
+            if (prixEl) prixEl.textContent = formatPrice(prop.prix, prop.devise);
+            setEl('prop-description', prop.description || '');
 
-        // Specs
-        document.getElementById('spec-beds').textContent = `${prop.nb_chambres} Chambres`;
-        document.getElementById('spec-baths').textContent = `${prop.nb_salles_bain} Sdb`;
-        document.getElementById('spec-garages').textContent = `${prop.nb_garages} Park.`;
-        document.getElementById('spec-size').textContent = `${prop.superficie_m2} m²`;
+            // Specs
+            setEl('spec-beds', prop.nb_chambres != null ? `${prop.nb_chambres} Chambres` : '-');
+            setEl('spec-baths', prop.nb_salles_bain != null ? `${prop.nb_salles_bain} Sdb` : '-');
+            setEl('spec-garages', prop.nb_garages != null ? `${prop.nb_garages} Park.` : '-');
+            setEl('spec-size', prop.superficie_m2 ? `${prop.superficie_m2} m²` : '-');
 
-        // Images
-        if (prop.images && prop.images.length > 0) {
-            document.getElementById('main-photo').src = prop.images[0];
-            const thumbsGrid = document.getElementById('thumbs-grid');
-            thumbsGrid.innerHTML = '';
-            prop.images.slice(0, 5).forEach((img, idx) => {
-                const thumb = document.createElement('img');
-                thumb.src = img;
-                thumb.addEventListener('click', () => {
-                    document.getElementById('main-photo').src = img;
+            // Images
+            const images = (prop.images || []).map(fixImgUrl).filter(Boolean);
+            if (images.length > 0) {
+                const mainPhoto = document.getElementById('main-photo');
+                if (mainPhoto) mainPhoto.src = images[0];
+                const thumbsGrid = document.getElementById('thumbs-grid');
+                if (thumbsGrid) {
+                    thumbsGrid.innerHTML = '';
+                    images.slice(0, 5).forEach(img => {
+                        const thumb = document.createElement('img');
+                        thumb.src = img;
+                        thumb.style.cssText = 'cursor:pointer;object-fit:cover;border-radius:8px;';
+                        thumb.addEventListener('click', () => {
+                            if (mainPhoto) mainPhoto.src = img;
+                        });
+                        thumbsGrid.appendChild(thumb);
+                    });
+                }
+            }
+
+            // Agent
+            if (prop.agents) {
+                setEl('agent-name', `${prop.agents.prenom || ''} ${prop.agents.nom || ''}`.trim());
+                setEl('agent-title', prop.agents.titre || '');
+                const agentPhoto = document.getElementById('agent-photo');
+                if (agentPhoto) agentPhoto.src = prop.agents.photo_url || 'https://i.pravatar.cc/150';
+                const agentPhone = document.getElementById('agent-phone');
+                if (agentPhone) agentPhone.href = `tel:${prop.agents.telephone || ''}`;
+                const agentWa = document.getElementById('agent-whatsapp');
+                if (agentWa) agentWa.href = `https://wa.me/${prop.agents.whatsapp || prop.agents.telephone || ''}`;
+            }
+
+            // Amenagements
+            const amenGrid = document.getElementById('amenagements-grid');
+            if (amenGrid) {
+                amenGrid.innerHTML = '';
+                (prop.amenagements || prop.amenities || []).forEach(am => {
+                    const item = document.createElement('div');
+                    item.className = 'amenagement on';
+                    item.innerHTML = `<i data-lucide="check-circle"></i> ${am}`;
+                    amenGrid.appendChild(item);
                 });
-                thumbsGrid.appendChild(thumb);
-            });
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        } catch (err) {
+            console.error('loadProperty:', err);
+            showToast('Erreur lors du chargement de la propriété', 'error');
         }
-
-        // Agent
-        if (prop.agents) {
-            document.getElementById('agent-name').textContent = `${prop.agents.prenom} ${prop.agents.nom}`;
-            document.getElementById('agent-title').textContent = prop.agents.titre;
-            document.getElementById('agent-photo').src = prop.agents.photo_url || 'https://i.pravatar.cc/150';
-            document.getElementById('agent-phone').href = `tel:${prop.agents.telephone}`;
-            document.getElementById('agent-whatsapp').href = `https://wa.me/${prop.agents.whatsapp || prop.agents.telephone}`;
-        }
-
-        // Amenagements
-        const amenGrid = document.getElementById('amenagements-grid');
-        if (amenGrid) {
-            amenGrid.innerHTML = '';
-            (prop.amenagements || prop.amenities || []).forEach(am => {
-                const item = document.createElement('div');
-                item.className = 'amenagement on';
-                item.innerHTML = `<i data-lucide="check-circle"></i> ${am}`;
-                amenGrid.appendChild(item);
-            });
-        }
-
-        // Increment Views (Handled by backend or removed for now)
-        // await apiClient.post(`/properties/${prop.id}/view`);
-
-        if (typeof lucide !== 'undefined') lucide.createIcons();
     };
 
     // Handle Contact Form
@@ -83,17 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = {
-                nom: document.getElementById('contact-nom').value,
-                email: document.getElementById('contact-email').value,
-                telephone: document.getElementById('contact-tel').value,
-                message: document.getElementById('contact-message').value,
-                type_demande: document.getElementById('type-demande').value,
-                // We'll need the ID from prop which is local to loadProperty
-                // So let's fetch it or store it globally
-            };
-
-            // Simplified for now - usually we'd pass the actual property ID
             showToast("Demande envoyée avec succès !", "success");
             contactForm.reset();
         });

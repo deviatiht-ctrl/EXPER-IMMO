@@ -690,7 +690,7 @@ async def upload_image(
     with open(dest, "wb") as f:
         f.write(contents)
 
-    base_url = os.getenv("BASE_URL", "")
+    base_url = os.getenv("BASE_URL") or os.getenv("RENDER_EXTERNAL_URL", "")
     url = f"{base_url}/static/uploads/{filename}"
     return {"url": url, "filename": filename}
 

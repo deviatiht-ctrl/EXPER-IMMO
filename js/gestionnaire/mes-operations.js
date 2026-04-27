@@ -115,8 +115,7 @@ function setupEventListeners() {
             publie_portail: getVal('op-statut-pub') === 'publie',
             statut_operation: 'brouillon'
         };
-        const { error } = await supabaseClient.from('operations').insert([opData]);
-        if (error) { alert('Erreur: ' + error.message); return; }
+        await apiClient.post('/operations', opData);
         document.getElementById('modal-op').style.display = 'none';
         document.getElementById('form-op').reset();
         await loadOperations(currentUser.id);

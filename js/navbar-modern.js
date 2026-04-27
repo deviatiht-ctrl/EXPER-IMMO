@@ -3,7 +3,6 @@
  * Gestion du navbar glassmorphic avec authentification
  */
 
-import { supabase } from './supabase-client.js';
 
 class NavbarController {
     constructor() {
@@ -183,11 +182,13 @@ class NavbarController {
     // Vérifier authentification
     async checkAuth() {
         try {
-            const { data: { session }, error } = await supabase.auth.getSession();
+            const token = localStorage.getItem('exper_immo_token');
+            const user = JSON.parse(localStorage.getItem('exper_immo_user') || 'null');
             
-            if (session?.user) {
-                this.currentUser = session.user;
-                await this.loadUserProfile(session.user.id);
+            if (token && user?.id) {
+                this.currentUser = user;
+                this.userProfile = user;
+                this.updateUserUI(user);
                 this.showConnectedUI();
             } else {
                 this.showNotConnectedUI();
@@ -195,22 +196,6 @@ class NavbarController {
         } catch (err) {
             console.error('Auth check error:', err);
             this.showNotConnectedUI();
-        }
-    }
-
-    // Charger profil utilisateur
-    async loadUserProfile(userId) {
-        try {
-            const { data, error } = await supabase
-                .from('profiles')
-                .select('*')
-                /* .eq('id', userId) - TODO: filter nan server */
-                [0];
-
-            this.userProfile = data;
-            this.updateUserUI(data);
-        } catch (err) {
-            console.error('Profile load error:', err);
         }
     }
 

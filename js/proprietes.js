@@ -75,10 +75,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    const API_URL = window.EXPER_API_URL || 'https://exper-immo.onrender.com';
+    const fixImg = (url) => url && url.startsWith('/static/') ? API_URL + url : url;
+
     const createPropertyCard = (prop) => {
         const div = document.createElement('div');
         div.className = 'prop-card card fade-in';
-        const mainImg = prop.images && prop.images.length > 0 ? prop.images[0] : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800';
+        const rawImg = prop.images && prop.images.length > 0 ? prop.images[0] : null;
+        const mainImg = fixImg(rawImg) || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800';
 
         div.innerHTML = `
             <div class="prop-img-wrap">

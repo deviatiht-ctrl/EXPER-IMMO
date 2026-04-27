@@ -261,3 +261,97 @@ document.body.insertAdjacentHTML('afterbegin', navbarHTML);
         item.classList.toggle('active', item.dataset.page === currentPage);
     });
 })();
+
+// ── Auth State Handling ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('exper_immo_token');
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    
+    if (token && user.id) {
+        // User is logged in
+        const navNotConnected = document.getElementById('nav-not-connected');
+        const navConnected = document.getElementById('nav-connected');
+        const sidebarNotConnected = document.getElementById('sidebar-not-connected');
+        const sidebarConnected = document.getElementById('sidebar-connected');
+        const sidebarMenuConnected = document.getElementById('sidebar-menu-connected');
+        const bottomNavUser = document.getElementById('bottom-nav-user');
+        
+        // Hide login buttons, show user menu
+        if (navNotConnected) navNotConnected.style.display = 'none';
+        if (navConnected) navConnected.style.display = 'block';
+        
+        // Mobile sidebar
+        if (sidebarNotConnected) sidebarNotConnected.style.display = 'none';
+        if (sidebarConnected) sidebarConnected.style.display = 'block';
+        if (sidebarMenuConnected) sidebarMenuConnected.style.display = 'block';
+        
+        // Update user info
+        const userName = user.prenom || user.nom || user.email || 'Utilisateur';
+        const userRole = user.role || 'Utilisateur';
+        
+        const navUserName = document.getElementById('nav-user-name');
+        if (navUserName) navUserName.textContent = userName.split(' ')[0];
+        
+        const dropdownName = document.getElementById('dropdown-name');
+        if (dropdownName) dropdownName.textContent = userName;
+        
+        const dropdownRole = document.getElementById('dropdown-role');
+        if (dropdownRole) dropdownRole.textContent = userRole;
+        
+        const sidebarName = document.getElementById('sidebar-name');
+        if (sidebarName) sidebarName.textContent = userName.split(' ')[0];
+        
+        const sidebarRole = document.getElementById('sidebar-role');
+        if (sidebarRole) sidebarRole.textContent = userRole;
+        
+        // Update avatar
+        const initial = (user.prenom?.[0] || user.nom?.[0] || user.email?.[0] || 'U').toUpperCase();
+        
+        const navUserAvatar = document.getElementById('nav-user-avatar');
+        if (navUserAvatar) navUserAvatar.textContent = initial;
+        
+        const sidebarAvatar = document.getElementById('sidebar-avatar');
+        if (sidebarAvatar) sidebarAvatar.textContent = initial;
+        
+        // Show role-specific menu items
+        if (user.role === 'proprietaire') {
+            const menuProp = document.getElementById('menu-proprietaire');
+            if (menuProp) menuProp.style.display = 'block';
+            const sidebarProp = document.getElementById('sidebar-link-proprietaire');
+            if (sidebarProp) sidebarProp.style.display = 'block';
+        } else if (user.role === 'locataire') {
+            const menuLoc = document.getElementById('menu-locataire');
+            if (menuLoc) menuLoc.style.display = 'block';
+            const sidebarLoc = document.getElementById('sidebar-link-locataire');
+            if (sidebarLoc) sidebarLoc.style.display = 'block';
+        } else if (user.role === 'admin') {
+            const menuAdmin = document.getElementById('menu-admin');
+            if (menuAdmin) menuAdmin.style.display = 'block';
+            const sidebarAdmin = document.getElementById('sidebar-link-admin');
+            if (sidebarAdmin) sidebarAdmin.style.display = 'block';
+            const navAdminBtn = document.getElementById('nav-admin-btn');
+            if (navAdminBtn) navAdminBtn.style.display = 'flex';
+        }
+        
+        // Update bottom nav
+        if (bottomNavUser) {
+            bottomNavUser.innerHTML = `<i data-lucide="user-check"></i><span>Mon compte</span>`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        
+        // Logout handlers
+        document.getElementById('btn-logout')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('exper_immo_token');
+            localStorage.removeItem('exper_immo_user');
+            window.location.href = prefix + 'index.html';
+        });
+        
+        document.getElementById('sidebar-logout')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('exper_immo_token');
+            localStorage.removeItem('exper_immo_user');
+            window.location.href = prefix + 'index.html';
+        });
+    }
+});

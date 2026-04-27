@@ -1,28 +1,31 @@
 // tickets.js - Support Tickets Page (for all user types)
-import CONFIG from './config.js';
+import { apiClient } from './api-client.js';
 import { showToast } from './utils.js';
-import { requireAuth, logout, supabaseClient } from './auth.js';
 
 let currentUser = null;
 let userRole = null;
 let allTickets = [];
 let currentTicketId = null;
 
-const initAuth = async () => {
-    currentUser = await requireAuth(['proprietaire', 'locataire', 'admin']);
-    if (!currentUser) return;
+const initAuth = () => {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return false; }
     
-    userRole = currentUser.profile?.role;
+    currentUser = user;
+    userRole = user.role;
     
     // Setup sidebar based on role
     setupSidebar();
     
-    document.getElementById('user-name').textContent = currentUser.profile?.full_name || 'Utilisateur';
-    document.getElementById('user-avatar').textContent = 
-        (currentUser.profile?.full_name || '?').charAt(0).toUpperCase();
-    document.getElementById('user-role').textContent = 
-        userRole === 'proprietaire' ? 'Propriétaire' : 
-        userRole === 'locataire' ? 'Locataire' : 'Admin';
+    const name = (`${user.prenom || ''} ${user.nom || ''}`).trim() || user.email || 'Utilisateur';
+    const el = document.getElementById('user-name');
+    if (el) el.textContent = name;
+    const av = document.getElementById('user-avatar');
+    if (av) av.textContent = name.charAt(0).toUpperCase();
+    const roleEl = document.getElementById('user-role');
+    if (roleEl) roleEl.textContent = userRole === 'proprietaire' ? 'Propriétaire' : userRole === 'locataire' ? 'Locataire' : 'Admin';
+    return true;
 };
 
 const setupSidebar = () => {
@@ -83,13 +86,8 @@ const setupSidebar = () => {
 
 const loadTickets = async () => {
     try {
-        const { data: tickets, error } = await supabaseClient
-            .from('tickets_support')
-            .select('*')
-            /* .eq('createur_id', currentUser.id) - TODO: filter nan server */
-            ;
-        
-        allTickets = tickets || [];
+        // Tickets endpoint may not exist yet
+        allTickets = []; // await apiClient.get('/tickets').catch(() => []);
         renderTickets(allTickets);
         updateStats(allTickets);
         
@@ -212,23 +210,9 @@ const submitNewTicket = async () => {
     }
     
     try {
-        const { data, error } = await supabaseClient
-            .from('tickets_support')
-            .insert([{
-                createur_id: currentUser.id,
-                type_createur: userRole,
-                sujet: sujet,
-                description: description,
-                categorie: categorie,
-                priorite: priorite,
-                statut: 'ouvert'
-            }])
-            .select()
-            [0];
-        
-        showToast('Ticket créé avec succès!', 'success');
+        // Tickets endpoint not yet available
+        showToast('Fonctionnalité tickets bientôt disponible', 'info');
         closeNewTicketModal();
-        await loadTickets();
         
     } catch (error) {
         console.error('Error creating ticket:', error);
@@ -240,11 +224,8 @@ const loadTicketDetail = async (ticketId) => {
     currentTicketId = ticketId;
     
     try {
-        const { data: ticket, error } = await supabaseClient
-            .from('tickets_support')
-            .select('*')
-            /* .eq('id', ticketId) - TODO: filter nan server */
-            [0];
+        const ticket = allTickets.find(t => t.id === ticketId);
+        if (!ticket) { showToast('Ticket non trouvé', 'error'); return; }
         
         document.getElementById('detail-sujet').textContent = ticket.sujet;
         document.getElementById('detail-statut').textContent = getStatusLabel(ticket.statut);
@@ -254,9 +235,7 @@ const loadTicketDetail = async (ticketId) => {
         document.getElementById('detail-date').textContent = new Date(ticket.created_at).toLocaleString();
         document.getElementById('detail-description').textContent = ticket.description;
         
-        // Load messages
         await loadTicketMessages(ticketId);
-        
         document.getElementById('ticket-detail-modal').style.display = 'flex';
         
     } catch (error) {
@@ -267,25 +246,8 @@ const loadTicketDetail = async (ticketId) => {
 
 const loadTicketMessages = async (ticketId) => {
     try {
-        const { data: messages, error } = await supabaseClient
-            .from('ticket_messages')
-            .select('*')
-            /* .eq('ticket_id', ticketId) - TODO: filter nan server */
-            ;
-        
         const container = document.getElementById('ticket-messages');
-        
-        if (!messages || messages.length === 0) {
-            container.innerHTML = '<p class="text-muted text-center">Aucun message</p>';
-            return;
-        }
-        
-        container.innerHTML = messages.map(m => `
-            <div class="message ${m.auteur_id === currentUser.id ? 'message-own' : 'message-other'}">
-                <div class="message-content">${m.message}</div>
-                <div class="message-time">${new Date(m.created_at).toLocaleString()}</div>
-            </div>
-        `).join('');
+        container.innerHTML = '<p class="text-muted text-center">Aucun message</p>';
         
     } catch (error) {
         console.error('Error loading messages:', error);
@@ -298,16 +260,9 @@ const sendReply = async () => {
     if (!message.trim()) return;
     
     try {
-        const { error } = await supabaseClient
-            .from('ticket_messages')
-            .insert([{
-                ticket_id: currentTicketId,
-                auteur_id: currentUser.id,
-                message: message
-            }]);
-        
+        // Tickets endpoint not yet available
+        showToast('Fonctionnalité bientôt disponible', 'info');
         document.getElementById('reply-message').value = '';
-        await loadTicketMessages(currentTicketId);
         
     } catch (error) {
         console.error('Error sending reply:', error);
@@ -319,9 +274,11 @@ const initEventListeners = () => {
     document.getElementById('filter-statut').addEventListener('change', filterTickets);
     document.getElementById('btn-submit-ticket').addEventListener('click', submitNewTicket);
     document.getElementById('btn-send-reply').addEventListener('click', sendReply);
-    document.getElementById('btn-logout').addEventListener('click', async (e) => {
+    document.getElementById('btn-logout')?.addEventListener('click', (e) => {
         e.preventDefault();
-        await logout();
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = '../login.html';
     });
 };
 
@@ -343,7 +300,7 @@ window.closeTicketDetailModal = () => {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await initAuth();
+    if (!initAuth()) return;
     await loadTickets();
     initEventListeners();
 });

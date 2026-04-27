@@ -81,17 +81,8 @@ window.viewLocataire = async function(id) {
     const l = locataires.find(function(x){ return x.id_locataire === id; });
     if (!l) return;
     const u = l.user || {};
-    const { data: contracts } = await supabase
-        .from('contrats')
-        .select('reference, date_debut, date_fin, loyer_mensuel, statut, propriete:proprietes(titre)')
-        /* .eq('locataire_id', id) - TODO: filter nan server */
-        ;
-    const { data: payments } = await supabase
-        .from('paiements')
-        .select('reference, montant_total, date_echeance, statut')
-        /* .eq('locataire_id', id) - TODO: filter nan server */
-        
-        .limit(5);
+    const contracts = await apiClient.get('/admin/contrats').then(d => (d||[]).filter(c => c.locataire_id === id)).catch(() => []);
+    const payments = []; // paiements endpoint not yet available
     const contractRows = (contracts || []).map(function(c){
         return '<div class="detail-card"><div class="detail-card-title">' + esc(c.reference || '') + ' â€” ' + esc(c.propriete?.titre || 'N/A') + '</div><div class="detail-card-sub">$' + Number(c.loyer_mensuel||0).toLocaleString('fr-FR') + '/mois Â· ' + esc(c.statut) + ' Â· ' + (c.date_debut||'').substring(0,10) + ' â†’ ' + (c.date_fin||'').substring(0,10) + '</div></div>';
     }).join('') || '<p style="color:#64748b;font-size:13px;">Aucun contrat</p>';
@@ -165,23 +156,17 @@ window.saveLocataire = async function(e) {
             showToast('Locataire mis à jour', 'success');
         } else {
             const pwd = genPwd();
-            const { data: auth, error: ae } = await supabase.auth.signUp({
+            // Create locataire via backend API (registration via code)
+            const newLocData = {
                 email: getVal('loc-email'),
                 password: pwd,
-                options: { data: { full_name: getVal('loc-nom'), role: 'locataire' } }
-            });
-            if (ae) throw ae;
-            if (!auth.user) throw new Error('Compte déjà existant ou confirmation email requise.');
-            const uid = auth.user.id;
-            // Wait for on_auth_user_created trigger
-            await new Promise(r => setTimeout(r, 1200));
-            const { error: pe } = await supabase.from('profiles').upsert(
-                { id: uid, ...profileData, role: 'locataire' },
-                { onConflict: 'id' }
-            );
-            if (pe) throw pe;
-            const { error: le } = await apiClient.post('/locataires', [{ user_id: uid, ...locData }]);
-            if (le) throw le;
+                nom: getVal('loc-nom').split(' ').slice(-1)[0] || getVal('loc-nom'),
+                prenom: getVal('loc-nom').split(' ')[0] || '',
+                role: 'locataire',
+                ...profileData,
+                ...locData
+            };
+            await apiClient.post('/admin/locataires', newLocData);
             showToast('Locataire créé! Mot de passe: ' + pwd, 'success');
         }
         closeModal('add-locataire');

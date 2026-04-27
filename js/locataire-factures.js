@@ -1,33 +1,26 @@
-import CONFIG from './config.js';
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from './api-client.js';
 
 let allFactures = [];
 let locataireId = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return; }
+    if (user.role !== 'locataire' && user.role !== 'admin') { window.location.href = '../index.html'; return; }
 
-    document.getElementById('btn-logout')?.addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
+    document.getElementById('btn-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
         window.location.href = '../login.html';
     });
 
-    const { data: loc } = await supabaseClient
-        .from('locataires')
-        .select('id_locataire, nom, prenom')
-        /* .eq('user_id', user.id) - TODO: filter nan server */
-        [0];
-
-    if (loc) {
-        locataireId = loc.id_locataire;
-        const name = (`${loc.prenom || ''} ${loc.nom || ''}`).trim() || user.email;
-        const el = document.getElementById('user-name');
-        if (el) el.textContent = name;
-        const av = document.getElementById('user-avatar');
-        if (av) av.textContent = (name).charAt(0).toUpperCase();
-    }
+    locataireId = user.locataire_id || user.id;
+    const name = (`${user.prenom || ''} ${user.nom || ''}`).trim() || user.email || 'Locataire';
+    const el = document.getElementById('user-name');
+    if (el) el.textContent = name;
+    const av = document.getElementById('user-avatar');
+    if (av) av.textContent = name.charAt(0).toUpperCase();
 
     await loadFactures();
     setupFilters();
@@ -35,15 +28,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadFactures() {
-    if (!locataireId) return;
     try {
-        const { data, error } = await supabaseClient
-            .from('factures')
-            .select('*')
-            /* .eq('id_locataire', locataireId) - TODO: filter nan server */
-            ;
-
-        allFactures = data || [];
+        // Factures endpoint not yet available - show placeholder
+        allFactures = []; // await apiClient.get('/factures').catch(() => []);
 
         setEl('stat-eau', allFactures.filter(f => f.type_facture === 'eau').length);
         setEl('stat-elec', allFactures.filter(f => f.type_facture === 'electricite').length);

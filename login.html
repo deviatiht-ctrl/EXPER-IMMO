@@ -445,19 +445,23 @@
     <!-- SCRIPTS -->
     
     <script type="module">
-        import CONFIG from '/js/config.js?v=4/02_081512';
-        const { createClient } = supabase;
-        const _db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        import { apiClient } from '/js/api-client.js';
         (async () => {
             try {
-                const [r1, r2, r3] = await Promise.all([
-                    _db.from('proprietes').select('*', { count: 'exact', head: true }),
-                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'proprietaire'),
-                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'locataire')
+                const [proprietes, proprietaires, locataires] = await Promise.all([
+                    apiClient.get('/properties').catch(() => []),
+                    apiClient.get('/admin/proprietaires').catch(() => []),
+                    apiClient.get('/locataires').catch(() => [])
                 ]);
-                const map = { biens: r1.count, proprietaires: r2.count, locataires: r3.count };
+                
+                const map = { 
+                    biens: proprietes.length, 
+                    proprietaires: proprietaires.length, 
+                    locataires: locataires.length 
+                };
+                
                 Object.entries(map).forEach(([key, val]) => {
-                    if (val === null || val === undefined) return;
+                    if (val === null || val === undefined || val === 0) return;
                     const el = document.querySelector('[data-stat="' + key + '"]');
                     if (el) el.textContent = val + '+';
                 });

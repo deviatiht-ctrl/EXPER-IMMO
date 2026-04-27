@@ -1,44 +1,36 @@
 // locataire-payments.js - Locataire Payments Page
-import CONFIG from './config.js';
+import { apiClient } from './api-client.js';
 import { showToast, formatPrice } from './utils.js';
-import { requireAuth, logout, supabaseClient } from './auth.js';
 
 let currentUser = null;
 let locataireId = null;
 let allPayments = [];
 
-const initAuth = async () => {
-    currentUser = await requireAuth(['locataire']);
-    if (!currentUser) return;
+const initAuth = () => {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return false; }
+    if (user.role !== 'locataire' && user.role !== 'admin') { window.location.href = '../index.html'; return false; }
     
-    const { data: locataire } = await supabaseClient
-        .from('locataires')
-        .select('id_locataire')
-        /* .eq('user_id', currentUser.id) - TODO: filter nan server */
-        [0];
+    currentUser = user;
+    locataireId = user.locataire_id || user.id;
     
-    locataireId = locataire?.id_locataire;
-    
-    document.getElementById('user-name').textContent = currentUser.profile?.full_name || 'Locataire';
-    document.getElementById('user-avatar').textContent = 
-        (currentUser.profile?.full_name || 'L').charAt(0).toUpperCase();
+    const name = (`${user.prenom || ''} ${user.nom || ''}`).trim() || user.email || 'Locataire';
+    const el = document.getElementById('user-name');
+    if (el) el.textContent = name;
+    const av = document.getElementById('user-avatar');
+    if (av) av.textContent = name.charAt(0).toUpperCase();
+    return true;
 };
 
 const loadPayments = async () => {
     if (!locataireId) return;
     
     try {
-        const { data: payments, error } = await supabaseClient
-            .from('paiements')
-            .select('*')
-            /* .eq('locataire_id', locataireId) - TODO: filter nan server */
-            
-            ;
-        
-        allPayments = payments || [];
+        // Paiements endpoint not yet available
+        allPayments = []; // await apiClient.get('/paiements').catch(() => []);
         renderPayments(allPayments);
         updateStats(allPayments);
-        
     } catch (error) {
         console.error('Error loading payments:', error);
         showToast('Erreur lors du chargement des paiements', 'error');
@@ -103,14 +95,10 @@ const loadContractInfo = async () => {
     if (!locataireId) return;
     
     try {
-        const { data: contract, error } = await supabaseClient
-            .from('contrats')
-            .select('loyer_mensuel, devise, date_fin')
-            /* .eq('locataire_id', locataireId) - TODO: filter nan server */
-            /* .eq('statut', 'actif') - TODO: filter nan server */
-            [0];
+        const contrats = await apiClient.get('/admin/contrats').catch(() => []);
+        const contract = contrats.find(c => c.locataire_id === locataireId && c.statut === 'actif') || null;
         
-        if (error || !contract) return;
+        if (!contract) return;
         
         document.getElementById('stat-loyer').textContent = formatPrice(contract.loyer_mensuel, contract.devise);
         

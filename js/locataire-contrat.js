@@ -1,30 +1,25 @@
-import CONFIG from './config.js';
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from './api-client.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return; }
+    if (user.role !== 'locataire' && user.role !== 'admin') { window.location.href = '../index.html'; return; }
 
-    document.getElementById('btn-logout')?.addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
+    document.getElementById('btn-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
         window.location.href = '../login.html';
     });
 
-    const { data: loc } = await supabaseClient
-        .from('locataires')
-        .select('id_locataire, nom, prenom')
-        /* .eq('user_id', user.id) - TODO: filter nan server */
-        [0];
+    const name = (`${user.prenom || ''} ${user.nom || ''}`).trim() || user.email || 'Locataire';
+    const el = document.getElementById('user-name');
+    if (el) el.textContent = name;
+    const av = document.getElementById('user-avatar');
+    if (av) av.textContent = name.charAt(0).toUpperCase();
 
-    if (loc) {
-        const name = (`${loc.prenom || ''} ${loc.nom || ''}`).trim();
-        const el = document.getElementById('user-name');
-        if (el) el.textContent = name || user.email;
-        const av = document.getElementById('user-avatar');
-        if (av) av.textContent = (name || 'L').charAt(0).toUpperCase();
-        await loadContrat(loc.id_locataire);
-    }
+    const locId = user.locataire_id || user.id;
+    await loadContrat(locId);
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
 });
@@ -34,16 +29,8 @@ async function loadContrat(locataireId) {
     const noContratDiv = document.getElementById('no-contrat');
 
     try {
-        const { data: contrat, error } = await supabaseClient
-            .from('contrats')
-            .select(`
-                *,
-                propriete:proprietes(titre, adresse, type_propriete, code_propriete),
-                proprietaire:proprietaires(code_proprietaire, user:profiles!proprietaires_user_id_fkey(full_name))
-            `)
-            /* .eq('locataire_id', locataireId) - TODO: filter nan server */
-            /* .eq('statut', 'actif') - TODO: filter nan server */
-            .maybeSingle();
+        const contrats = await apiClient.get('/admin/contrats').catch(() => []);
+        const contrat = contrats.find(c => c.locataire_id === locataireId && c.statut === 'actif') || contrats.find(c => c.locataire_id === locataireId);
 
         if (!contrat) {
             if (detailsDiv) detailsDiv.style.display = 'none';
@@ -54,7 +41,7 @@ async function loadContrat(locataireId) {
         if (noContratDiv) noContratDiv.style.display = 'none';
         if (detailsDiv) detailsDiv.style.display = 'block';
 
-        setEl('c-code', contrat.code_contrat || contrat.reference || '-');
+        setEl('c-code', contrat.code_contrat || contrat.reference || String(contrat.id || '-'));
         setEl('c-date-signature', contrat.date_signature ? new Date(contrat.date_signature).toLocaleDateString('fr-FR') : '-');
         setEl('c-date-debut', contrat.date_debut ? new Date(contrat.date_debut).toLocaleDateString('fr-FR') : '-');
         setEl('c-date-fin', contrat.date_fin ? new Date(contrat.date_fin).toLocaleDateString('fr-FR') : '-');
@@ -63,11 +50,11 @@ async function loadContrat(locataireId) {
         setEl('c-renouvellement', contrat.renouvellement_auto ? 'Oui' : 'Non');
         setEl('c-objet', contrat.objet || '-');
 
-        setEl('b-code', contrat.propriete?.code_propriete || '-');
-        setEl('b-adresse', contrat.propriete?.adresse || '-');
-        setEl('b-type', contrat.propriete?.type_propriete || '-');
-
-        setEl('prop-nom', contrat.proprietaire?.user?.full_name || '-');
+        const prop = contrat.propriete || contrat.property || {};
+        setEl('b-code', prop.code_propriete || '-');
+        setEl('b-adresse', prop.adresse || prop.address || '-');
+        setEl('b-type', prop.type_propriete || '-');
+        setEl('prop-nom', contrat.proprietaire?.nom || '-');
         setEl('prop-code', contrat.proprietaire?.code_proprietaire || '-');
 
         const statusBadge = document.getElementById('contrat-statut');
@@ -76,7 +63,7 @@ async function loadContrat(locataireId) {
             statusBadge.className = `status-badge ${contrat.statut === 'actif' ? 'green' : 'inactive'}`;
         }
 
-        await loadVersements(contrat.id_contrat);
+        await loadVersements(contrat.id || contrat.id_contrat);
     } catch (err) {
         console.error('loadContrat:', err);
     }
@@ -84,12 +71,8 @@ async function loadContrat(locataireId) {
 
 async function loadVersements(contratId) {
     try {
-        const { data } = await supabaseClient
-            .from('paiements')
-            .select('montant_total, date_echeance, statut')
-            /* .eq('contrat_id', contratId) - TODO: filter nan server */
-            
-            .limit(12);
+        // Paiements endpoint not yet available - show placeholder
+        const data = [];
 
         const tbody = document.getElementById('versements-tbody');
         if (!tbody) return;

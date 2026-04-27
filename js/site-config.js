@@ -7,19 +7,12 @@
  *   <script type="module" src="js/site-config.js"></script>
  */
 
-import CONFIG from './config.js';
-
-const { createClient } = supabase;
-const db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from './api-client.js';
 
 async function loadSiteConfig() {
     try {
-        const { data, error } = await db
-            .from('parametres_site')
-            .select('*')
-            .single();
-
-        if (error || !data) return;
+        const data = await apiClient.get('/parametres-site').catch(() => null);
+        if (!data) return;
         applyConfig(data);
     } catch (e) {
         console.warn('[SiteConfig] Impossible de charger les paramètres:', e.message);

@@ -745,8 +745,8 @@
             <div class="footer-grid">
                 <div class="footer-about">
                     <div class="footer-logo">
-                        "assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO"
-                        style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'"
+                        <img src="/assets/EXPER IMMO LOGO.png?v=2" alt="EXPERIMMO"
+                        style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none'">
                         <span>EXPERIMMO</span>
                     </div>
                     <p data-site="description">Votre partenaire de confiance pour la gestion, l'achat et la location de
@@ -769,9 +769,9 @@
                 </div>
                 <div>
                     <h4>Espaces</h4>
-                    <nav class="footer-links">
-                        <a href="login.html">Connexion</a>
-                        <a href="inscription.html">Inscription</a>
+                    <nav class="footer-links" id="footer-auth-links">
+                        <a href="login.html" id="footer-login">Connexion</a>
+                        <a href="inscription.html" id="footer-register">Inscription</a>
                         <a href="calculateur.html">Simulateur</a>
                         <a href="#">Mentions légales</a>
                     </nav>
@@ -855,25 +855,34 @@
         });
     </script>
     <script type="module">
-        import CONFIG from '/js/config.js';
-        const { createClient } = supabase;
-        const _db = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        import { apiClient } from '/js/api-client.js';
         (async () => {
             try {
-                const [r1, r2, r3] = await Promise.all([
-                    _db.from('proprietes').select('*', { count: 'exact', head: true }),
-                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'proprietaire'),
-                    _db.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'locataire')
+                // Fetch real data from API
+                const [proprietes, proprietaires, locataires] = await Promise.all([
+                    apiClient.get('/properties').catch(() => []),
+                    apiClient.get('/admin/proprietaires').catch(() => []),
+                    apiClient.get('/locataires').catch(() => [])
                 ]);
-                const map = { biens: r1.count, proprietaires: r2.count, locataires: r3.count };
+                
+                const map = { 
+                    biens: proprietes.length, 
+                    proprietaires: proprietaires.length, 
+                    locataires: locataires.length 
+                };
+                
                 Object.entries(map).forEach(([key, val]) => {
                     if (val === null || val === undefined) return;
                     const el = document.querySelector('[data-stat="' + key + '"]');
                     if (!el) return;
                     el.dataset.target = val;
-                    if (el.textContent !== '0') el.textContent = val + '+';
+                    if (val > 0) el.textContent = val + '+';
                 });
-            } catch (e) { console.warn('[Stats]', e.message); }
+                
+                console.log('[Stats] Loaded from API:', map);
+            } catch (e) { 
+                console.warn('[Stats] Error loading stats:', e.message); 
+            }
         })();
     </script>
     <script>
@@ -884,6 +893,33 @@
                     .catch(e => console.warn('[PWA] SW err', e));
             });
         }
+    </script>
+    <script>
+        // Auth state handling for footer buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('exper_immo_token');
+            const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+            
+            const footerLogin = document.getElementById('footer-login');
+            const footerRegister = document.getElementById('footer-register');
+            
+            if (token && user.id) {
+                // User is logged in - show Déconnexion
+                if (footerLogin) {
+                    footerLogin.textContent = 'Déconnexion';
+                    footerLogin.href = '#';
+                    footerLogin.onclick = (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('exper_immo_token');
+                        localStorage.removeItem('exper_immo_user');
+                        window.location.reload();
+                    };
+                }
+                if (footerRegister) {
+                    footerRegister.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 

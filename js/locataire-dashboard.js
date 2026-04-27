@@ -1,76 +1,53 @@
-import CONFIG from './config.js';
-const { createClient } = supabase;
-const supabaseClient = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+import { apiClient } from './api-client.js';
 
 let currentUser = null;
 let locataireId = null;
 
-const initAuth = async () => {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
+const initAuth = () => {
+    const token = localStorage.getItem('exper_immo_token');
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    
+    if (!token || !user.id) {
         window.location.href = '../login.html';
         return;
     }
-    currentUser = user;
-
-    const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('full_name')
-        /* .eq('id', user.id) - TODO: filter nan server */
-        [0];
-
-    const { data: loc } = await supabaseClient
-        .from('locataires')
-        .select('id')
-        /* .eq('user_id', user.id) - TODO: filter nan server */
-        [0];
     
-    if (loc) {
-        locataireId = loc.id;
-        document.getElementById('user-name').textContent = profile?.full_name || 'Locataire';
+    if (user.role !== 'locataire' && user.role !== 'admin') {
+        window.location.href = '../index.html';
+        return;
     }
-
-    const lastLogin = new Date(user.last_sign_in_at).toLocaleString('fr-FR');
-    document.getElementById('last-login').textContent = lastLogin;
-    document.getElementById('welcome-title').textContent = `Bonjour, ${profile?.full_name?.split(' ')[0] || 'M.'}`;
+    
+    currentUser = user;
+    locataireId = user.locataire_id || user.id;
+    
+    const userName = user.prenom || user.nom || user.email || 'Locataire';
+    document.getElementById('user-name').textContent = userName;
+    document.getElementById('last-login').textContent = new Date().toLocaleString('fr-FR');
+    document.getElementById('welcome-title').textContent = `Bonjour, ${userName}`;
 };
 
 const loadDashboardData = async () => {
     if (!locataireId) return;
-
-    // Load Bien & Contrat
-    const { data: contrat } = await supabaseClient
-        .from('contrats')
-        .select('*, proprietes(titre)')
-        /* .eq('locataire_id', locataireId) - TODO: filter nan server */
-        /* .eq('statut', 'actif') - TODO: filter nan server */
-        .maybeSingle();
-
-    if (contrat) {
-        document.getElementById('stat-bien-occupe').textContent = contrat.proprietes?.titre || 'Oui';
-        document.getElementById('stat-contrat-statut').textContent = 'Actif';
-    }
-
-    // Load Factures
-    const { data: factures } = await supabaseClient
-        .from('factures')
-        .select('*')
-        /* .eq('id_locataire', locataireId) - TODO: filter nan server */
+    
+    try {
+        // Try to load contracts from API
+        const contrats = await apiClient.get('/admin/contrats').catch(() => []);
+        const contrat = contrats.find(c => c.locataire_id === locataireId && c.statut === 'actif');
         
-        .limit(5);
-
-    const tbody = document.getElementById('factures-tbody');
-    if (factures && factures.length > 0) {
-        tbody.innerHTML = factures.map(f => `
-            <tr>
-                <td>${f.type_facture}</td>
-                <td>${f.periode}</td>
-                <td>${f.montant.toLocaleString()}</td>
-                <td><span class="status-badge ${f.statut_facture}">${f.statut_facture}</span></td>
-            </tr>
-        `).join('');
-    } else {
+        if (contrat) {
+            document.getElementById('stat-bien-occupe').textContent = contrat.propriete?.titre || 'Oui';
+            document.getElementById('stat-contrat-statut').textContent = 'Actif';
+        } else {
+            document.getElementById('stat-bien-occupe').textContent = '-';
+            document.getElementById('stat-contrat-statut').textContent = 'Aucun';
+        }
+        
+        // Factures endpoint not ready yet - show placeholder
+        const tbody = document.getElementById('factures-tbody');
         tbody.innerHTML = '<tr><td colspan="4" class="text-center">Aucune facture récente.</td></tr>';
+        
+    } catch (error) {
+        console.error('Error loading dashboard data:', error);
     }
 };
 

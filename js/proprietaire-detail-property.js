@@ -1,27 +1,26 @@
 // proprietaire-detail-property.js - Property Detail Page
-import CONFIG from './config.js';
+import { apiClient } from './api-client.js';
 import { showToast, formatPrice } from './utils.js';
-import { requireAuth, logout, supabaseClient } from './auth.js';
 
 let currentUser = null;
 let proprietaireId = null;
 let propertyId = null;
 
-const initAuth = async () => {
-    currentUser = await requireAuth(['proprietaire']);
-    if (!currentUser) return;
+const initAuth = () => {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return false; }
+    if (user.role !== 'proprietaire' && user.role !== 'admin') { window.location.href = '../index.html'; return false; }
     
-    const { data: proprietaire } = await supabaseClient
-        .from('proprietaires')
-        .select('id_proprietaire')
-        /* .eq('user_id', currentUser.id) - TODO: filter nan server */
-        [0];
+    currentUser = user;
+    proprietaireId = user.proprietaire_id || user.id;
     
-    proprietaireId = proprietaire?.id_proprietaire;
-    
-    document.getElementById('user-name').textContent = currentUser.profile?.full_name || 'Propriétaire';
-    document.getElementById('user-avatar').textContent = 
-        (currentUser.profile?.full_name || 'P').charAt(0).toUpperCase();
+    const name = (`${user.prenom || ''} ${user.nom || ''}`).trim() || user.email || 'Propriétaire';
+    const el = document.getElementById('user-name');
+    if (el) el.textContent = name;
+    const av = document.getElementById('user-avatar');
+    if (av) av.textContent = name.charAt(0).toUpperCase();
+    return true;
 };
 
 const getPropertyIdFromUrl = () => {
@@ -89,14 +88,10 @@ const loadProperty = async () => {
     }
     
     try {
-        const { data: property, error } = await supabaseClient
-            .from('proprietes')
-            .select('*')
-            /* .eq('id_propriete', propertyId) - TODO: filter nan server */
-            /* .eq('proprietaire_id', proprietaireId) - TODO: filter nan server */
-            [0];
+        const props = await apiClient.get('/properties').catch(() => []);
+        const property = props.find(p => String(p.id || p.id_propriete) === String(propertyId));
         
-        if (error || !property) {
+        if (!property) {
             showError('Propriété non trouvée');
             return;
         }

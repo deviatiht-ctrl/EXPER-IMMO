@@ -1,39 +1,38 @@
 // proprietaire-properties.js - Proprietaire Properties Page
-import CONFIG from './config.js';
+import { apiClient } from './api-client.js';
 import { showToast, formatPrice } from './utils.js';
-import { requireAuth, logout, supabaseClient } from './auth.js';
 
 let currentUser = null;
 let proprietaireId = null;
 let allProperties = [];
 
-const initAuth = async () => {
-    currentUser = await requireAuth(['proprietaire']);
-    if (!currentUser) return;
+const initAuth = () => {
+    const token = localStorage.getItem('exper_immo_token');
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
     
-    const { data: proprietaire } = await supabaseClient
-        .from('proprietaires')
-        .select('id_proprietaire')
-        /* .eq('user_id', currentUser.id) - TODO: filter nan server */
-        [0];
+    if (!token || !user.id) {
+        window.location.href = '../login.html';
+        return;
+    }
     
-    proprietaireId = proprietaire?.id_proprietaire;
+    if (user.role !== 'proprietaire' && user.role !== 'admin') {
+        window.location.href = '../index.html';
+        return;
+    }
     
-    document.getElementById('user-name').textContent = currentUser.profile?.full_name || 'Propriétaire';
-    document.getElementById('user-avatar').textContent = 
-        (currentUser.profile?.full_name || 'P').charAt(0).toUpperCase();
+    currentUser = user;
+    proprietaireId = user.proprietaire_id || user.id;
+    
+    const userName = user.prenom || user.nom || user.email || 'Propriétaire';
+    document.getElementById('user-name').textContent = userName;
+    document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
 };
 
 const loadProperties = async () => {
     if (!proprietaireId) return;
     
     try {
-        const { data: properties, error } = await supabaseClient
-            .from('proprietes')
-            .select('*, zones(nom)')
-            /* .eq('proprietaire_id', proprietaireId) - TODO: filter nan server */
-            /* .eq('est_actif', true) - TODO: filter nan server */
-            ;
+        const properties = await apiClient.get('/properties').catch(() => []);
         
         allProperties = properties || [];
         renderProperties(allProperties);
@@ -154,9 +153,11 @@ const initFilters = () => {
 };
 
 const initLogout = () => {
-    document.getElementById('btn-logout').addEventListener('click', async (e) => {
+    document.getElementById('btn-logout')?.addEventListener('click', (e) => {
         e.preventDefault();
-        await logout();
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
+        window.location.href = '../login.html';
     });
 };
 

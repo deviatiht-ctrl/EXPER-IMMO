@@ -1,18 +1,13 @@
 // agents.js
-import { supabaseClient } from './supabase-client.js';
+import { apiClient } from './api-client.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const agentsGrid = document.getElementById('agents-grid');
 
     const loadAgents = async () => {
-        const { data: agents, error } = await supabaseClient
-            .from('agents')
-            .select('*')
-            /* .eq('actif', true) - TODO: filter nan server */
-            ;
+        const agents = await apiClient.get('/agents').catch(() => null);
 
-        if (error) {
-            console.error('Error loading agents:', error);
+        if (!agents) {
             agentsGrid.innerHTML = '<p>Erreur lors du chargement des agents.</p>';
             return;
         }

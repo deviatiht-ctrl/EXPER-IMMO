@@ -9,12 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadUsers() {
     try {
-        const { data, error } = await supabase
-            .from('profiles')
-            .select('*')
-            ;
-
-        allUsers = data || [];
+        // Fetch all users from admin endpoint
+        const data = await apiClient.get('/admin/users').catch(() => []);
+        allUsers = Array.isArray(data) ? data : [];
         renderTable(allUsers);
     } catch (err) { console.error(err); }
 }

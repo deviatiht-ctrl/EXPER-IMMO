@@ -77,12 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Handle Logout
         const btnLogout = document.getElementById('admin-logout');
         if (btnLogout) {
-            btnLogout.addEventListener('click', async () => {
-                if (window.supabase) {
-                    await window.supabase.auth.signOut();
-                } else {
-                    localStorage.removeItem('sb-access-token');
-                }
+            btnLogout.addEventListener('click', () => {
+                localStorage.removeItem('exper_immo_token');
+                localStorage.removeItem('exper_immo_user');
                 window.location.href = '../login.html';
             });
         }

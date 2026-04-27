@@ -115,7 +115,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             reader.readAsDataURL(file);
             uploadedFiles.push(file);
         });
-        showToast(`${files.length} image(s) ajoutée(s) au local`, "info");
+        showToast(`${files.length} image(s) sélectionnée(s)`, "info");
+    }
+
+    async function uploadAllImages() {
+        const urls = [];
+        for (const file of uploadedFiles) {
+            try {
+                const fd = new FormData();
+                fd.append('file', file);
+                const token = localStorage.getItem('exper_immo_token');
+                const API_URL = window.EXPER_API_URL || 'https://exper-immo.onrender.com';
+                const res = await fetch(`${API_URL}/upload/image`, {
+                    method: 'POST',
+                    headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+                    body: fd
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    urls.push(data.url);
+                }
+            } catch (err) {
+                console.error('Image upload error:', err);
+            }
+        }
+        return urls;
     }
 
     btnSave.addEventListener('click', async (e) => {
@@ -130,7 +154,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnSave.innerHTML = '<i class="spinner-small"></i> <span>Enregistrement...</span>';
 
         try {
-            // 1. Prepare data
+            // 1. Upload images first
+            showToast('Upload des images...', 'info');
+            const imageUrls = uploadedFiles.length > 0 ? await uploadAllImages() : [];
+
+            // 2. Prepare data
             const slug = titre.toLowerCase()
                 .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
                 .replace(/\s+/g, '-')
@@ -141,22 +169,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const formData = {
                 titre: titre,
                 type_transaction: document.getElementById('type_transaction').value,
-                type_propriete: document.getElementById('type_propriete').value,
+                type_bien: document.getElementById('type_propriete').value,
                 description: document.getElementById('description').value,
                 prix: parseFloat(document.getElementById('prix_vente').value || document.getElementById('prix_location').value) || 0,
-                prix_location: parseFloat(document.getElementById('prix_location').value) || null,
-                prix_vente: parseFloat(document.getElementById('prix_vente').value) || null,
                 statut_bien: document.getElementById('statut').value || 'disponible',
                 devise: document.getElementById('devise').value,
                 nb_chambres: parseInt(document.getElementById('nb_chambres').value) || 0,
                 nb_salles_bain: parseInt(document.getElementById('nb_salles_bain').value) || 0,
-                nb_garages: parseInt(document.getElementById('nb_garages').value) || 0,
                 superficie_m2: parseFloat(document.getElementById('superficie_m2').value) || 0,
                 est_vedette: document.getElementById('est_vedette').checked,
-                zone_id: document.getElementById('zone_id').value || null,
-                agent_id: document.getElementById('agent_id').value || null,
                 adresse: document.getElementById('adresse').value,
-                reference: 'REF-' + Date.now().toString().slice(-6)
+                reference: 'REF-' + Date.now().toString().slice(-6),
+                images: imageUrls
             };
 
             if (!propId) formData.slug = slug;
