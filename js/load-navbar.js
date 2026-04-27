@@ -11,7 +11,7 @@ const prefix = needsPrefix ? '../' : '';
 // Role config: dashboard URL, icon, label
 const ROLE_CONFIG = {
     admin:        { href: 'admin/dashboard.html',        icon: 'shield',           label: 'Admin',          color: '#C53636' },
-    gestionnaire: { href: 'gestionnaire/dashboard.html', icon: 'settings-2',       label: 'Gestionnaire',   color: '#7c3aed' },
+    gestionnaire: { href: 'gestionnaire/index.html',     icon: 'settings-2',       label: 'Gestionnaire',   color: '#7c3aed' },
     proprietaire: { href: 'proprietaire/index.html',     icon: 'home',             label: 'Propriétaire',   color: '#0ea5e9' },
     locataire:    { href: 'locataire/index.html',        icon: 'key',              label: 'Locataire',      color: '#10b981' },
 };
@@ -101,7 +101,7 @@ const navbarHTML = `
 
                     <!-- Links for Gestionnaire -->
                     <div id="menu-gestionnaire" style="display:none;">
-                        <a href="${prefix}gestionnaire/dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
+                        <a href="${prefix}gestionnaire/index.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background=''">
                             <i data-lucide="settings-2" style="width:15px;"></i> Dashboard Gest.
                         </a>
                     </div>
@@ -219,7 +219,7 @@ const navbarHTML = `
                 <a href="${prefix}admin/dashboard.html" id="sidebar-link-admin" style="display:none">
                     <i data-lucide="shield"></i> Administration
                 </a>
-                <a href="${prefix}gestionnaire/dashboard.html" id="sidebar-link-gestionnaire" style="display:none">
+                <a href="${prefix}gestionnaire/index.html" id="sidebar-link-gestionnaire" style="display:none">
                     <i data-lucide="settings-2"></i> Dashboard Gestionnaire
                 </a>
                 <a href="${prefix}proprietaire/index.html" id="sidebar-link-proprietaire" style="display:none">

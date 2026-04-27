@@ -3,8 +3,8 @@
 // Version 1.0.0
 // ============================================================
 
-const CACHE_NAME = 'experImmo-v5';
-const STATIC_CACHE = 'experImmo-static-v5';
+const CACHE_NAME = 'experImmo-v6';
+const STATIC_CACHE = 'experImmo-static-v6';
 
 // App shell : fichiers à mettre en cache pour le mode hors-ligne
 const APP_SHELL = [
@@ -57,6 +57,12 @@ self.addEventListener('activate', event => {
                     .map(key => caches.delete(key))
             ))
             .then(() => self.clients.claim())
+        .then(() => {
+            // Force all open tabs to reload so they get the latest JS
+            self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
+                clients.forEach(client => client.navigate(client.url));
+            });
+        })
     );
 });
 
