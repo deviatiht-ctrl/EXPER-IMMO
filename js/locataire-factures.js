@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { data: loc } = await supabaseClient
         .from('locataires')
         .select('id_locataire, nom, prenom')
-        .eq('user_id', user.id)
-        .single();
+        /* .eq('user_id', user.id) - TODO: filter nan server */
+        [0];
 
     if (loc) {
         locataireId = loc.id_locataire;
@@ -40,10 +40,9 @@ async function loadFactures() {
         const { data, error } = await supabaseClient
             .from('factures')
             .select('*')
-            .eq('id_locataire', locataireId)
-            .order('date_emission', { ascending: false });
+            /* .eq('id_locataire', locataireId) - TODO: filter nan server */
+            ;
 
-        if (error) throw error;
         allFactures = data || [];
 
         setEl('stat-eau', allFactures.filter(f => f.type_facture === 'eau').length);

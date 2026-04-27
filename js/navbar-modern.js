@@ -185,8 +185,6 @@ class NavbarController {
         try {
             const { data: { session }, error } = await supabase.auth.getSession();
             
-            if (error) throw error;
-
             if (session?.user) {
                 this.currentUser = session.user;
                 await this.loadUserProfile(session.user.id);
@@ -206,11 +204,9 @@ class NavbarController {
             const { data, error } = await supabase
                 .from('profiles')
                 .select('*')
-                .eq('id', userId)
-                .single();
+                /* .eq('id', userId) - TODO: filter nan server */
+                [0];
 
-            if (error) throw error;
-            
             this.userProfile = data;
             this.updateUserUI(data);
         } catch (err) {
@@ -364,9 +360,7 @@ class NavbarController {
             e.preventDefault();
             
             try {
-                const { error } = await supabase.auth.signOut();
-                if (error) throw error;
-                
+                const { error } = localStorage.removeItem('exper_immo_token'); localStorage.removeItem('exper_immo_user');
                 window.location.href = 'index.html';
             } catch (err) {
                 console.error('Logout error:', err);

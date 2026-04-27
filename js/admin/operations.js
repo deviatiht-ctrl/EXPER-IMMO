@@ -23,7 +23,7 @@ async function loadProperties() {
     const { data, error } = await supabaseClient
         .from('proprietes')
         .select('id_propriete, titre, code_propriete')
-        .order('titre');
+        ;
     
     if (data) {
         propSelect.innerHTML = '<option value="">Sélectionner un bien...</option>' + 
@@ -40,7 +40,7 @@ async function loadOperations() {
             *,
             proprietes (titre, code_propriete)
         `)
-        .order('date_operation', { ascending: false });
+        ;
 
     if (error) {
         tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: red;">Erreur de chargement</td></tr>';
@@ -97,7 +97,7 @@ async function saveOperation(e) {
 
     let result;
     if (id) {
-        result = await supabaseClient.from('operations').update(opData).eq('id_operation', id);
+        result = await supabaseClient.from('operations').update(opData)/* .eq('id_operation', id) - TODO: filter nan server */;
     } else {
         result = await supabaseClient.from('operations').insert([opData]);
     }

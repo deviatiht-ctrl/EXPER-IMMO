@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { data: profile } = await supabaseClient
         .from('profiles')
         .select('role')
-        .eq('id', user.id)
-        .single();
+        /* .eq('id', user.id) - TODO: filter nan server */
+        [0];
 
     if (profile.role !== 'gestionnaire' && profile.role !== 'admin') {
         window.location.href = '../index.html';
@@ -30,14 +30,14 @@ async function loadStats(userId) {
         // Biens gérés par ce gestionnaire
         const { count: biensCount } = await supabaseClient
             .from('proprietes')
-            .select('*', { count: 'exact', head: true })
-            .eq('gestionnaire_responsable', userId);
+            
+            /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */;
 
         // Locataires gérés
         const { count: locatairesCount } = await supabaseClient
             .from('locataires')
-            .select('*', { count: 'exact', head: true })
-            .eq('gestionnaire_responsable', userId);
+            
+            /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */;
 
         document.getElementById('stat-mes-biens').textContent = biensCount || 0;
         document.getElementById('stat-mes-locataires').textContent = locatairesCount || 0;
@@ -52,11 +52,9 @@ async function loadRecentDossiers(userId) {
         const { data, error } = await supabaseClient
             .from('proprietes')
             .select('titre, reference, created_at')
-            .eq('gestionnaire_responsable', userId)
-            .order('created_at', { ascending: false })
+            /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */
+            
             .limit(5);
-
-        if (error) throw error;
 
         if (data && data.length > 0) {
             container.innerHTML = data.map(item => `

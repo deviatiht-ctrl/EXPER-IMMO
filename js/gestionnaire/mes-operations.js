@@ -27,8 +27,8 @@ async function loadBienOptions(userId) {
     const { data } = await supabaseClient
         .from('proprietes')
         .select('id_propriete, titre, code_propriete')
-        .eq('gestionnaire_responsable', userId)
-        .order('titre');
+        /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */
+        ;
     select.innerHTML = '<option value="">-- Choisir un bien --</option>' +
         (data || []).map(p => `<option value="${p.id_propriete}">${esc(p.titre)} (${p.code_propriete || '-'})</option>`).join('');
 }
@@ -39,9 +39,8 @@ async function loadOperations(userId) {
         const { data, error } = await supabaseClient
             .from('operations')
             .select('*, proprietes(titre, code_propriete, gestionnaire_responsable)')
-            .order('date_operation', { ascending: false });
+            ;
 
-        if (error) throw error;
         allOps = (data || []).filter(op => op.proprietes?.gestionnaire_responsable === userId);
         setEl('count-ops', allOps.length + ' opération(s)');
         renderTable(allOps);

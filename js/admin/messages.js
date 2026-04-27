@@ -24,7 +24,7 @@ async function loadDestinataires() {
     const { data: profiles } = await supabaseClient
         .from('profiles')
         .select('id, full_name, role')
-        .order('full_name');
+        ;
     
     if (profiles) {
         const select = document.getElementById('msg-destinataire');
@@ -42,7 +42,7 @@ async function loadMessages() {
             *,
             expediteur:profiles!messages_expediteur_fkey(full_name, role)
         `)
-        .order('date_envoi', { ascending: false });
+        ;
 
     if (error) {
         messagesList.innerHTML = '<p class="empty-state">Erreur de chargement.</p>';
@@ -104,8 +104,8 @@ window.viewMessage = async (id) => {
     const { data: msg } = await supabaseClient
         .from('messages')
         .select('*, expediteur:profiles!messages_expediteur_fkey(full_name)')
-        .eq('id_message', id)
-        .single();
+        /* .eq('id_message', id) - TODO: filter nan server */
+        [0];
     
     if (msg) {
         messageDetail.innerHTML = `
@@ -121,6 +121,6 @@ window.viewMessage = async (id) => {
             </div>
         `;
         // Mark as read
-        await supabaseClient.from('messages').update({ lu_oui_non: true }).eq('id_message', id);
+        await supabaseClient.from('messages').update({ lu_oui_non: true })/* .eq('id_message', id) - TODO: filter nan server */;
     }
 };

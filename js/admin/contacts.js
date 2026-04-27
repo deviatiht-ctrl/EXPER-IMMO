@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { data: contacts, error } = await supabaseClient
             .from('contacts')
             .select('*')
-            .order('created_at', { ascending: false });
+            ;
 
         if (error) {
             console.error('Error:', error);
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const { error } = await supabaseClient
                     .from('contacts')
                     .update({ traite: true })
-                    .eq('id', id);
+                    /* .eq('id', id) - TODO: filter nan server */;
                 if (!error) loadContacts();
             });
         });
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             btn.addEventListener('click', async () => {
                 const id = btn.getAttribute('data-id');
                 if (confirm('Supprimer ce message ?')) {
-                    const { error } = await supabaseClient.from('contacts').delete().eq('id', id);
+                    const { error } = await supabaseClient.from('contacts').delete()/* .eq('id', id) - TODO: filter nan server */;
                     if (!error) loadContacts();
                 }
             });
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function checkAuth() {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) { window.location.href = '../login.html'; return; }
-    const { data: profile } = await supabaseClient.from('profiles').select('role').eq('id', user.id).single();
+    const { data: profile } = await supabaseClient.from('profiles').select('role')/* .eq('id', user.id) - TODO: filter nan server */[0];
     if (profile?.role !== 'admin') { window.location.href = '../index.html'; }
 }
 

@@ -18,8 +18,8 @@ async function checkAuth() {
     const { data: profile } = await supabase
         .from('profiles')
         .select('role')
-        .eq('id', user.id)
-        .single();
+        /* .eq('id', user.id) - TODO: filter nan server */
+        [0];
     
     if (profile?.role !== 'admin') {
         window.location.href = '../index.html';
@@ -83,7 +83,7 @@ async function loadStats() {
 
 // Get count with optional filter
 async function getCount(table, column = null, value = null) {
-    let query = supabase.from(table).select('*', { count: 'exact', head: true });
+    let query = supabase.from(table);
     
     if (column && value) {
         query = query.eq(column, value);
@@ -98,7 +98,7 @@ async function getRevenusMensuels() {
     const { data } = await supabase
         .from('paiements')
         .select('montant_total')
-        .eq('statut', 'paye')
+        /* .eq('statut', 'paye') - TODO: filter nan server */
         .gte('date_paiement', new Date(new Date().setDate(1)).toISOString());
 
     return data?.reduce((sum, p) => sum + (p.montant_total || 0), 0) || 0;
@@ -109,7 +109,7 @@ async function getRevenusTotaux() {
     const { data } = await supabase
         .from('paiements')
         .select('montant_total')
-        .eq('statut', 'paye');
+        /* .eq('statut', 'paye') - TODO: filter nan server */;
 
     return (data?.reduce((sum, p) => sum + (p.montant_total || 0), 0) || 0) / 1000;
 }
@@ -233,7 +233,7 @@ function setupEventListeners() {
     const logoutBtn = document.getElementById('btn-logout');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
-            await supabase.auth.signOut();
+            localStorage.removeItem('exper_immo_token'); localStorage.removeItem('exper_immo_user');
             window.location.href = '../login.html';
         });
     }

@@ -941,6 +941,130 @@ def paiements_stats(
 
 
 # ─────────────────────────────────────────────
+# AGENTS ENDPOINTS
+# ─────────────────────────────────────────────
+class AgentCreate(BaseModel):
+    nom: str
+    prenom: str
+    titre: Optional[str] = None
+    telephone: Optional[str] = None
+    email: Optional[str] = None
+    photo_url: Optional[str] = None
+    ordre: int = 0
+
+class AgentUpdate(BaseModel):
+    nom: Optional[str] = None
+    prenom: Optional[str] = None
+    titre: Optional[str] = None
+    telephone: Optional[str] = None
+    email: Optional[str] = None
+    photo_url: Optional[str] = None
+    ordre: Optional[int] = None
+
+def _agent_dict(a: models.Agent):
+    return {
+        "id": a.id,
+        "nom": a.nom,
+        "prenom": a.prenom,
+        "titre": a.titre,
+        "telephone": a.telephone,
+        "email": a.email,
+        "photo_url": a.photo_url,
+        "ordre": a.ordre,
+        "created_at": a.created_at.isoformat() if a.created_at else None,
+    }
+
+@app.get("/agents")
+def list_agents(
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Liste tous les agents"""
+    agents = db.query(models.Agent).order_by(models.Agent.ordre).all()
+    return [_agent_dict(a) for a in agents]
+
+
+@app.post("/agents")
+def create_agent(
+    payload: AgentCreate,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Créer un nouvel agent (admin uniquement)"""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    
+    agent = models.Agent(
+        id=str(uuid.uuid4()),
+        nom=payload.nom,
+        prenom=payload.prenom,
+        titre=payload.titre,
+        telephone=payload.telephone,
+        email=payload.email,
+        photo_url=payload.photo_url,
+        ordre=payload.ordre,
+    )
+    db.add(agent)
+    db.commit()
+    db.refresh(agent)
+    return _agent_dict(agent)
+
+
+@app.put("/agents/{agent_id}")
+def update_agent(
+    agent_id: str,
+    payload: AgentUpdate,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Mettre à jour un agent (admin uniquement)"""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    
+    agent = db.query(models.Agent).filter(models.Agent.id == agent_id).first()
+    if not agent:
+        raise HTTPException(status_code=404, detail="Agent non trouvé")
+    
+    if payload.nom is not None:
+        agent.nom = payload.nom
+    if payload.prenom is not None:
+        agent.prenom = payload.prenom
+    if payload.titre is not None:
+        agent.titre = payload.titre
+    if payload.telephone is not None:
+        agent.telephone = payload.telephone
+    if payload.email is not None:
+        agent.email = payload.email
+    if payload.photo_url is not None:
+        agent.photo_url = payload.photo_url
+    if payload.ordre is not None:
+        agent.ordre = payload.ordre
+    
+    db.commit()
+    db.refresh(agent)
+    return _agent_dict(agent)
+
+
+@app.delete("/agents/{agent_id}")
+def delete_agent(
+    agent_id: str,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """Supprimer un agent (admin uniquement)"""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    
+    agent = db.query(models.Agent).filter(models.Agent.id == agent_id).first()
+    if not agent:
+        raise HTTPException(status_code=404, detail="Agent non trouvé")
+    
+    db.delete(agent)
+    db.commit()
+    return {"message": "Agent supprimé"}
+
+
+# ─────────────────────────────────────────────
 # ADMIN SETUP ENDPOINT (for Render free tier - no shell access)
 # ─────────────────────────────────────────────
 class SetupAdminRequest(BaseModel):

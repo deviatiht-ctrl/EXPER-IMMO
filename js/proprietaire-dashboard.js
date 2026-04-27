@@ -17,8 +17,8 @@ const initAuth = async () => {
     const { data: proprietaire } = await supabaseClient
         .from('proprietaires')
         .select('*')
-        .eq('user_id', currentUser.id)
-        .single();
+        /* .eq('user_id', currentUser.id) - TODO: filter nan server */
+        [0];
     
     proprietaireId = proprietaire?.id_proprietaire;
     
@@ -41,15 +41,15 @@ const loadDashboardStats = async () => {
     
     try {
         // Total biens
-        const { count: total } = await supabaseClient.from('proprietes').select('*', { count: 'exact', head: true }).eq('proprietaire_id', proprietaireId);
+        const { count: total } = await supabaseClient.from('proprietes')/* .eq('proprietaire_id', proprietaireId) - TODO: filter nan server */;
         // En Gestion
-        const { count: gestion } = await supabaseClient.from('proprietes').select('*', { count: 'exact', head: true }).eq('proprietaire_id', proprietaireId).eq('statut_bien', 'gestion');
+        const { count: gestion } = await supabaseClient.from('proprietes')/* .eq('proprietaire_id', proprietaireId) - TODO: filter nan server *//* .eq('statut_bien', 'gestion') - TODO: filter nan server */;
         // En Construction
-        const { count: construction } = await supabaseClient.from('proprietes').select('*', { count: 'exact', head: true }).eq('proprietaire_id', proprietaireId).eq('statut_bien', 'construction');
+        const { count: construction } = await supabaseClient.from('proprietes')/* .eq('proprietaire_id', proprietaireId) - TODO: filter nan server *//* .eq('statut_bien', 'construction') - TODO: filter nan server */;
         // Ops récentes (derniers 30 jours)
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const { count: ops } = await supabaseClient.from('operations').select('*', { count: 'exact', head: true }).eq('id_proprietaire', proprietaireId).gte('date_operation', thirtyDaysAgo.toISOString());
+        const { count: ops } = await supabaseClient.from('operations')/* .eq('id_proprietaire', proprietaireId) - TODO: filter nan server */.gte('date_operation', thirtyDaysAgo.toISOString());
 
         document.getElementById('stat-total-biens').textContent = total || 0;
         document.getElementById('stat-en-gestion').textContent = gestion || 0;
@@ -71,12 +71,10 @@ const loadProperties = async () => {
         const { data: properties, error } = await supabaseClient
             .from('proprietes')
             .select('*, zones(nom)')
-            .eq('proprietaire_id', proprietaireId)
-            .eq('est_actif', true)
-            .order('created_at', { ascending: false })
+            /* .eq('proprietaire_id', proprietaireId) - TODO: filter nan server */
+            /* .eq('est_actif', true) - TODO: filter nan server */
+            
             .limit(3);
-        
-        if (error) throw error;
         
         const grid = document.getElementById('properties-grid');
         
@@ -137,10 +135,8 @@ const loadPayments = async () => {
             .from('paiements')
             .select('*, propriete:proprietes!inner(titre, proprietaire_id)')
             .eq('propriete.proprietaire_id', proprietaireId)
-            .order('created_at', { ascending: false })
+            
             .limit(5);
-        
-        if (error) throw error;
         
         const tbody = document.getElementById('finances-tbody');
         
@@ -180,11 +176,9 @@ const loadTicketCount = async () => {
     try {
         const { count, error } = await supabaseClient
             .from('tickets_support')
-            .select('*', { count: 'exact', head: true })
+            
             .in('statut', ['ouvert', 'en_cours'])
-            .eq('createur_id', currentUser.id);
-        
-        if (error) throw error;
+            /* .eq('createur_id', currentUser.id) - TODO: filter nan server */;
         
         const badge = document.getElementById('ticket-count');
         if (count > 0) {

@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { data: agents, error } = await supabaseClient
             .from('agents')
             .select('*')
-            .eq('actif', true)
-            .order('ordre', { ascending: true });
+            /* .eq('actif', true) - TODO: filter nan server */
+            ;
 
         if (error) {
             console.error('Error loading agents:', error);

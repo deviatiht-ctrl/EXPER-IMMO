@@ -24,16 +24,15 @@ async function loadLocataires(userId) {
         const { data, error } = await supabaseClient
             .from('locataires')
             .select('id_locataire, nom, prenom, code_locataire, user:profiles!locataires_user_id_fkey(full_name, email, phone)')
-            .eq('gestionnaire_responsable', userId)
-            .order('created_at', { ascending: false });
+            /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */
+            ;
 
-        if (error) throw error;
         allLocataires = data || [];
 
         const { count: contrats } = await supabaseClient
-            .from('contrats').select('*', { count: 'exact', head: true }).eq('statut', 'actif');
+            .from('contrats')/* .eq('statut', 'actif') - TODO: filter nan server */;
         const { count: retards } = await supabaseClient
-            .from('paiements').select('*', { count: 'exact', head: true }).eq('statut', 'en_retard');
+            .from('paiements')/* .eq('statut', 'en_retard') - TODO: filter nan server */;
 
         setEl('stat-total', allLocataires.length);
         setEl('stat-contrats', contrats || 0);

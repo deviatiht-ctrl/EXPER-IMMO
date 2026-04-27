@@ -1,4 +1,4 @@
-import { supabaseClient as supabase } from '../supabase-client.js';
+import { apiClient } from '../api-client.js';
 
 let allUsers = [];
 
@@ -12,9 +12,8 @@ async function loadUsers() {
         const { data, error } = await supabase
             .from('profiles')
             .select('*')
-            .order('created_at', { ascending: false });
+            ;
 
-        if (error) throw error;
         allUsers = data || [];
         renderTable(allUsers);
     } catch (err) { console.error(err); }

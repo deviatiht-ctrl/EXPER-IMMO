@@ -86,10 +86,8 @@ const loadTickets = async () => {
         const { data: tickets, error } = await supabaseClient
             .from('tickets_support')
             .select('*')
-            .eq('createur_id', currentUser.id)
-            .order('created_at', { ascending: false });
-        
-        if (error) throw error;
+            /* .eq('createur_id', currentUser.id) - TODO: filter nan server */
+            ;
         
         allTickets = tickets || [];
         renderTickets(allTickets);
@@ -226,9 +224,7 @@ const submitNewTicket = async () => {
                 statut: 'ouvert'
             }])
             .select()
-            .single();
-        
-        if (error) throw error;
+            [0];
         
         showToast('Ticket créé avec succès!', 'success');
         closeNewTicketModal();
@@ -247,10 +243,8 @@ const loadTicketDetail = async (ticketId) => {
         const { data: ticket, error } = await supabaseClient
             .from('tickets_support')
             .select('*')
-            .eq('id', ticketId)
-            .single();
-        
-        if (error) throw error;
+            /* .eq('id', ticketId) - TODO: filter nan server */
+            [0];
         
         document.getElementById('detail-sujet').textContent = ticket.sujet;
         document.getElementById('detail-statut').textContent = getStatusLabel(ticket.statut);
@@ -276,10 +270,8 @@ const loadTicketMessages = async (ticketId) => {
         const { data: messages, error } = await supabaseClient
             .from('ticket_messages')
             .select('*')
-            .eq('ticket_id', ticketId)
-            .order('created_at', { ascending: true });
-        
-        if (error) throw error;
+            /* .eq('ticket_id', ticketId) - TODO: filter nan server */
+            ;
         
         const container = document.getElementById('ticket-messages');
         
@@ -313,8 +305,6 @@ const sendReply = async () => {
                 auteur_id: currentUser.id,
                 message: message
             }]);
-        
-        if (error) throw error;
         
         document.getElementById('reply-message').value = '';
         await loadTicketMessages(currentTicketId);

@@ -16,14 +16,14 @@ const initAuth = async () => {
     const { data: profile } = await supabaseClient
         .from('profiles')
         .select('full_name')
-        .eq('id', user.id)
-        .single();
+        /* .eq('id', user.id) - TODO: filter nan server */
+        [0];
 
     const { data: loc } = await supabaseClient
         .from('locataires')
         .select('id')
-        .eq('user_id', user.id)
-        .single();
+        /* .eq('user_id', user.id) - TODO: filter nan server */
+        [0];
     
     if (loc) {
         locataireId = loc.id;
@@ -42,8 +42,8 @@ const loadDashboardData = async () => {
     const { data: contrat } = await supabaseClient
         .from('contrats')
         .select('*, proprietes(titre)')
-        .eq('locataire_id', locataireId)
-        .eq('statut', 'actif')
+        /* .eq('locataire_id', locataireId) - TODO: filter nan server */
+        /* .eq('statut', 'actif') - TODO: filter nan server */
         .maybeSingle();
 
     if (contrat) {
@@ -55,8 +55,8 @@ const loadDashboardData = async () => {
     const { data: factures } = await supabaseClient
         .from('factures')
         .select('*')
-        .eq('id_locataire', locataireId)
-        .order('date_emission', { ascending: false })
+        /* .eq('id_locataire', locataireId) - TODO: filter nan server */
+        
         .limit(5);
 
     const tbody = document.getElementById('factures-tbody');

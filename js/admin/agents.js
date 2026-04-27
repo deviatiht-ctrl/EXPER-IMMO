@@ -1,5 +1,5 @@
 // admin/agents.js
-import { supabaseClient } from '../supabase-client.js';
+import { apiClient } from '../api-client.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const tbody = document.getElementById('agents-tbody');
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const photoIcon = document.getElementById('photo-icon');
     const photoContainer = document.getElementById('photo-preview-container');
 
+    checkAuth();
     setupLogout();
 
     window.openAgentModal = (agent = null) => {
@@ -64,19 +65,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const loadAgents = async () => {
-        const { data: agents, error } = await supabaseClient
-            .from('agents')
-            .select('*')
-            .order('ordre', { ascending: true });
+        try {
+            const agents = await apiClient.get('/agents');
+            
+            if (!agents || !agents.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Aucun agent trouvé.</td></tr>';
+                return;
+            }
 
-        if (error) {
-            console.error('Error:', error);
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Erreur de chargement.</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = '';
-        agents.forEach(a => {
+            tbody.innerHTML = '';
+            agents.forEach(a => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td><img src="${a.photo_url || 'https://i.pravatar.cc/150'}" class="table-thumb" style="border-radius:50%;width:40px;height:40px;object-fit:cover"></td>
@@ -95,14 +93,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             tbody.appendChild(tr);
         });
 
-        if (typeof lucide !== 'undefined') lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        } catch (err) {
+            console.error('Error:', err);
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Erreur de chargement.</td></tr>';
+        }
     };
 
     const deleteAgent = async (id) => {
         if (confirm('Voulez-vous vraiment supprimer cet agent ?')) {
-            const { error } = await supabaseClient.from('agents').delete().eq('id', id);
-            if (!error) loadAgents();
-            else alert('Erreur lors de la suppression.');
+            try {
+                await apiClient.delete('/agents/' + id);
+                loadAgents();
+            } catch (err) {
+                alert('Erreur lors de la suppression.');
+            }
         }
     };
 
@@ -119,22 +124,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         try {
             // 1. Upload Photo if changed
+            let photoUrl = photoPreview.src.startsWith('http') ? photoPreview.src : null;
             if (photoFile) {
-                const fileExt = photoFile.name.split('.').pop();
-                const fileName = `${Math.random()}.${fileExt}`;
-                const filePath = `agents/${fileName}`;
-
-                const { error: uploadError } = await supabaseClient.storage
-                    .from('profile-avatars')
-                    .upload(filePath, photoFile);
-
-                if (uploadError) throw uploadError;
-
-                const { data: { publicUrl } } = supabaseClient.storage
-                    .from('profile-avatars')
-                    .getPublicUrl(filePath);
-                
-                photoUrl = publicUrl;
+                const formData = new FormData();
+                formData.append('file', photoFile);
+                const uploadResult = await apiClient.post('/upload/image', formData, false);
+                photoUrl = uploadResult.url;
             }
 
             // 2. Save Agent Data
@@ -148,16 +143,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 photo_url: photoUrl
             };
 
-            let error;
             if (agentId) {
-                const { error: err } = await supabaseClient.from('agents').update(agentData).eq('id', agentId);
-                error = err;
+                await apiClient.put('/agents/' + agentId, agentData);
             } else {
-                const { error: err } = await supabaseClient.from('agents').insert([agentData]);
-                error = err;
+                await apiClient.post('/agents', agentData);
             }
-
-            if (error) throw error;
 
             closeAgentModal();
             loadAgents();
@@ -175,9 +165,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadAgents();
 });
 
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return; }
+    if (user.role !== 'admin') { window.location.href = '../index.html'; }
+}
+
 function setupLogout() {
-    document.getElementById('btn-logout')?.addEventListener('click', async function() {
-        await supabaseClient.auth.signOut();
+    document.getElementById('btn-logout')?.addEventListener('click', function() {
+        localStorage.removeItem('exper_immo_token');
+        localStorage.removeItem('exper_immo_user');
         window.location.href = '../login.html';
     });
 }

@@ -14,8 +14,8 @@ const initAuth = async () => {
     const { data: locataire } = await supabaseClient
         .from('locataires')
         .select('id_locataire')
-        .eq('user_id', currentUser.id)
-        .single();
+        /* .eq('user_id', currentUser.id) - TODO: filter nan server */
+        [0];
     
     locataireId = locataire?.id_locataire;
     
@@ -31,11 +31,9 @@ const loadPayments = async () => {
         const { data: payments, error } = await supabaseClient
             .from('paiements')
             .select('*')
-            .eq('locataire_id', locataireId)
-            .order('annee', { ascending: false })
-            .order('mois', { ascending: false });
-        
-        if (error) throw error;
+            /* .eq('locataire_id', locataireId) - TODO: filter nan server */
+            
+            ;
         
         allPayments = payments || [];
         renderPayments(allPayments);
@@ -108,9 +106,9 @@ const loadContractInfo = async () => {
         const { data: contract, error } = await supabaseClient
             .from('contrats')
             .select('loyer_mensuel, devise, date_fin')
-            .eq('locataire_id', locataireId)
-            .eq('statut', 'actif')
-            .single();
+            /* .eq('locataire_id', locataireId) - TODO: filter nan server */
+            /* .eq('statut', 'actif') - TODO: filter nan server */
+            [0];
         
         if (error || !contract) return;
         

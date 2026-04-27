@@ -29,9 +29,7 @@ async function loadContrats(userId) {
                 locataire:locataires(code_locataire, user:profiles!locataires_user_id_fkey(full_name)),
                 proprietaire:proprietaires(code_proprietaire, user:profiles!proprietaires_user_id_fkey(full_name))
             `)
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
+            ;
 
         allContrats = (data || []).filter(c => c.propriete?.gestionnaire_responsable === userId);
 

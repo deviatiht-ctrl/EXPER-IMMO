@@ -50,8 +50,6 @@ export async function uploadImage(file, bucket, path) {
                 upsert: false
             });
 
-        if (error) throw error;
-
         // Get public URL
         const { data: { publicUrl } } = supabase.storage
             .from(bucket)
@@ -105,8 +103,6 @@ export async function deleteImage(bucket, path) {
         const { error } = await supabase.storage
             .from(bucket)
             .remove([path]);
-
-        if (error) throw error;
 
         return { success: true, error: null };
     } catch (error) {
@@ -310,7 +306,7 @@ export async function uploadAvatar(file, userId) {
         const { error } = await supabase
             .from('profiles')
             .update({ avatar_url: result.data.publicUrl })
-            .eq('id', userId);
+            /* .eq('id', userId) - TODO: filter nan server */;
 
         if (error) {
             return { url: null, error };

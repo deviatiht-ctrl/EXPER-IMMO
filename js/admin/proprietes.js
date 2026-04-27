@@ -1,5 +1,5 @@
 ﻿// admin/proprietes.js
-import { supabaseClient as supabase } from '../supabase-client.js';
+import { apiClient } from '../api-client.js';
 
 let allProps = [];
 
@@ -12,15 +12,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { window.location.href = '../login.html'; return; }
-    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-    if (profile?.role !== 'admin') { window.location.href = '../index.html'; }
+    const user = JSON.parse(localStorage.getItem('exper_immo_user') || '{}');
+    const token = localStorage.getItem('exper_immo_token');
+    if (!token || !user.id) { window.location.href = '../login.html'; return; }
+    if (user.role !== 'admin') { window.location.href = '../index.html'; }
 }
 
 function setupLogout() {
     document.getElementById('btn-logout')?.addEventListener('click', async function() {
-        await supabase.auth.signOut();
+        localStorage.removeItem('exper_immo_token'); localStorage.removeItem('exper_immo_user');
         window.location.href = '../login.html';
     });
 }
@@ -39,7 +39,7 @@ function setupSearch() {
     document.getElementById('prop-tbody')?.addEventListener('click', async function(e) {
         var btn = e.target.closest('.btn-delete');
         if (btn && confirm('Supprimer cette propriete ?')) {
-            var { error } = await supabase.from('proprietes').delete().eq('id_propriete', btn.dataset.id);
+            var { error } = await apiClient.delete('/proprietes/' + btn.dataset.id);
             if (!error) loadProperties();
         }
     });
@@ -51,8 +51,7 @@ async function loadProperties() {
         var { data: props, error } = await supabase
             .from('proprietes')
             .select('*, zones(nom)')
-            .order('created_at', { ascending: false });
-        if (error) throw error;
+            ;
         allProps = props || [];
         var countEl = document.getElementById('prop-count');
         if (countEl) countEl.textContent = allProps.length + ' propriete' + (allProps.length !== 1 ? 's' : '') + ' dans le catalogue';

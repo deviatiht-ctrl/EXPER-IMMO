@@ -45,7 +45,7 @@ async function loadFactures() {
             *,
             locataires (nom, prenom)
         `)
-        .order('date_emission', { ascending: false });
+        ;
 
     if (error) {
         tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: red;">Erreur</td></tr>';

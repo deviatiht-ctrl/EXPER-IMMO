@@ -84,13 +84,13 @@ window.viewLocataire = async function(id) {
     const { data: contracts } = await supabase
         .from('contrats')
         .select('reference, date_debut, date_fin, loyer_mensuel, statut, propriete:proprietes(titre)')
-        .eq('locataire_id', id)
-        .order('date_debut', { ascending: false });
+        /* .eq('locataire_id', id) - TODO: filter nan server */
+        ;
     const { data: payments } = await supabase
         .from('paiements')
         .select('reference, montant_total, date_echeance, statut')
-        .eq('locataire_id', id)
-        .order('date_echeance', { ascending: false })
+        /* .eq('locataire_id', id) - TODO: filter nan server */
+        
         .limit(5);
     const contractRows = (contracts || []).map(function(c){
         return '<div class="detail-card"><div class="detail-card-title">' + esc(c.reference || '') + ' â€” ' + esc(c.propriete?.titre || 'N/A') + '</div><div class="detail-card-sub">$' + Number(c.loyer_mensuel||0).toLocaleString('fr-FR') + '/mois Â· ' + esc(c.statut) + ' Â· ' + (c.date_debut||'').substring(0,10) + ' â†’ ' + (c.date_fin||'').substring(0,10) + '</div></div>';
@@ -158,9 +158,9 @@ window.saveLocataire = async function(e) {
             date_naissance: getVal('loc-ddn') || null,
         };
         if (currentLocataire) {
-            const { error: pe } = await supabase.from('profiles').update(profileData).eq('id', currentLocataire.user_id);
+            const { error: pe } = await apiClient.put('/profiles/' + currentLocataire.user_id, profileData);
             if (pe) throw pe;
-            const { error: le } = await supabase.from('locataires').update(locData).eq('id_locataire', currentLocataire.id_locataire);
+            const { error: le } = await apiClient.put('/locataires/' + currentLocataire.id_locataire, locData);
             if (le) throw le;
             showToast('Locataire mis à jour', 'success');
         } else {
@@ -180,7 +180,7 @@ window.saveLocataire = async function(e) {
                 { onConflict: 'id' }
             );
             if (pe) throw pe;
-            const { error: le } = await supabase.from('locataires').insert([{ user_id: uid, ...locData }]);
+            const { error: le } = await apiClient.post('/locataires', [{ user_id: uid, ...locData }]);
             if (le) throw le;
             showToast('Locataire créé! Mot de passe: ' + pwd, 'success');
         }
@@ -197,8 +197,7 @@ window.saveLocataire = async function(e) {
 window.deleteLocataire = async function(id) {
     if (!confirm('Supprimer ce locataire ?')) return;
     try {
-        const { error } = await supabase.from('locataires').delete().eq('id_locataire', id);
-        if (error) throw error;
+        const { error } = await apiClient.delete('/locataires/' + id);
         showToast('Locataire supprimÃ©', 'success');
         await Promise.all([loadLocataires(), loadStats()]);
     } catch (err) { showToast(err.message || 'Erreur de suppression', 'error'); }
@@ -206,7 +205,7 @@ window.deleteLocataire = async function(id) {
 
 function setupEventListeners() {
     document.getElementById('btn-logout')?.addEventListener('click', async () => {
-        await supabase.auth.signOut();
+        localStorage.removeItem('exper_immo_token'); localStorage.removeItem('exper_immo_user');
         window.location.href = '../login.html';
     });
     document.getElementById('search-locataires')?.addEventListener('input', function(e) {

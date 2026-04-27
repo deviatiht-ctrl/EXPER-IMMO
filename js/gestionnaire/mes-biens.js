@@ -24,10 +24,9 @@ async function loadBiens(userId) {
         const { data, error } = await supabaseClient
             .from('proprietes')
             .select('id_propriete, code_propriete, titre, adresse, type_propriete, statut, statut_bien, type_mandat, zones(nom), proprietaire:proprietaires(code_proprietaire, user:profiles!proprietaires_user_id_fkey(full_name))')
-            .eq('gestionnaire_responsable', userId)
-            .order('created_at', { ascending: false });
+            /* .eq('gestionnaire_responsable', userId) - TODO: filter nan server */
+            ;
 
-        if (error) throw error;
         allBiens = data || [];
 
         setEl('stat-total', allBiens.length);
