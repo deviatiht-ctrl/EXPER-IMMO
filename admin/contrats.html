@@ -27,16 +27,21 @@
             <div class="sidebar-logo-text"><strong>EXPERIMMO</strong><span>Administration</span></div>
         </a>
         <nav class="sidebar-nav">
-            <div class="sidebar-section-label">Principal</div>
             <a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
-            <div class="sidebar-section-label">Dossiers</div>
+            <a href="../../proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
             <a href="proprietaires.html" class="nav-link"><i data-lucide="user-check"></i> <span>Propriétaires</span></a>
             <a href="locataires.html" class="nav-link"><i data-lucide="users"></i> <span>Locataires</span></a>
-            <a href="../../proprietes.html" class="nav-link"><i data-lucide="building-2"></i> <span>Propriétés</span></a>
-            <div class="sidebar-section-label">Finances</div>
             <a href="contrats.html" class="nav-link active"><i data-lucide="file-text"></i> <span>Contrats</span></a>
-            <a href="paiements.html" class="nav-link"><i data-lucide="wallet"></i> <span>Paiements</span></a>
+            <a href="paiements.html" class="nav-link"><i data-lucide="credit-card"></i> <span>Paiements</span></a>
+            <a href="../../agents.html" class="nav-link"><i data-lucide="briefcase"></i> <span>Agents</span></a>
+            <a href="gestionnaires.html" class="nav-link"><i data-lucide="shield-check"></i> <span>Gestionnaires</span></a>
+            <a href="contacts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Messages</span></a>
+            <a href="statistiques.html" class="nav-link"><i data-lucide="bar-chart-3"></i> <span>Statistiques</span></a>
+            <a href="parametres.html" class="nav-link"><i data-lucide="settings"></i> <span>Paramètres</span></a>
         </nav>
+        <div class="sidebar-footer">
+            <button id="btn-logout"><i data-lucide="log-out"></i>Déconnexion</button>
+        </div>
     </aside>
 
     <main class="admin-main">
@@ -131,7 +136,7 @@
                 <div style="margin-bottom:12px;">
                     <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Propriété</label>
                     <select id="ctr-propriete" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
-                        <option value="">— Sélectionner une propriété —</option>
+                        <option value="">- Sélectionner une propriété -</option>
                     </select>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
