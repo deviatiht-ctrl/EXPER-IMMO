@@ -3,8 +3,8 @@
 // Version 1.0.0
 // ============================================================
 
-const CACHE_NAME = 'experImmo-v2';
-const STATIC_CACHE = 'experImmo-static-v2';
+const CACHE_NAME = 'experImmo-v4';
+const STATIC_CACHE = 'experImmo-static-v4';
 
 // App shell : fichiers à mettre en cache pour le mode hors-ligne
 const APP_SHELL = [
@@ -74,10 +74,25 @@ self.addEventListener('fetch', event => {
     if (url.hostname.includes('supabase.io')) return;
     if (url.protocol === 'chrome-extension:') return;
 
-    // Ressources statiques (CSS, JS, images, polices) → Cache First
+    // Fichiers JS → Network First (toujours récupérer la dernière version)
+    if (url.pathname.startsWith('/js/')) {
+        event.respondWith(
+            fetch(request)
+                .then(response => {
+                    if (!response || response.status !== 200) return response;
+                    return caches.open(STATIC_CACHE).then(cache => {
+                        cache.put(request, response.clone());
+                        return response;
+                    });
+                })
+                .catch(() => caches.match(request))
+        );
+        return;
+    }
+
+    // CSS, assets, polices → Cache First
     if (
         url.pathname.startsWith('/css/')      ||
-        url.pathname.startsWith('/js/')       ||
         url.pathname.startsWith('/assets/')   ||
         url.hostname.includes('fonts.gstatic.com') ||
         url.hostname.includes('fonts.googleapis.com') ||
