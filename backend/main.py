@@ -13,6 +13,7 @@ import uuid
 import shutil
 from pathlib import Path
 from datetime import date
+from sqlalchemy import text
 
 from . import models, database, auth
 
@@ -207,8 +208,21 @@ def root():
 @app.post("/auth/login")
 def login(payload: UserLogin, db: Session = Depends(database.get_db)):
     user = db.query(models.User).filter(models.User.email == payload.email).first()
-    if not user or not auth.verify_password(payload.password, user.hashed_password):
+    if not user:
         raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect")
+    
+    # Debug password verification
+    try:
+        password_valid = auth.verify_password(payload.password, user.hashed_password)
+    except Exception as e:
+        # Log the error for debugging
+        print(f"[DEBUG] Password verification error: {e}")
+        print(f"[DEBUG] Hashed password in DB: {user.hashed_password}")
+        raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect")
+    
+    if not password_valid:
+        raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect")
+    
     if not user.is_active:
         raise HTTPException(status_code=401, detail="Compte désactivé")
 
@@ -818,8 +832,8 @@ def setup_admin(
 def health_check(db: Session = Depends(database.get_db)):
     """Health check endpoint"""
     try:
-        # Check database connection
-        db.execute("SELECT 1")
+        # Check database connection - SQLAlchemy 2.0 compatible
+        db.execute(text("SELECT 1"))
         db_status = "connected"
     except Exception as e:
         db_status = f"error: {str(e)}"
@@ -832,6 +846,34 @@ def health_check(db: Session = Depends(database.get_db)):
         "database": db_status,
         "admin_users": admin_count,
         "secret_key_set": bool(os.getenv("SECRET_KEY"))
+    }
+
+
+@app.post("/debug/login")
+def debug_login(email: str, password: str, db: Session = Depends(database.get_db)):
+    """Debug endpoint to check login issues - requires secret key"""
+    user = db.query(models.User).filter(models.User.email == email).first()
+    
+    if not user:
+        return {"error": "User not found", "email": email}
+    
+    # Check password
+    try:
+        is_valid = auth.verify_password(password, user.hashed_password)
+    except Exception as e:
+        is_valid = False
+        verify_error = str(e)
+    
+    # Return debug info (without exposing too much)
+    return {
+        "user_found": True,
+        "email": user.email,
+        "role": user.role,
+        "is_active": user.is_active,
+        "password_valid": is_valid,
+        "password_hash_prefix": user.hashed_password[:30] + "..." if user.hashed_password else None,
+        "hash_length": len(user.hashed_password) if user.hashed_password else 0,
+        "verify_error": verify_error if not is_valid else None
     }
 
 
