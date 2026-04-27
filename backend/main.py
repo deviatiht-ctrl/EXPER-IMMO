@@ -751,5 +751,89 @@ def get_proprietaires(db: Session = Depends(database.get_db)):
     return result
 
 
+# ─────────────────────────────────────────────
+# ADMIN SETUP ENDPOINT (for Render free tier - no shell access)
+# ─────────────────────────────────────────────
+@app.post("/setup/admin")
+def setup_admin(
+    secret: str,
+    email: str = "admin@experimmo.com",
+    password: str = "Admin@Exp2024!",
+    full_name: str = "Administrateur EXPERIMMO",
+    db: Session = Depends(database.get_db)
+):
+    """
+    Endpoint to create or reset admin user.
+    Requires SECRET_KEY as 'secret' parameter for security.
+    """
+    expected_secret = os.getenv("SECRET_KEY", "dev-secret-key")
+    if secret != expected_secret:
+        raise HTTPException(status_code=403, detail="Invalid secret key")
+    
+    # Check if admin exists
+    existing = db.query(models.User).filter(models.User.email == email).first()
+    
+    if existing:
+        # Reset password
+        existing.hashed_password = auth.get_password_hash(password)
+        db.commit()
+        return {
+            "message": "Admin password reset successfully",
+            "email": email,
+            "password": password,
+            "action": "password_reset"
+        }
+    
+    # Create new admin
+    user = models.User(
+        id=str(uuid.uuid4()),
+        email=email,
+        hashed_password=auth.get_password_hash(password),
+        full_name=full_name,
+        role="admin",
+        is_active=True
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    
+    # Create profile
+    profile = models.Profile(
+        id=user.id,
+        full_name=full_name,
+        role="admin"
+    )
+    db.add(profile)
+    db.commit()
+    
+    return {
+        "message": "Admin created successfully",
+        "email": email,
+        "password": password,
+        "action": "created"
+    }
+
+
+@app.get("/health")
+def health_check(db: Session = Depends(database.get_db)):
+    """Health check endpoint"""
+    try:
+        # Check database connection
+        db.execute("SELECT 1")
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+    
+    # Check if admin exists
+    admin_count = db.query(models.User).filter(models.User.role == "admin").count()
+    
+    return {
+        "status": "ok",
+        "database": db_status,
+        "admin_users": admin_count,
+        "secret_key_set": bool(os.getenv("SECRET_KEY"))
+    }
+
+
 if __name__ == "__main__":
     uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
